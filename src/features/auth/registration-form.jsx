@@ -43,7 +43,7 @@ function Register({ onToggle, onRegistrationSuccess }){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onRegistrationSuccess();
+        onRegistrationSuccess(); // bypass          comment this out if want to try the registration. uncomment the block of codes below
         // setErrors({});
 
         // const validationErrors = validate();

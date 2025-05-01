@@ -13,8 +13,7 @@ function App() {
                 {/* <Route path="/" element={<Navigate to="/landing-page" />} /> */}
                 <Route path="/" element={<Navigate to="/auth" />} />
                 <Route path="/auth" element={<Auth />} />
-                
-                {/* Other pages */}
+                {/* Other pages here */}
             </Routes>
         </div>
     </Router>

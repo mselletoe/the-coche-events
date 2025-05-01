@@ -20,7 +20,6 @@ function AccountSetup() {
     }
   };
 
-  // If a section is active, just show that section
   if (activeSection) {
     return (
       <div className="accountsetup-container">
