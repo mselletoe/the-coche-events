@@ -1,0 +1,229 @@
+@import '../../shared_components/global_styles';
+
+.auth-page-wrapper{
+    background-color: $secondary-color;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+
+    .auth-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+
+        .loginform-container{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            font-family: var(--inter);
+            width: 500px;
+    
+            #coche-logo{
+                height: 30px;
+            }
+    
+            .login-form{
+                display: flex;
+                flex-direction: column;
+                margin: 1.5em 0 3em 0;
+    
+                input, .login_button{
+                    height: auto;
+                    padding: 10px;
+                    font-size: 1em;
+                    border: none;
+                    margin: 1.7em 0 0.3em 0;
+                }
+    
+                input[placeholder] {
+                    font-family: var(--inter);
+                }
+    
+                .login_button{
+                    color: $secondary-color-dark;
+                    background-color: $primary-color-dark;
+                    border: none;
+                    cursor: pointer;
+                }
+    
+                .login-error{
+                    font-size: 10px;
+                    font-style: italic;
+                    color: $warning-text;
+                    display: flex;
+                    justify-self: flex-start;
+                    padding-left: 10px;
+                }
+            }
+    
+            .google_signin{
+                height: auto;
+                padding: 10px;
+                font-size: 1em;
+                border: none;
+                cursor: pointer;
+                background-color: white;
+                font-family: var(--inter);
+            }
+    
+            .register_q{
+                margin: 1.5em 0 0 0;
+                font-size: 1em;
+    
+                span{
+                    font-weight: bold;
+                    cursor: pointer;
+                };
+            }
+        }
+    
+        .regiform-container{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            width: 500px;
+            font-family: 'inter';
+    
+            #coche-logo{
+                height: 20px;
+                margin-bottom: 1.5em;
+            }
+    
+            .regi-form{
+                display: flex;
+                flex-direction: column;
+                
+    
+                .phoneNum-container{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+    
+                    p{
+                        flex: 0.1;
+                        margin: 1.5em 0 0.3em 0;
+                    }
+    
+                    input{
+                        flex: 0.93;
+                    }
+                }
+    
+                input{
+                    height: auto;
+                    padding: 8px 10px;
+                    font-size: 1em;
+                    border: none;
+                    margin: 1.5em 0 0.3em 0;
+                }
+    
+                .name-2{
+                    display: flex;
+                    gap: 1em;
+    
+                    .last_name{
+                        flex: 1;
+                    }
+    
+                    .suffix{
+                        width: 100px;
+                    }
+                }
+            }
+
+            #regi-buttons{
+                display: flex;
+                justify-content: space-between;
+                margin: 2em 0 0 0;
+
+                button{
+                    height: auto;
+                    padding: 8px 50px;
+                    font-size: 1em;
+                    border: none;
+                    cursor: pointer;
+                }
+
+                #register_button{
+                    background-color: $primary-color-dark;
+                    color: $secondary-color-dark;
+                    font-weight: bold;
+                }
+            }
+
+            .login-error{
+                font-size: 10px;
+                font-style: italic;
+                color: $warning-text;
+                display: flex;
+                justify-self: flex-start;
+                padding-left: 10px;
+            }
+        }
+
+        .accountsetup-container{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            font-family: var(--inter);
+
+            #coche-logo{
+                height: 20px;
+                margin-bottom: 1.5em;
+            }
+
+            .setup-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 600px;
+
+                .setup-options{
+                    display: flex;
+                    justify-content: space-evenly;
+                    min-width: 550px;
+
+                    div {
+                        margin: 10px;
+                        width: 180px;
+                        height: 180px;
+                        background-color: $primary-color;
+                        border-radius: 5px;
+                    }
+                }
+            }
+              
+            #skip-button{
+                text-align: center;
+                height: auto;
+                width: 200px;
+                padding: 8px;
+                font-size: 1em;
+                border: none;
+                cursor: pointer;
+                background-color: $primary-color-dark;
+                color: $secondary-color-dark;
+                margin-left: auto;
+            }
+        }
+    }
+
+    #side-image-container {
+        flex: 0 0 45%;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.5s ease-in-out;
+        display: flex;
+        justify-content: flex-end;
+
+        img{
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover; // makes sure the image don't stretch
+        }
+    }
+}
+

@@ -1,0 +1,24 @@
+$primary-color: #734F23;
+$secondary-color: #FEF2F5;
+
+$primary-color-dark: #26221C;
+$secondary-color-dark: #FFB4C7;
+
+$warning-text: #FF0000;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  --inter: 'Inter';
+  --inter-medium: 'Inter Medium';
+}
+
+@mixin rounded-corners($radius: 5px) {
+    border-radius: $radius;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
