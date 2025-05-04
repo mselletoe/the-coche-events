@@ -1,49 +1,38 @@
-import { useState } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import "../auth/auth.scss";
-import ProfileSetup from './profile-setup';
-import AddressSetup from './address-setup';
-import PaymentSetup from './payment-setup';
+import { cocheLogo } from '../../assets/images.js';
 
-function AccountSetup() {
-  const [activeSection, setActiveSection] = useState("");
+function AccountSetupLayout({ showWelcome }) {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const renderSection = () => {
-    switch (activeSection) {
-      case "profile":
-        return <ProfileSetup />;
-      case "address":
-        return <AddressSetup />;
-      case "payment":
-        return <PaymentSetup />;
-      default:
-        return null;
-    }
+  const handleNavigate = (section) => {
+    navigate(`/auth/setup/${section}`);
   };
 
-  // If a section is active, just show that section
-  if (activeSection) {
+  if (showWelcome || location.pathname === "/auth/setup") {
     return (
       <div className="accountsetup-container">
-        {renderSection()}
+        <img id='coche-logo' src={cocheLogo} alt="coche"/>
+        <h3>You have successfully created an account!</h3>
+        <div className="setup-container">
+          <h1>Setup your account</h1>
+          <div className="setup-options">
+            <div className="profile-setup" onClick={() => handleNavigate("profile")}>Profile Setup</div>
+            <div className="address-setup" onClick={() => handleNavigate("address")}>Address Setup</div>
+            <div className="payment-setup" onClick={() => handleNavigate("payment")}>Payment Setup</div>  
+          </div>
+        </div>
+        <button id="skip-button">Skip</button>
       </div>
     );
   }
 
   return (
     <div className="accountsetup-container">
-      <img id='coche-logo' src="src/assets/coche-logo.svg" alt="coche"/>
-      <h3>You have successfully created an account!</h3>
-      <div className="setup-container">
-        <h1>Setup your account</h1>
-        <div className="setup-options">
-          <div className="profile-setup" onClick={() => setActiveSection("profile")}>Profile Setup</div>
-          <div className="address-setup" onClick={() => setActiveSection("address")}>Address Setup</div>
-          <div className="payment-setup" onClick={() => setActiveSection("payment")}>Payment Setup</div>  
-        </div>
-      </div>
-      <button id="skip-button">Skip</button>
+      <Outlet />
     </div>
   );
 }
 
-export default AccountSetup;
+export default AccountSetupLayout;

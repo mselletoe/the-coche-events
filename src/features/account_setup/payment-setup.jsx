@@ -1,8 +1,13 @@
-import "../auth/auth.scss"; // Assuming styles live here
+import "./profile-setup.scss";
 
 function PaymentSetup() {
   return (
-    <h2>Payment</h2>
+    <h2>Payment</h2> // can remove this
+    // ####################################################################
+    // ###                                                              ###
+    // ###                       Your code here                         ###
+    // ###                                                              ###
+    // ####################################################################
   );
 }
 

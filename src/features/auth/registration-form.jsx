@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { cocheLogo } from '../../assets/images.js';
 import "./auth.scss";
 
-function Register({ onToggle, onRegistrationSuccess }){
+function Register(){
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
         first_name: "",
         last_name: "",
@@ -25,7 +29,7 @@ function Register({ onToggle, onRegistrationSuccess }){
         const hasInput = Object.values(form).some((value) => value.trim() !== "");
         
         if (!hasInput || window.confirm("You have unsaved information. Do you really want to cancel registration?")) {
-            onToggle();
+            navigate("/auth/login");
         }
     };
       
@@ -43,7 +47,7 @@ function Register({ onToggle, onRegistrationSuccess }){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onRegistrationSuccess();
+        navigate("/auth/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
         // setErrors({});
 
         // const validationErrors = validate();
@@ -60,7 +64,7 @@ function Register({ onToggle, onRegistrationSuccess }){
         //   .then((res) => res.json())
         //   .then((data) => {
         //     if (data.success) {
-        //       onRegistrationSuccess();
+        //       navigate("/auth/setup");
         //       setForm({
         //         first_name: "",
         //         last_name: "",
@@ -82,7 +86,7 @@ function Register({ onToggle, onRegistrationSuccess }){
       
     return (
         <div className="regiform-container">
-            <img id='coche-logo' src="src\assets\coche-logo.svg" alt="coche"/>
+            <img id='coche-logo' src={cocheLogo} alt="coche"/>
             <form className="regi-form" onSubmit={handleSubmit}>
                 {/* First Name */}
                 <input

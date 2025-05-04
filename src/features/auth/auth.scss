@@ -192,6 +192,7 @@
                         height: 180px;
                         background-color: $primary-color;
                         border-radius: 5px;
+                        cursor: pointer;
                     }
                 }
             }
@@ -201,12 +202,12 @@
                 height: auto;
                 width: 200px;
                 padding: 8px;
-                font-size: 1em;
+                margin-left: auto;
                 border: none;
                 cursor: pointer;
                 background-color: $primary-color-dark;
                 color: $secondary-color-dark;
-                margin-left: auto;
+                font-size: 1em;
             }
         }
     }

@@ -1,8 +1,14 @@
-import "../auth/auth.scss"; // Assuming styles live here
+import "./address-setup.scss";
 
 function AddressSetup() {
   return (
-    <h2>Address hello</h2>
+    <h2>Address</h2> // can remove this
+    // ####################################################################
+    // ###                                                              ###
+    // ###                       Your code here                         ###
+    // ###                                                              ###
+    // ###            Go to sample.jsx for sample fetching              ###
+    // ####################################################################
   );
 }
 
