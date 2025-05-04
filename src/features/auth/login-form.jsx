@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { cocheLogo } from '../../assets/images.js';
 import "./auth.scss";
 
-function Login({ onToggle }){
+function Login(){
+    const navigate = useNavigate();
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -58,7 +61,7 @@ function Login({ onToggle }){
 
     return (
         <div className="loginform-container">
-          <img id='coche-logo' src="src\assets\coche-logo.svg" alt="coche"/>
+        <img id='coche-logo' src={cocheLogo} alt="coche"/>
           <form className="login-form" onSubmit={handleSubmit}>
             <input 
                 required 
@@ -81,7 +84,7 @@ function Login({ onToggle }){
             <button className="login_button" type="submit">Login</button>
           </form>
             <button className="google_signin">Sign in with google</button>
-            <p className="register_q">Don’t have an account? <span onClick={onToggle}>Register for free</span></p>
+            <p className="register_q">Don’t have an account? <span onClick={() => navigate("/auth/register")}>Register for free</span></p>
         </div>   
     )       
 }
