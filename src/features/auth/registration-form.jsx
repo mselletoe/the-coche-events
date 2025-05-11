@@ -47,7 +47,7 @@ function Register(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate("/auth/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
+        navigate("/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
         // setErrors({});
 
         // const validationErrors = validate();

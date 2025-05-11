@@ -20,13 +20,15 @@ function App() {
           <Route index element={<Navigate to="login" replace />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
-          <Route path="setup" element={<AccountSetup />}>
-            <Route index element={<AccountSetup showWelcome />} />
-            <Route path="profile" element={<ProfileSetup />} />
-            <Route path="address" element={<AddressSetup />} />
-            <Route path="payment" element={<PaymentSetup />} />
-          </Route>
         </Route>
+
+        {/* Setup entry point */}
+        <Route path="/setup" element={<AccountSetup showWelcome />} />
+
+        {/* Now top-level standalone pages */}
+        <Route path="/profile" element={<ProfileSetup />} />
+        <Route path="/address" element={<AddressSetup />} />
+        <Route path="/payment" element={<PaymentSetup />} />
       </Routes>
     </Router>
   );
