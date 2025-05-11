@@ -13,42 +13,63 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
+        font-family: var(--inter);
 
+        // -------------------- login-form.jsx
         .loginform-container{
             display: flex;
             flex-direction: column;
             text-align: center;
-            font-family: var(--inter);
-            width: 500px;
-    
+            width: 600px;
+            background-color: white;
+            padding: 3em;
+            border-radius: 10px;
+
             #coche-logo{
                 height: 30px;
             }
-    
+
             .login-form{
                 display: flex;
                 flex-direction: column;
-                margin: 1.5em 0 3em 0;
-    
+                margin: 1.1em 0 3em 0;
+
                 input, .login_button{
                     height: auto;
-                    padding: 10px;
+                    padding: 12px 20px;
+                    border-radius: 5px;
                     font-size: 1em;
-                    border: none;
                     margin: 1.7em 0 0.3em 0;
-                }
-    
-                input[placeholder] {
                     font-family: var(--inter);
+                    border: 2px solid transparent;
+                    background-color: #EFEFEF;
+                    transition: all 0.3s ease-in-out;
                 }
-    
+
+                input {
+                    &::placeholder {
+                      font-family: var(--inter);
+                      color: #B4B4B4;
+                    }
+
+                    &:focus {
+                      outline: none;
+                      border: 2px solid $secondary-color-dark;
+                    }
+                }
+
                 .login_button{
                     color: $secondary-color-dark;
                     background-color: $primary-color-dark;
                     border: none;
                     cursor: pointer;
+                    font-weight: bold;
+
+                    &:hover{
+                        background-color: #191612;
+                    }
                 }
-    
+
                 .login-error{
                     font-size: 10px;
                     font-style: italic;
@@ -58,45 +79,67 @@
                     padding-left: 10px;
                 }
             }
-    
+
             .google_signin{
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 height: auto;
-                padding: 10px;
+                padding: 12px 20px;
                 font-size: 1em;
                 border: none;
                 cursor: pointer;
-                background-color: white;
+                background-color: #EFEFEF;
                 font-family: var(--inter);
+                font-weight: bold;
+                border-radius: 5px;
+                transition: all 0.3s ease-in-out;
+
+                &:hover{
+                    background-color: #dbd8d8;
+                }
+
+                img{
+                    height: 20px;
+                    margin-right: 10px;
+                }
             }
-    
+
             .register_q{
                 margin: 1.5em 0 0 0;
                 font-size: 1em;
+                color: #D4C5C8;
     
                 span{
                     font-weight: bold;
                     cursor: pointer;
-                };
+                    color: $primary-color;
+                    transition: all 0.3s ease-in-out;
+
+                    &:hover{
+                        color: #503819;
+                    }
+                }
             }
         }
-    
+
+        // -------------------- registration-form.jsx
         .regiform-container{
             display: flex;
             flex-direction: column;
             text-align: center;
             width: 500px;
-            font-family: 'inter';
-    
+            font-family: var(--inter);
+
             #coche-logo{
                 height: 20px;
                 margin-bottom: 1.5em;
             }
-    
+
             .regi-form{
                 display: flex;
                 flex-direction: column;
-                
-    
+
                 .phoneNum-container{
                     display: flex;
                     justify-content: space-between;
@@ -105,21 +148,37 @@
                     p{
                         flex: 0.1;
                         margin: 1.5em 0 0.3em 0;
+                        font-weight: bold;
+                        font-size: 0.9em;
+                        color: #8A6971;
                     }
     
                     input{
-                        flex: 0.93;
+                        flex: 0.97;
                     }
                 }
     
                 input{
                     height: auto;
-                    padding: 8px 10px;
+                    padding: 10px 15px;
                     font-size: 1em;
-                    border: none;
+                    border-radius: 5px;
+                    border: 2px solid transparent;
                     margin: 1.5em 0 0.3em 0;
+                    font-family: var(--inter);
+                    transition: all 0.3s ease-in-out;
+
+                    &::placeholder{
+                        font-family: var(--inter);
+                        color: #B4B4B4;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border: 2px solid $secondary-color-dark;
+                    }
                 }
-    
+
                 .name-2{
                     display: flex;
                     gap: 1em;
@@ -137,20 +196,30 @@
             #regi-buttons{
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
                 margin: 2em 0 0 0;
 
-                button{
-                    height: auto;
-                    padding: 8px 50px;
-                    font-size: 1em;
-                    border: none;
+                i{
+                    color: $primary-color;
                     cursor: pointer;
+                    transition: all 0.3s ease-in-out;
                 }
 
                 #register_button{
+                    height: auto;
+                    padding: 10px 50px;
+                    font-size: 1em;
+                    border: none;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    transition: all 0.3s ease-in-out;
                     background-color: $primary-color-dark;
                     color: $secondary-color-dark;
                     font-weight: bold;
+
+                    &:hover{
+                        background-color: #191612;
+                    }
                 }
             }
 
@@ -164,6 +233,7 @@
             }
         }
 
+        // -------------------- account-setup.jsx
         .accountsetup-container{
             display: flex;
             flex-direction: column;
@@ -175,24 +245,49 @@
                 margin-bottom: 1.5em;
             }
 
+            h3{
+                color: $primary-color;
+            }
+
             .setup-container {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 min-width: 600px;
+                margin: 2em 0 4em 0;
+
+                h1{
+                    color: $primary-color-dark;
+                    margin-bottom: 0.5em;
+                }
 
                 .setup-options{
                     display: flex;
                     justify-content: space-evenly;
-                    min-width: 550px;
 
-                    div {
+                    .setup-item {
                         margin: 10px;
                         width: 180px;
                         height: 180px;
-                        background-color: $primary-color;
+                        background-color: white;
                         border-radius: 5px;
                         cursor: pointer;
+                        border: 1px solid #e0e0e0;
+                        transition: all 0.3s ease-in-out;
+
+                        img{
+                            height: 180px;
+                        }
+
+                        &:hover{
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                        }
+                    }
+
+                    .setup-label {
+                        margin-top: 10px;
+                        color: $primary-color-dark;
+                        font-weight: bold;
                     }
                 }
             }
@@ -202,12 +297,18 @@
                 height: auto;
                 width: 200px;
                 padding: 8px;
+                border-radius: 5px;
                 margin-left: auto;
                 border: none;
                 cursor: pointer;
                 background-color: $primary-color-dark;
                 color: $secondary-color-dark;
                 font-size: 1em;
+                transition: all 0.3s ease-in-out;
+
+                &:hover{
+                    background-color: #191612;
+                }
             }
         }
     }
@@ -227,4 +328,3 @@
         }
     }
 }
-
