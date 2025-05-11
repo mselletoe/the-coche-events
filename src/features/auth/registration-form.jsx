@@ -47,7 +47,7 @@ function Register(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate("/auth/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
+        navigate("/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
         // setErrors({});
 
         // const validationErrors = validate();
@@ -156,7 +156,7 @@ function Register(){
                 {errors.password && <p className="login-error">{errors.password}</p>}
                 <input
                     type="password" 
-                    placeholder="Re-enter password"
+                    placeholder="Confirm password"
                     name="confirmPassword"
                     value={form.confirmPassword}
                     onChange={handleChange}
@@ -166,7 +166,7 @@ function Register(){
                 {errors.general && <p className="login-error">{errors.general}</p>}
     
                 <div id="regi-buttons">
-                    <button id="back-to-login" onClick={handleBackToLogin}>Login</button>
+                    <i class="fa-solid fa-arrow-left" onClick={handleBackToLogin}></i>
                     <button type="submit" id="register_button">Register</button>
                 </div>
             </form>
