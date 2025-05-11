@@ -1,8 +1,117 @@
 @import '../../shared_components/global_styles';
 
+.address-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #DAE9F0;
+  font-family: var(--inter);
+  position: relative;
+  overflow: hidden;
 
-// ####################################################################
-// ###                                                              ###
-// ###              Make sure your styles are nested                ###
-// ###                                                              ###
-// ####################################################################
+  .left-circle {
+    background-color: #A4C4DE;
+    width: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .blue-flower {
+      max-width: 80%;
+      height: auto;
+    }
+  }
+
+  .form-container {
+    flex: 1;
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h2 {
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+          font-weight: 500;
+        }
+
+        .required {
+          color: $warning-text;
+        }
+
+        select,
+        input {
+          padding: 0.75rem 1rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-family: var(--inter);
+          color: #333;
+
+          &::placeholder {
+            color: $placeholder-gray;
+          }
+        }
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+
+        .back-btn {
+          background: none;
+          border: none;
+          color: $primary-color;
+          font-weight: 500;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+
+        .save-btn {
+          background-color: $primary-color;
+          color: white;
+          border: none;
+          padding: 0.75rem 2rem;
+          font-size: 1rem;
+          font-weight: 500;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: darken($primary-color, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+
+    .left-circle {
+      width: 100%;
+      border-radius: 0;
+      padding: 2rem 0;
+    }
+
+    .form-container {
+      padding: 2rem;
+    }
+  }
+}

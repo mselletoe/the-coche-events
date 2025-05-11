@@ -4,6 +4,7 @@ import googleLogo from './google-icon-1.png';
 import profileSetupCover from './profile-setup.png';
 import addressSetupCover from './address-setup.png';
 import paymentSetupCover from './payment-setup.png';
+import blueFlower from './blueFlower.png';
 // add other images as needed
 
 export {
@@ -12,5 +13,6 @@ export {
   googleLogo,
   profileSetupCover,
   addressSetupCover,
-  paymentSetupCover
+  paymentSetupCover,
+  blueFlower
 };
