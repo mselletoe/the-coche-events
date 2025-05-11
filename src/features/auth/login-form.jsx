@@ -83,7 +83,6 @@ function Login(){
               
             <button className="login_button" type="submit">Login</button>
           </form>
-            <button className="google_signin"><img src={googleLogo} alt="googleLogo" />Sign in with google</button>
             <p className="register_q">Don’t have an account? <span onClick={() => navigate("/auth/register")}>Register for free</span></p>
         </div>   
     )       
