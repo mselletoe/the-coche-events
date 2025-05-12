@@ -1,126 +1,155 @@
 @import '../../shared_components/global_styles';
 
-.address-page {
+.addresssetup-container {
   display: flex;
-  height: 100vh; // strictly enforce full viewport height
+  height: 100vh;
   background-color: #DAE9F0;
   font-family: var(--inter);
   position: relative;
   overflow: hidden;
-
-  .left-circle {
-    background-color: #A4C4DE;
-    width: 50vh; // width = height to keep circle
-    height: 50vh;
-    border-radius: 50%;
-    margin: auto 0; // center vertically
-    margin-left: 2rem;
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
+  align-items: center;
     justify-content: center;
 
-    .blue-flower {
-      max-width: 100%;
-      height: auto;
-    }
+  .side-content {
+    flex: 0 0 50%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    overflow: visible;
+    justify-content: center;
+    align-items: center;
+
+    .circle{
+        background-color: #A4C4DE;
+        border-radius: 50%;
+        width: 900px;
+        height: 1000px;
+        position: absolute;
+        left: -170px;
+        display: flex;
+
+        img{
+          position: absolute;
+          width: 1150px;
+          height: auto;
+          object-fit: contain;
+          top: 20px;
+          left: -150px;
+        }
+    }   
   }
 
-  .form-container {
-    flex: 1;
-    padding: 40px 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-
-    h2 {
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      font-size: 40px;
-    }
-
-    form {
+  .addressform-container{
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      height: 100vh;
+      font-family: var(--inter);
 
-      .form-group {
+    .address-form {
+      padding: 2em;
+      width: 600px;
+
+      h1 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $primary-color-dark;
+      }
+
+      form {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1rem;
 
-        label {
-          font-weight: 500;
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          position: relative;
+
+          label {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: $primary-color-dark;
+          }
+
+          .required {
+            color: $warning-text;
+          }
+
+          select,
+          input {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            border: 1.5px solid darken(white, 15%);
+            border-radius: 5px;
+            font-family: var(--inter);
+            transition: all 0.4s ease-in-out;
+
+            &::placeholder {
+              color: $placeholder-gray;
+            }
+
+            &:focus {
+              outline: none;
+              box-shadow: 0 0 0 2px rgba(#68a4d4, 0.7);
+            }
+          }
+
+          select{
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            option{
+              &:hover{
+                background-color: red;
+              }
+            }
+          }
+
+          .dropdown-icon {
+            position: absolute;
+            right: 20px;
+            top: 35px;
+            pointer-events: none;
+            font-size: 1rem;
+            color: #A4C4DE;
+          }
         }
 
-        .required {
-          color: $warning-text;
-        }
+        .button-group {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 2em 0 0 0;
 
-        select,
-        input {
-          padding: 0.75rem 1rem;
-          font-size: 1rem;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          font-family: var(--inter);
-          color: #333;
+          i{
+            color: $primary-color;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+          }
 
-          &::placeholder {
-            color: $placeholder-gray;
+          .save-btn {
+            background-color: $primary-color;
+            color: white;
+            border: none;
+            padding: 8px 40px;
+            font-size: 0.9em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: darken($primary-color, 5%);
+            }
           }
         }
       }
-
-      .button-group {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 1rem;
-
-        .back-btn {
-          background: none;
-          border: none;
-          color: $primary-color;
-          font-weight: 500;
-          font-size: 1rem;
-          cursor: pointer;
-        }
-
-        .save-btn {
-          background-color: $primary-color;
-          color: white;
-          border: none;
-          padding: 0.75rem 2rem;
-          font-size: 1rem;
-          font-weight: 500;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-
-          &:hover {
-            background-color: darken($primary-color, 10%);
-          }
-        }
-      }
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    height: 100vh;
-
-    .left-circle {
-      width: 40vw;
-      height: 40vw;
-      border-radius: 50%;
-      margin: 1rem auto 0;
-    }
-
-    .form-container {
-      padding: 1.5rem;
-      overflow: auto;
     }
   }
 }
