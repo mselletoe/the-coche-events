@@ -1,8 +1,18 @@
 import "./profile-setup.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ProfileSetup() {
   const [image, setImage] = useState(null);
+  const navigate = useNavigate();
+
+  // ✅ Load saved image from localStorage on mount
+  useEffect(() => {
+    const savedImage = localStorage.getItem("profileImage");
+    if (savedImage) {
+      setImage(savedImage);
+    }
+  }, []);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -17,7 +27,9 @@ function ProfileSetup() {
         .then((res) => res.json())
         .then((data) => {
           if (data.status === "success") {
-            setImage(`/the_coche-events/uploads/${data.image}`);
+            const imagePath = `/the_coche-events/uploads/${data.image}`;
+            setImage(imagePath);
+            localStorage.setItem("profileImage", imagePath); // ✅ save to localStorage
           }
         });
     }
@@ -31,8 +43,15 @@ function ProfileSetup() {
       .then((data) => {
         if (data.status === "success") {
           setImage(null);
+          localStorage.removeItem("profileImage"); // ✅ remove from localStorage
         }
       });
+  };
+
+  const handleSave = () => {
+    // Here you could also send a final save request if needed
+    console.log("Saved image URL:", image);
+    navigate("/setup");
   };
 
   return (
@@ -69,10 +88,12 @@ function ProfileSetup() {
       </div>
 
       <div className="bottom-bar">
-        <button className="back">
+        <button className="back" onClick={() => navigate(-1)}>
           <i className="fa-solid fa-arrow-left"></i> Back
         </button>
-        <button className="save">Save</button>
+        <button className="save" onClick={handleSave}>
+          Save
+        </button>
       </div>
     </div>
   );

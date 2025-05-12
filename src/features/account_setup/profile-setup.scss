@@ -35,16 +35,17 @@
       align-items: center;
       justify-content: center;
       gap: 3rem;
-  
+
       .pfp {
-        width: 160px;
-        height: 160px;
-        border-radius: 50%;
-        background-color: #a56b2d;
-        background-size: cover;
-        background-position: center;
+        width: 150px; /* Set a fixed size for the profile picture circle */
+        height: 150px; /* Ensure the height is the same as width for a perfect circle */
+        border-radius: 50%; /* Makes the div circular */
+        background-color: #a56b2d; /* Default background color if no image is present */
+        background-size: cover; /* Ensures the image covers the whole circle */
+        background-position: center; /* Centers the image within the circle */
+        background-repeat: no-repeat; /* Prevents repeating the image */
       }
-  
+   
       .actions {
         display: flex;
         flex-direction: column;
