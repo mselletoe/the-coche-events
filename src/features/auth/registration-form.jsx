@@ -47,41 +47,41 @@ function Register(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate("/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
-        // setErrors({});
+        // navigate("/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
+         setErrors({});
 
-        // const validationErrors = validate();
-        // if (Object.keys(validationErrors).length > 0) {
-        //   setErrors(validationErrors);
-        //   return;
-        // }
+         const validationErrors = validate();
+         if (Object.keys(validationErrors).length > 0) {
+           setErrors(validationErrors);
+           return;
+         }
     
-        // fetch("/the_coche-events/registered_users.php", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(form),
-        // })
-        //   .then((res) => res.json())
-        //   .then((data) => {
-        //     if (data.success) {
-        //       navigate("/auth/setup");
-        //       setForm({
-        //         first_name: "",
-        //         last_name: "",
-        //         suffix: "",
-        //         email: "",
-        //         phone: "",
-        //         password: "",
-        //         confirmPassword: "",
-        //       });
-        //     } else {
-        //       setErrors({ general: data.error });
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.error(err);
-        //     setErrors({ general: "Server error. Please try again later." });
-        //   });
+         fetch("/the_coche-events/registered_users.php", {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify(form),
+         })
+           .then((res) => res.json())
+           .then((data) => {
+             if (data.success) {
+               navigate("/setup");
+               setForm({
+                 first_name: "",
+                 last_name: "",
+                 suffix: "",
+                 email: "",
+                 phone: "",
+                 password: "",
+                 confirmPassword: "",
+               });
+             } else {
+               setErrors({ general: data.error });
+             }
+           })
+           .catch((err) => {
+             console.error(err);
+             setErrors({ general: "Server error. Please try again later." });
+           });
       };
       
     return (
