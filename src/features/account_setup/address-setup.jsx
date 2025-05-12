@@ -27,7 +27,7 @@ const AddressSetup = () => {
         .then(response => setProvinces(response.data))
         .catch(error => console.error('Error fetching provinces:', error));
       setCities([]);
-      setBarangays([]);
+      setBarangays([]);``
       setSelectedProvince('');
       setSelectedCity('');
     }
