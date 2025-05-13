@@ -5,6 +5,8 @@ import { blueFlower } from '../../assets/images.js';
 import { useNavigate } from 'react-router-dom';
 
 const AddressSetup = () => {
+  const navigate = useNavigate();
+
   // Store options for dropdowns
   const [regions, setRegions] = useState([]);
   const [provinces, setProvinces] = useState([]);
@@ -21,8 +23,6 @@ const AddressSetup = () => {
   const [addressLine1, setAddressLine1] = useState('');
   const [addressLine2, setAddressLine2] = useState('');
   const [zipCode, setZipCode] = useState('');
-
-  const navigate = useNavigate();
 
   // Fetch regions on mount
   useEffect(() => {

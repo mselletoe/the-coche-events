@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function ProfileSetup() {
-  const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
-  // ✅ Load saved image from localStorage on mount
+  // Holds the uploaded image path
+  const [image, setImage] = useState(null); 
+
+  // Load Image from LocalStorage
   useEffect(() => {
     const savedImage = localStorage.getItem("profileImage");
     if (savedImage) {
@@ -17,7 +19,7 @@ function ProfileSetup() {
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user")); // Get logged-in user
     const userId = user?.id;
 
     if (file && userId) {
