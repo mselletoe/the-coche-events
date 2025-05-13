@@ -1,12 +1,100 @@
 import "./profile-setup.scss";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ProfileSetup() {
+  const [image, setImage] = useState(null);
+  const navigate = useNavigate();
+
+  // ✅ Load saved image from localStorage on mount
+  useEffect(() => {
+    const savedImage = localStorage.getItem("profileImage");
+    if (savedImage) {
+      setImage(savedImage);
+    }
+  }, []);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      fetch("/the_coche-events/api/upload.php", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "success") {
+            const imagePath = `/the_coche-events/uploads/${data.image}`;
+            setImage(imagePath);
+            localStorage.setItem("profileImage", imagePath); // ✅ save to localStorage
+          }
+        });
+    }
+  };
+
+  const handleRemoveImage = () => {
+    fetch("/the_coche-events/api/delete.php", {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          setImage(null);
+          localStorage.removeItem("profileImage"); // ✅ remove from localStorage
+        }
+      });
+  };
+
+  const handleSave = () => {
+    // Here you could also send a final save request if needed
+    console.log("Saved image URL:", image);
+    navigate("/setup");
+  };
+
   return (
     <div className="profilesetup-container">
-      <h2>Set profile picture</h2>
-      <div className="pfp-container"></div> {/* this is a circle */}
-      <button><i className="fa-solid fa-cloud-arrow-up"></i>Upload</button>
-      <button>Remove</button>
+      <h2 className="page-title">Setup Profile</h2>
+
+      <div className="card">
+        <div className="profile-section">
+          <div
+            className="pfp"
+            style={{
+              backgroundImage: image ? `url(${image})` : "none",
+            }}
+          />
+          <div className="actions">
+            <input
+              type="file"
+              id="uploadInput"
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{ display: "none" }}
+            />
+            <button
+              className="btn upload"
+              onClick={() => document.getElementById("uploadInput").click()}
+            >
+              <i className="fa-solid fa-file-arrow-up"></i> Upload
+            </button>
+            <button className="btn remove" onClick={handleRemoveImage}>
+              <i className="fa-solid fa-trash-can"></i> Remove
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="bottom-bar">
+        <button className="back" onClick={() => navigate(-1)}>
+          <i className="fa-solid fa-arrow-left"></i> Back
+        </button>
+        <button className="save" onClick={handleSave}>
+          Save
+        </button>
+      </div>
     </div>
   );
 }
