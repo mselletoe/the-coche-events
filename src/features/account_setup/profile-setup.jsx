@@ -1,4 +1,5 @@
 import "./profile-setup.scss";
+import axios from 'axios';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -14,38 +15,47 @@ function ProfileSetup() {
     }
   }, []);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
+
+    if (file && userId) {
       const formData = new FormData();
       formData.append("image", file);
+      formData.append("userId", userId);
 
-      fetch("/the_coche-events/api/upload.php", {
-        method: "POST",
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.status === "success") {
-            const imagePath = `/the_coche-events/uploads/${data.image}`;
-            setImage(imagePath);
-            localStorage.setItem("profileImage", imagePath); // ✅ save to localStorage
-          }
+      try {
+        const res = await axios.post("/the_coche-events/api/upload.php", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
         });
+
+        if (res.data.status === "success") {
+          const imagePath = `/the_coche-events/uploads/${res.data.image}`;
+          setImage(imagePath);
+          localStorage.setItem("profileImage", imagePath);
+        } else {
+          console.error(res.data.message);
+        }
+      } catch (err) {
+        console.error("Upload failed", err);
+      }
     }
   };
 
-  const handleRemoveImage = () => {
-    fetch("/the_coche-events/api/delete.php", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "success") {
-          setImage(null);
-          localStorage.removeItem("profileImage"); // ✅ remove from localStorage
-        }
-      });
+  const handleRemoveImage = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
+
+    try {
+      const res = await axios.post("/the_coche-events/api/delete.php", { userId });
+      if (res.data.status === "success") {
+        setImage(null);
+        localStorage.removeItem("profileImage");
+      }
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
   };
 
   const handleSave = () => {
