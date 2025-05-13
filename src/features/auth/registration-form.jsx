@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { cocheLogo } from '../../assets/images.js';
 import "./auth.scss";
@@ -6,6 +7,16 @@ import "./auth.scss";
 function Register(){
     const navigate = useNavigate();
 
+    // Check if the user is already logged in
+    useEffect(() => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        console.log("Already logged in:", user);
+        navigate("/setup", { replace: true });
+      }
+    }, [navigate]);
+
+    // Manages form input values
     const [form, setForm] = useState({
         first_name: "",
         last_name: "",
@@ -14,7 +25,7 @@ function Register(){
         phone: "",
         password: "",
         confirmPassword: "",
-      });
+    });
 
     const [errors, setErrors] = useState({});
 
@@ -22,8 +33,9 @@ function Register(){
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
         setErrors({ ...errors, [name]: "" });
-      };
+    };
 
+    // If the form has content, it warns user before leaving
     const handleBackToLogin = (e) => {
         e.preventDefault();
         const hasInput = Object.values(form).some((value) => value.trim() !== "");
@@ -32,7 +44,8 @@ function Register(){
             navigate("/auth/login");
         }
     };
-      
+
+    // Validates user info
     const validate = () => {
         const newErrors = {};
         if (!form.first_name.trim()) newErrors.first_name = "First name is required.";
@@ -45,49 +58,48 @@ function Register(){
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
+    // Submit user info to database
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        navigate("/setup"); // bypass          comment this out if want to try the registration. uncomment the block of codes below
-        // setErrors({});
+        // navigate("/setup"); // bypass
+        setErrors({});
+        const validationErrors = validate();
 
-        // const validationErrors = validate();
-        // if (Object.keys(validationErrors).length > 0) {
-        //   setErrors(validationErrors);
-        //   return;
-        // }
-    
-        // fetch("/the_coche-events/registered_users.php", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(form),
-        // })
-        //   .then((res) => res.json())
-        //   .then((data) => {
-        //     if (data.success) {
-        //       navigate("/auth/setup");
-        //       setForm({
-        //         first_name: "",
-        //         last_name: "",
-        //         suffix: "",
-        //         email: "",
-        //         phone: "",
-        //         password: "",
-        //         confirmPassword: "",
-        //       });
-        //     } else {
-        //       setErrors({ general: data.error });
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.error(err);
-        //     setErrors({ general: "Server error. Please try again later." });
-        //   });
-      };
-      
+        if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+        }
+
+        try {
+            const response = await axios.post("/the_coche-events/registered_users.php", form);
+            const data = response.data;
+
+            if (data.success) {
+                localStorage.setItem("user", JSON.stringify(data.user)); // Save user session
+                navigate("/setup", { replace: true });
+                setForm({
+                    first_name: "",
+                    last_name: "",
+                    suffix: "",
+                    email: "",
+                    phone: "",
+                    password: "",
+                    confirmPassword: "",
+                });
+            } else {
+                setErrors({ general: data.error });
+            }
+        } catch (err) {
+            console.error("Registration error:", err);
+            setErrors({ general: "Server error. Please try again later." });
+        }
+    };
+
     return (
         <div className="regiform-container">
             <img id='coche-logo' src={cocheLogo} alt="coche"/>
             <form className="regi-form" onSubmit={handleSubmit}>
+
                 {/* First Name */}
                 <input
                     type="text"

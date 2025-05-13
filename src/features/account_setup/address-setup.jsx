@@ -5,20 +5,28 @@ import { blueFlower } from '../../assets/images.js';
 import { useNavigate } from 'react-router-dom';
 
 const AddressSetup = () => {
+  // Store options for dropdowns
   const [regions, setRegions] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [cities, setCities] = useState([]);
   const [barangays, setBarangays] = useState([]);
 
+  // Stores the user's selected options from each dropdown
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
+  const [selectedBarangay, setSelectedBarangay] = useState('');
+
+  // Stores text input values for the street address and zip code
+  const [addressLine1, setAddressLine1] = useState('');
+  const [addressLine2, setAddressLine2] = useState('');
+  const [zipCode, setZipCode] = useState('');
 
   const navigate = useNavigate();
 
   // Fetch regions on mount
   useEffect(() => {
-    axios.get('http://localhost/the_coche-events/regions.php')
+    axios.get('/the_coche-events/regions.php')
       .then(response => setRegions(response.data))
       .catch(error => console.error('Error fetching regions:', error));
   }, []);
@@ -26,11 +34,11 @@ const AddressSetup = () => {
   // Fetch provinces when a region is selected
   useEffect(() => {
     if (selectedRegion) {
-      axios.get(`http://localhost/the_coche-events/provinces.php?region_id=${selectedRegion}`)
+      axios.get(`/the_coche-events/provinces.php?region_id=${selectedRegion}`)
         .then(response => setProvinces(response.data))
         .catch(error => console.error('Error fetching provinces:', error));
       setCities([]);
-      setBarangays([]);``
+      setBarangays([]);
       setSelectedProvince('');
       setSelectedCity('');
     }
@@ -39,7 +47,7 @@ const AddressSetup = () => {
   // Fetch cities when a province is selected
   useEffect(() => {
     if (selectedProvince) {
-      axios.get(`http://localhost/the_coche-events/cities.php?province_id=${selectedProvince}`)
+      axios.get(`/the_coche-events/cities.php?province_id=${selectedProvince}`)
         .then(response => setCities(response.data))
         .catch(error => console.error('Error fetching cities:', error));
       setBarangays([]);
@@ -50,14 +58,53 @@ const AddressSetup = () => {
   // Fetch barangays when a city is selected
   useEffect(() => {
     if (selectedCity) {
-      axios.get(`http://localhost/the_coche-events/barangays.php?city_id=${selectedCity}`)
+      axios.get(`/the_coche-events/barangays.php?city_id=${selectedCity}`)
         .then(response => setBarangays(response.data))
         .catch(error => console.error('Error fetching barangays:', error));
     }
   }, [selectedCity]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Check if user is logged in
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || !user.id) {
+      alert("User not logged in.");
+      navigate("/auth/login");
+      return;
+    }
+
+    // Prepare the payload to send to backend
+    const payload = {
+      user_id: user.id,
+      region_name: selectedRegion ? regions.find(region => region.id === selectedRegion)?.name : '', 
+      province_name: selectedProvince ? provinces.find(province => province.id === selectedProvince)?.name : '', 
+      city_name: selectedCity ? cities.find(city => city.id === selectedCity)?.name : '', 
+      barangay_name: selectedBarangay ? barangays.find(barangay => barangay.id === selectedBarangay)?.name : '', 
+      address_line_1: addressLine1,
+      address_line_2: addressLine2,
+      zip_code: zipCode
+    };
+
+    // Sends payload to backend sand save
+    try {
+      const response = await axios.post("/the_coche-events/save_address.php", payload);
+      if (response.data.success) {
+        alert("Address saved successfully!");
+        navigate("/setup"); // Redirect after saving address
+      } else {
+        alert(response.data.error || "Failed to save address.");
+      }
+    } catch (err) {
+      console.error("Error saving address:", err);
+      alert("Server error.");
+    }
+  };
+
   return (
     <div className="addresssetup-container">
+      {/* Side Content */}
       <div className="side-content">
         <div className="circle">
           <img src={blueFlower} alt="Blue Flower" />
@@ -67,7 +114,8 @@ const AddressSetup = () => {
       <div className='addressform-container'>
         <div className="address-form">
           <h1>Set Address</h1>
-          <form>
+          <form onSubmit={handleSubmit}>
+
             {/* Region Dropdown */}
             <div className="form-group">
               <label>Region <span className="required">*</span></label>
@@ -107,7 +155,7 @@ const AddressSetup = () => {
             {/* Barangay Dropdown */}
             <div className="form-group">
               <label>Barangay <span className="required">*</span></label>
-              <select disabled={!barangays.length}>
+              <select onChange={(e) => setSelectedBarangay(e.target.value)} disabled={!barangays.length}>
                 <option value="">Select Barangay</option>
                 {barangays.map(barangay => (
                   <option key={barangay.id} value={barangay.id}>{barangay.name}</option>
@@ -119,14 +167,14 @@ const AddressSetup = () => {
             {/* Address Fields */}
             <div className="form-group">
               <label>House/Building No. / Street <span className="required">*</span></label>
-              <input type="text" placeholder="Address Line 1" />
-              <input type="text" placeholder="Address Line 2" />
+              <input type="text" placeholder="Address Line 1" value={addressLine1} onChange={(e) => setAddressLine1(e.target.value)} />
+              <input type="text" placeholder="Address Line 2" value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} />
             </div>
 
             {/* Zip Code */}
             <div className="form-group">
               <label>Zip Code <span className="required">*</span></label>
-              <input type="text" placeholder="Enter Zip Code" />
+              <input type="text" placeholder="Enter Zip Code" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
             </div>
 
             {/* Buttons */}
