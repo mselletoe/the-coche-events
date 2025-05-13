@@ -1,110 +1,117 @@
 @import '../../shared_components/global_styles';
 
 .profilesetup-container {
-    background-color: #fff1f5;
-    height: 100vh;
+  background-color: #fff1f5;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", sans-serif;
+  position: relative;
+
+  .page-title {
+    position: absolute;
+    top: 2rem;
+    left: 3rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2e2019;
+  }
+
+  .card {
+    background-color: white;
+    padding: 2.5rem 3rem;
+    width: 600px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 4rem;
+  }
+
+  .profile-section {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    font-family: "Segoe UI", sans-serif;
-    position: relative;
-  
-    .page-title {
-      position: absolute;
-      top: 2rem;
-      left: 3rem;
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #2e2019;
-    }
-  
-    .card {
-      background-color: white;
-      padding: 2.5rem 3rem;
-      width: 600px; // smaller card
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 4rem; // pushes it down so it doesn't overlap title
-    }
-  
-    .profile-section {
+    gap: 3rem;
+
+    .pfp {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: #a56b2d;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 3rem;
 
-      .pfp {
-        width: 150px; /* Set a fixed size for the profile picture circle */
-        height: 150px; /* Ensure the height is the same as width for a perfect circle */
-        border-radius: 50%; /* Makes the div circular */
-        background-color: #a56b2d; /* Default background color if no image is present */
-        background-size: cover; /* Ensures the image covers the whole circle */
-        background-position: center; /* Centers the image within the circle */
-        background-repeat: no-repeat; /* Prevents repeating the image */
-      }
-   
-      .actions {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-  
-        .btn {
-          background-color: #ffdbe4;
-          color: #6b2f2f;
-          padding: 0.8rem 2rem;
-          border: none;
-          border-radius: 0;
-          font-size: 1rem;
-          font-weight: 500;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          justify-content: center;
-          width: 150px;
-  
-          &:hover {
-            background-color: #ffc1d2;
-          }
-        }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
       }
     }
-  
-    .bottom-bar {
-      margin-top: 2rem;
-      width: 600px;
+
+    .actions {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-  
-      .back {
-        background: none;
-        border: none;
-        font-size: 1rem;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .btn {
+        background-color: #ffdbe4;
         color: #6b2f2f;
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 0;
+        font-size: 1rem;
+        font-weight: 500;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-      }
-  
-      .save {
-        padding: 0.9rem 2.5rem;
-        background-color: #2e2019;
-        color: #ffdbe4;
-        font-weight: bold;
-        border: none;
-        border-radius: 0;
-        cursor: pointer;
-        font-size: 1rem;
-  
+        justify-content: center;
+        width: 150px;
+
         &:hover {
-          background-color: #1e1410;
+          background-color: #ffc1d2;
         }
       }
     }
   }
-  
+
+  .bottom-bar {
+    margin-top: 2rem;
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .back {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      color: #6b2f2f;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .save {
+      padding: 0.9rem 2.5rem;
+      background-color: #2e2019;
+      color: #ffdbe4;
+      font-weight: bold;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      font-size: 1rem;
+
+      &:hover {
+        background-color: #1e1410;
+      }
+    }
+  }
+}

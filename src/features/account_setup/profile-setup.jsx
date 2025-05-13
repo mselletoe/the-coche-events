@@ -61,7 +61,6 @@ function ProfileSetup() {
   };
 
   const handleSave = () => {
-    // Here you could also send a final save request if needed
     console.log("Saved image URL:", image);
     navigate("/setup");
   };
@@ -72,12 +71,9 @@ function ProfileSetup() {
 
       <div className="card">
         <div className="profile-section">
-          <div
-            className="pfp"
-            style={{
-              backgroundImage: image ? `url(${image})` : "none",
-            }}
-          />
+          <div className="pfp">
+            {image && <img src={image} alt="Profile" />}
+          </div>
           <div className="actions">
             <input
               type="file"
