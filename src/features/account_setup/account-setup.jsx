@@ -5,9 +5,15 @@ import { cocheLogo, profileSetupCover, addressSetupCover, paymentSetupCover } fr
 function AccountSetup({ showWelcome }) {
   const navigate = useNavigate();
 
+  // Navigates to any setup section (/profile, /address, /payment)
   const handleNavigate = (section) => {
     navigate(`/${section}`);
   };  
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/auth/login", { replace: true });
+  };
 
   return (
     <div className="accountsetup-container">
@@ -39,7 +45,7 @@ function AccountSetup({ showWelcome }) {
           </div>
         </div>
 
-        <button id="skip-button">Skip</button>
+        <button id="logout-button" onClick={handleLogout}>Log Out</button>
       </div>
       
     </div>
