@@ -45,15 +45,16 @@
                 background-color: white;
                 border-radius: 5px;
                 cursor: pointer;
-                border: 1px solid #e0e0e0;
-                transition: all 0.3s ease-in-out;
+                // border: 1px solid darken(white, 12%);
+                transition: all 0.4s ease-in-out;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
 
                 img{
                     height: 180px;
                 }
 
                 &:hover{
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    box-shadow: 0 0 10px rgba(250, 93, 158, 0.5);
                 }
             }
 
@@ -64,7 +65,7 @@
             }
         }
 
-        #skip-button{
+        #logout-button{
             margin: 3em 10px 0 0;
             text-align: center;
             height: auto;
@@ -74,13 +75,13 @@
             margin-left: auto;
             border: none;
             cursor: pointer;
-            background-color: $primary-color-dark;
-            color: $secondary-color-dark;
+            background-color: $primary-color;
+            color: $secondary-color;
             font-size: 1em;
             transition: all 0.3s ease-in-out;
     
             &:hover{
-                background-color: #191612;
+                background-color: darken($primary-color, 5%);
             }
         }
     }
