@@ -1,17 +1,25 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+// Handle preflight request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
+// Database Connection
 $conn = new mysqli("localhost", "root", "", "the_coche-events");
+if ($conn->connect_error) {
+    echo json_encode(["error" => "Database connection failed"]);
+    exit;
+}
 
+// Parse JSON Input
 $data = json_decode(file_get_contents("php://input"), true);
 
+// Extract User Address Fields
 $user_id = $data["user_id"];
 $region_name = $data["region_name"];
 $province_name = $data["province_name"];

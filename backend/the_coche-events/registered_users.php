@@ -1,13 +1,22 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-$conn = new mysqli("localhost", "root", "", "the_coche-events");
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "error" => "Database connection failed."]);
+// Handle preflight request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
     exit();
 }
 
+// Database Connection
+$conn = new mysqli("localhost", "root", "", "the_coche-events");
+if ($conn->connect_error) {
+    echo json_encode(["error" => "Database connection failed"]);
+    exit;
+}
+
+// Parse JSON Input
 $data = json_decode(file_get_contents("php://input"), true);
 
 // Validate input fields

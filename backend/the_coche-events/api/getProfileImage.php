@@ -1,21 +1,33 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-$conn = new mysqli("localhost", "root", "", "the_coche-events");
-if ($conn->connect_error) {
-  die(json_encode(["status" => "error", "message" => "DB connection failed."]));
+// Handle preflight request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
 
+// Database Connection
+$conn = new mysqli("localhost", "root", "", "the_coche-events");
+if ($conn->connect_error) {
+    echo json_encode(["error" => "Database connection failed"]);
+    exit;
+}
+
+// Get User ID from the Request
 $userId = isset($_GET['userId']) ? intval($_GET['userId']) : null;
 if (!$userId) {
   echo json_encode(["status" => "error", "message" => "Missing userId."]);
   exit;
 }
 
+// Query the Database for Profile Picture
 $result = $conn->query("SELECT filename FROM profile_pictures WHERE user_id = $userId");
 $row = $result->fetch_assoc();
 
+// Handle Missing Profile Picture
 $image = $row && $row['filename'] ? $row['filename'] : null;
 echo json_encode(["status" => "success", "image" => $image]);
 
