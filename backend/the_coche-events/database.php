@@ -1,15 +1,15 @@
 <?php
-// Allow requests from localhost:5173 (React dev server)
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-// Handle preflight (OPTIONS) request
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    exit;
+// Handle preflight request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
 
-// db.php
+// Database Connection Setup
 $host = 'localhost';
 $user = 'root';
 $pass = '';

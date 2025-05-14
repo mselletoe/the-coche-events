@@ -1,16 +1,19 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-// Allow POST requests with application/x-www-form-urlencoded or multipart/form-data
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
+// Handle preflight request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
-// Connect to database
+// Database Connection
 $conn = new mysqli("localhost", "root", "", "the_coche-events");
 if ($conn->connect_error) {
-    echo json_encode(["status" => "error", "message" => "Database connection failed."]);
-    exit();
+    echo json_encode(["error" => "Database connection failed"]);
+    exit;
 }
 
 // Get userId from POST data
