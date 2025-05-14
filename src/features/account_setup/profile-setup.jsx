@@ -6,63 +6,75 @@ import { useNavigate } from "react-router-dom";
 function ProfileSetup() {
   const navigate = useNavigate();
 
-  // Holds the uploaded image path
-  const [image, setImage] = useState(null); 
+  const [previewImage, setPreviewImage] = useState(null); // Local preview
+  const [imageFile, setImageFile] = useState(null); 
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.id;
 
   // Load Image from LocalStorage
   useEffect(() => {
-    const savedImage = localStorage.getItem("profileImage");
-    if (savedImage) {
-      setImage(savedImage);
+    if (userId) {
+      const savedImage = localStorage.getItem(`profileImage_${userId}`);
+      if (savedImage) {
+        setPreviewImage(savedImage);
+      }
     }
-  }, []);
+  }, [userId]);
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    const user = JSON.parse(localStorage.getItem("user")); // Get logged-in user
-    const userId = user?.id;
+    if (file) {
+      setImageFile(file);
+      setPreviewImage(URL.createObjectURL(file)); // Local preview only
+    }
+  };
 
-    if (file && userId) {
-      const formData = new FormData();
-      formData.append("image", file);
-      formData.append("userId", userId);
+  const handleSave = async () => {
+    if (!imageFile || !userId) {
+      navigate("/setup");
+      return;
+    }
 
-      try {
-        const res = await axios.post("/the_coche-events/api/upload.php", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    formData.append("userId", userId);
 
-        if (res.data.status === "success") {
-          const imagePath = `/the_coche-events/uploads/${res.data.image}`;
-          setImage(imagePath);
-          localStorage.setItem("profileImage", imagePath);
-        } else {
-          console.error(res.data.message);
-        }
-      } catch (err) {
-        console.error("Upload failed", err);
+    try {
+      const res = await axios.post("/the_coche-events/api/upload.php", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.data.status === "success") {
+        const imagePath = `/the_coche-events/uploads/${res.data.image}`;
+        localStorage.setItem(`profileImage_${userId}`, imagePath);
+        navigate("/setup");
+      } else {
+        console.error(res.data.message);
       }
+    } catch (err) {
+      console.error("Upload failed", err);
     }
   };
 
   const handleRemoveImage = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user?.id;
+    if (!userId) return;
 
     try {
-      const res = await axios.post("/the_coche-events/api/delete.php", { userId });
+      const formData = new FormData();
+      formData.append("userId", userId);
+
+      const res = await axios.post("/the_coche-events/api/delete.php", formData);
       if (res.data.status === "success") {
-        setImage(null);
-        localStorage.removeItem("profileImage");
+        setPreviewImage(null);
+        setImageFile(null);
+        localStorage.removeItem(`profileImage_${userId}`);
+      } else {
+        console.error("Server error:", res.data.message);
       }
     } catch (err) {
-      console.error("Delete failed", err);
+      console.error("Failed to delete image", err);
     }
-  };
-
-  const handleSave = () => {
-    console.log("Saved image URL:", image);
-    navigate("/setup");
   };
 
   return (
@@ -72,7 +84,7 @@ function ProfileSetup() {
       <div className="card">
         <div className="profile-section">
           <div className="pfp">
-            {image && <img src={image} alt="Profile" />}
+            {previewImage && <img src={previewImage} alt="Profile" />}
           </div>
           <div className="actions">
             <input

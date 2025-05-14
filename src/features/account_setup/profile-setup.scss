@@ -7,13 +7,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: "Segoe UI", sans-serif;
+  font-family: var(--inter);
   position: relative;
 
   .page-title {
-    position: absolute;
-    top: 2rem;
-    left: 3rem;
     font-size: 1.8rem;
     font-weight: bold;
     color: #2e2019;
@@ -23,11 +20,12 @@
     background-color: white;
     padding: 2.5rem 3rem;
     width: 600px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 4rem;
+    margin-top: 3rem;
+    border-radius: 5px;
   }
 
   .profile-section {
