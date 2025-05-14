@@ -43,12 +43,12 @@ function AccountSetup({ showWelcome }) {
             <p className="setup-label">Address</p>
           </div>
 
-          <div className="setup-item">
+          {/* <div className="setup-item">
             <div className="payment-setup" onClick={() => handleNavigate("payment")}>
               <img src={paymentSetupCover} alt="payment" />
             </div>
             <p className="setup-label">Payment Method</p>
-          </div>
+          </div> */}
         </div>
 
         <button id="logout-button" onClick={handleLogout}>Log Out</button>
