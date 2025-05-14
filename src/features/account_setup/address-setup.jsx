@@ -5,6 +5,9 @@ import { blueFlower } from '../../assets/images.js';
 import { useNavigate } from 'react-router-dom';
 
 const AddressSetup = () => {
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false); // true if address exists
+
   // Store options for dropdowns
   const [regions, setRegions] = useState([]);
   const [provinces, setProvinces] = useState([]);
@@ -22,7 +25,29 @@ const AddressSetup = () => {
   const [addressLine2, setAddressLine2] = useState('');
   const [zipCode, setZipCode] = useState('');
 
-  const navigate = useNavigate();
+  // load the existing address data
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.id) return;
+
+    axios.get(`/the_coche-events/get_address.php?user_id=${user.id}`)
+      .then(res => {
+        if (res.data?.address) {
+          const addr = res.data.address;
+          setIsEditing(true);
+          setAddressLine1(addr.address_line_1);
+          setAddressLine2(addr.address_line_2);
+          setZipCode(addr.zip_code);
+          setSelectedRegion(addr.region_id);
+          setSelectedProvince(addr.province_id);
+          setSelectedCity(addr.city_id);
+          setSelectedBarangay(addr.barangay_id);
+        }
+      })
+      .catch(err => {
+        console.error("Failed to fetch address", err);
+      });
+  }, []);
 
   // Fetch regions on mount
   useEffect(() => {
@@ -89,7 +114,11 @@ const AddressSetup = () => {
 
     // Sends payload to backend sand save
     try {
-      const response = await axios.post("/the_coche-events/save_address.php", payload);
+      const url = isEditing
+      ? "/the_coche-events/update_address.php"
+      : "/the_coche-events/save_address.php";
+
+      const response = await axios.post(url, payload);
       if (response.data.success) {
         alert("Address saved successfully!");
         navigate("/setup"); // Redirect after saving address
@@ -155,7 +184,7 @@ const AddressSetup = () => {
             {/* Barangay Dropdown */}
             <div className="form-group">
               <label>Barangay <span className="required">*</span></label>
-              <select onChange={(e) => setSelectedBarangay(e.target.value)} disabled={!barangays.length}>
+              <select value={selectedBarangay} onChange={(e) => setSelectedBarangay(e.target.value)} disabled={!barangays.length}>
                 <option value="">Select Barangay</option>
                 {barangays.map(barangay => (
                   <option key={barangay.id} value={barangay.id}>{barangay.name}</option>

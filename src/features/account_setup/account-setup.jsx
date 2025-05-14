@@ -1,9 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import "./account-setup.scss";
+import { useEffect } from "react";
 import { cocheLogo, profileSetupCover, addressSetupCover, paymentSetupCover } from '../../assets/images.js';
 
 function AccountSetup({ showWelcome }) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("Logged-in user:", user);
+  }, []);
 
   // Navigates to any setup section (/profile, /address, /payment)
   const handleNavigate = (section) => {

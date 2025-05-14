@@ -11,6 +11,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 $identifier = $data["identifier"];
 $password = $data["password"];
 
+error_log("Identifier: $identifier");
+
 $sql = "SELECT * FROM users WHERE email = ? OR phone = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ss", $identifier, $identifier);
@@ -34,7 +36,13 @@ if (!$user) {
 } else {
     echo json_encode([
         "success" => true,
-        "user" => $user["first_name"]
+        "user" => [
+            "id" => $user["id"],
+            "first_name" => $user["first_name"],
+            "last_name" => $user["last_name"],
+            "email" => $user["email"],
+            "phone" => $user["phone"]
+        ]
     ]);
 }
 ?>

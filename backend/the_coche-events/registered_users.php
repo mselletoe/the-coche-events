@@ -45,7 +45,18 @@ $sql = "INSERT INTO users (first_name, last_name, suffix, email, phone, password
         VALUES ('$first_name', '$last_name', '$suffix', '$email', '$phone', '$password')";
 
 if ($conn->query($sql) === TRUE) {
-    echo json_encode(['success' => true]);
+    $user_id = $conn->insert_id; // Get last inserted ID
+    echo json_encode([
+        'success' => true,
+        'user' => [
+            'id' => $user_id,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'suffix' => $suffix,
+            'email' => $email,
+            'phone' => $phone
+        ]
+    ]);
 } else {
     echo json_encode(['success' => false, 'error' => 'Error: ' . $conn->error]);
 }
