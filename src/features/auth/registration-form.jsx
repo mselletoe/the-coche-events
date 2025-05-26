@@ -128,8 +128,8 @@ function Register(){
                         value={form.suffix}
                         onChange={handleChange}
                     />
-                    {errors.last_name && <p className="login-error">{errors.last_name}</p>}
                 </div>
+                {errors.last_name && <p className="login-error">{errors.last_name}</p>}
                 
                 {/* Email Address */}
                 <input
