@@ -88,3 +88,42 @@
 
 // Media queries
 
+@media (max-width: 480px) {
+  .accountsetup-container {
+    #coche-logo {
+      height: 16px;
+    }
+
+    .setup-container {
+      width: 100%;
+      margin: 1.5em 0 3em 0;
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      .setup-options {
+        flex-direction: column;
+        align-items: center;
+
+        .setup-item {
+          width: 100%;
+          height: auto;
+          padding: 1rem;
+
+          img {
+            height: 100px;
+            width: auto;
+          }
+        }
+      }
+
+      #logout-button {
+        width: 35%;
+        padding: 12px;
+        font-size: 1rem;
+        margin: 3em 0 0 0;
+      }
+    }
+  }
+}
