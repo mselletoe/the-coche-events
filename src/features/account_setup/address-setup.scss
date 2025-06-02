@@ -8,7 +8,8 @@
   position: relative;
   overflow: hidden;
   align-items: center;
-    justify-content: center;
+  justify-content: center;
+  transition: all 0.5s ease;
 
   .side-content {
     flex: 0 0 50%;
@@ -18,6 +19,7 @@
     overflow: visible;
     justify-content: center;
     align-items: center;
+    transition: all 0.5s ease;
 
     .circle{
         background-color: #A4C4DE;
@@ -27,6 +29,7 @@
         position: absolute;
         left: -170px;
         display: flex;
+        transition: all 0.5s ease;
 
         img{
           position: absolute;
@@ -35,6 +38,7 @@
           object-fit: contain;
           top: 20px;
           left: -150px;
+          transition: all 0.5s ease;
         }
     }   
   }
@@ -48,10 +52,12 @@
       overflow: hidden;
       height: 100vh;
       font-family: var(--inter);
+      transition: all 0.5s ease;
 
     .address-form {
       padding: 2em;
       width: 600px;
+      transition: all 0.5s ease;
 
       h1 {
         font-weight: 700;
@@ -115,7 +121,7 @@
           .dropdown-icon {
             position: absolute;
             right: 20px;
-            top: 35px;
+            top: 32px;
             pointer-events: none;
             font-size: 1rem;
             color: #A4C4DE;
@@ -154,5 +160,126 @@
   }
 }
 
+@media (max-width: 1290px) {
+  .addresssetup-container {
+    .side-content {
+      .circle{
+          left: -290px;
+      }   
+    }
+  }
+}
 
-// Media queries
+@media (max-width: 1180px) {
+  .addresssetup-container {
+    .side-content {
+      .circle{
+          left: -350px;
+      }   
+    }
+  }
+}
+
+@media (max-width: 1100px){
+  .addresssetup-container {
+    flex-direction: column;
+    .side-content {
+      top: 60%;
+      position: absolute;
+
+      .circle{
+          background-color: #A4C4DE;
+          border-radius: 50%;
+          width: 1200px;
+          height: 1000px;
+          top: 100px;
+          left: auto;
+
+          img{
+            display: none;
+          }
+      }   
+    }
+
+        .button-group {
+          position: relative;
+          
+          .save-btn {
+            position: relative;
+          }
+       }
+    }
+}
+
+@media (max-width: 768px){
+  .addresssetup-container {
+    flex-direction: column;
+    .side-content {
+      top: 60%;
+      position: absolute;
+
+      .circle{
+          background-color: #A4C4DE;
+          border-radius: 50%;
+          width: 1200px;
+          height: 1000px;
+          top: 100px;
+          left: auto;
+
+          img{
+            display: none;
+          }
+      }   
+    }
+      .addressform-container{
+          .address-form {
+            width: 500px;
+
+        .button-group {
+          position: relative;
+          
+          .save-btn {
+            position: relative;
+          }
+        }
+        }
+      }
+    }
+}
+
+@media (max-width: 480px){
+  .addresssetup-container {
+    flex-direction: column;
+    .side-content {
+      top: 60%;
+      position: absolute;
+
+      .circle{
+          background-color: #A4C4DE;
+          border-radius: 50%;
+          width: 1200px;
+          height: 1000px;
+          top: 100px;
+          left: auto;
+
+          img{
+            display: none;
+          }
+      }   
+    }
+
+    .addressform-container{
+      .address-form {
+            width: 400px;
+
+        .button-group {
+          position: relative;
+          
+          .save-btn {
+            position: relative;
+          }
+       }
+      }
+    }
+  }
+}
