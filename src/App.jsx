@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Auth from './features/auth/auth.jsx';
 import LoginForm from './features/auth/login-form.jsx';
 import RegisterForm from './features/auth/registration-form.jsx';

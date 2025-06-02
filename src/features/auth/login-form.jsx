@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { cocheLogo } from '../../assets/images.js';
+import api from '../../api';
 import "./auth.scss";
 
 function Login(){
@@ -43,7 +44,7 @@ function Login(){
       }
 
       try {
-        const response = await axios.post("/the_coche-events/login.php", {
+        const response = await api.post("/login.php", {
           identifier,
           password,
         });

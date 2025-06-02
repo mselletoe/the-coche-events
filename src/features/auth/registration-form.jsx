@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { cocheLogo } from '../../assets/images.js';
+import api from '../../api';
 import "./auth.scss";
 
 function Register(){
@@ -116,7 +117,7 @@ function Register(){
         }
 
         try {
-            const response = await axios.post("/the_coche-events/registered_users.php", form);
+            const response = await api.post("/registered_users.php", form);
             const data = response.data;
 
             if (data.success) {
