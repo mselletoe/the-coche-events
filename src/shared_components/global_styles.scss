@@ -1,8 +1,14 @@
 $primary-color: #734F23;
-$secondary-color: #FEF2F5;
-
+$primary-color-light: #9F8365;
 $primary-color-dark: #26221C;
+
+$secondary-color: #FF5F88;
 $secondary-color-dark: #FFB4C7;
+
+$shade-1: #F5F5F5;
+$shade-2: #B6B6B6;
+$shade-3: #676767;
+$shade-4: #414141;
 
 $warning-text: #C20000;
 $placeholder-gray: #B4B4B4;
@@ -12,6 +18,17 @@ $placeholder-gray: #B4B4B4;
 :root {
   --inter: 'Inter';
   --inter-medium: 'Inter Medium';
+
+  .page-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    .main-content {
+      flex: 1; // Allows content to grow and push footer down
+      padding: 90px 40px 60px 40px;
+    }
+  }
 }
 
 @mixin rounded-corners($radius: 5px) {
