@@ -1,0 +1,106 @@
+@import '../../shared_components/global_styles';
+
+.footer{
+    .upperfooter{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100px;
+        background-color: #E6E6E6;
+        padding: 10px 120px;
+        gap: 100px;
+
+        #coche-logo{
+            flex: 1;
+            height: 30px;
+        }
+
+        .upperfooter-texts{
+            font-family: var(--inter);
+            flex: 4;
+            background-color: #E6E6E6;
+
+            .coche-contact-details, .coche-agreements{
+                height: 25px;
+                // border: 1px solid red;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                font-size: 0.7em;
+                font-weight: 500;
+                color: $shade-3;
+                gap: 70px;
+            }
+
+            .coche-agreements a{
+                color: $shade-3;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .lowerfooter{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+        background-color: $primary-color-dark;
+        padding: 10px 80px;
+        font-family: var(--inter);
+        color: #676767;
+        font-size: 0.7em;
+    }
+}
+
+.coche-agreements-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 70px;
+    font-family: var(--inter);
+
+    .page-title{
+        color: $shade-4;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    hr{
+        color: $shade-3;
+    }
+    
+    .agreement-heading{
+        text-align: center;
+        align-self: center;
+        width: 500px;
+        color: $shade-3;
+        font-weight: 500;
+        margin: 50px 0;
+        font-size: 1.3em;
+    }
+
+    .agreement-content{
+        padding: 20px 0;
+        h1{
+            color: $shade-4;
+            font-weight: 700;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        ul{
+            padding: 5px 30px;
+        }
+
+        p, li{
+            padding: 3px 0;
+            color: $shade-3;
+            font-size: 0.9em;
+
+            span a{
+                font-weight: 500;
+                color: $secondary-color;
+            }
+        }
+    }
+}

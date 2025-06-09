@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { cocheLogo } from '../../assets/images.js';
 import api from '../../api';
 import "./auth.scss";
 
@@ -98,7 +97,9 @@ function Register(){
 
     return (
         <div className="regiform-container">
-            <img id='coche-logo' src={cocheLogo} alt="coche"/>
+            <p className="regi-header">Create your account</p>
+            <p className="signin_q">Already have an account? <span onClick={handleBackToLogin}>Sign In</span></p>
+
             <form className="regi-form" onSubmit={handleSubmit}>
 
                 {/* First Name */}
@@ -178,10 +179,7 @@ function Register(){
 
                 {errors.general && <p className="login-error">{errors.general}</p>}
     
-                <div id="regi-buttons">
-                    <i class="fa-solid fa-arrow-left" onClick={handleBackToLogin}></i>
-                    <button type="submit" id="register_button">Register</button>
-                </div>
+                <button type="submit" className="register_button">Register</button>
             </form>
         </div>
     )
