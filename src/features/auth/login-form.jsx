@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { cocheLogo } from '../../assets/images.js';
+import api from '../../api';
 import "./auth.scss";
 
 function Login(){
@@ -43,7 +43,7 @@ function Login(){
       }
 
       try {
-        const response = await axios.post("/the_coche-events/login.php", {
+        const response = await api.post("/login.php", {
           identifier,
           password,
         });
@@ -77,8 +77,7 @@ function Login(){
 
     return (
       <div className="loginform-container">
-        <img id='coche-logo' src={cocheLogo} alt="coche"/>
-
+        <p className="login-header">Sign in to The Coche Events</p>
         <form className="login-form" onSubmit={handleSubmit}>
           <input 
               required 
@@ -98,9 +97,10 @@ function Login(){
           />
           {passwordError && <p className="login-error">{passwordError}</p>}
             
-          <button className="login_button" type="submit">Login</button>
+          <button className="login_button" type="submit">Sign In</button>
         </form>
 
+        <p className="forgot-password">Forgot Password?</p>
         <p className="register_q">Don’t have an account? <span onClick={() => navigate("/auth/register")}>Register for free</span></p>
       </div>
     )       
