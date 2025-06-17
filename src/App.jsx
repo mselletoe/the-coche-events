@@ -13,6 +13,7 @@ import Services from './tabs/services/services.jsx';
 import Gallery from './tabs/gallery/gallery.jsx';
 import PrivacyPolicy from './features/footer/privacy-policy.jsx';
 import TermsAndConditions from './features/footer/terms-and-conditions.jsx';
+import AccountSettings from './features/account-settings/account-settings.jsx';
 
 function App() {
   return (
@@ -34,9 +35,10 @@ function App() {
           </Route>
 
           {/* Setup entry point */}
-          <Route path="/setup" element={<ProtectedRoute><AccountSetup showWelcome /></ProtectedRoute>} />
+          {/* <Route path="/setup" element={<ProtectedRoute><AccountSetup showWelcome /></ProtectedRoute>} /> */}
           
           {/* Protected Standalone pages */}
+          <Route path="/account" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfileSetup /></ProtectedRoute>} />
           <Route path="/address" element={<ProtectedRoute><AddressSetup /></ProtectedRoute>} />
           <Route path="/payment" element={<ProtectedRoute><PaymentSetup /></ProtectedRoute>} />

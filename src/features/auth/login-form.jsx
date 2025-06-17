@@ -1,11 +1,12 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import api from '../../api';
 import "./auth.scss";
 
 function Login(){
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/home";
 
     // Stores user information (email/phone number & password)
     const [identifier, setIdentifier] = useState("");
@@ -53,7 +54,7 @@ function Login(){
         if (data.user) {
           localStorage.setItem("user", JSON.stringify(data.user)); // Save user info
           console.log("User data:", data.user);
-          navigate("/setup", { replace: true }); // Redirect to main page
+          navigate(from, { replace: true });
           // ####################################################################
           // ###                                                              ###
           // ###           Redirect or session logic can go here              ###

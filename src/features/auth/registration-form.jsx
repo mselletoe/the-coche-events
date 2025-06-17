@@ -76,7 +76,7 @@ function Register(){
 
             if (data.success) {
                 localStorage.setItem("user", JSON.stringify(data.user)); // Save user session
-                navigate("/setup", { replace: true });
+                navigate("/account", { replace: true });
                 setForm({
                     first_name: "",
                     last_name: "",

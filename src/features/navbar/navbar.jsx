@@ -32,7 +32,7 @@ function NavBar(){
     };
 
     const handleAccountPage = () => {
-        navigate('/profile'); // account/profile page
+        navigate('/account'); // account/profile page
     };
 
     useEffect(() => {
@@ -79,6 +79,7 @@ function NavBar(){
                     {isLoggedIn ? (
                     <>
                         <button onClick={handleAccountPage}>Account</button>
+                        <hr/>
                         <button onClick={handleSignOut}>Sign Out</button>
                     </>
                     ) : (
