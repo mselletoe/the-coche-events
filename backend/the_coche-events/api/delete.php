@@ -1,7 +1,8 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, ngrok-skip-browser-warning");
+header("Access-Control-Max-Age: 600");
 
 // Handle preflight request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -10,11 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Database Connection
-$conn = new mysqli("localhost", "root", "", "the_coche-events");
-if ($conn->connect_error) {
-    echo json_encode(["error" => "Database connection failed"]);
-    exit;
-}
+include '../database.php';
 
 // Get userId from POST data
 $userId = isset($_POST['userId']) ? intval($_POST['userId']) : 0;

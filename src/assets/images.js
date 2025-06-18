@@ -1,4 +1,5 @@
 import cocheLogo from './coche-logo.svg';
+import darkcocheLogo from './dark-coche-logo.svg';
 import sideimage from './image-3.png';
 import googleLogo from './google-icon-1.png';
 import profileSetupCover from './profile-setup.png';
@@ -6,6 +7,7 @@ import addressSetupCover from './address-setup.png';
 import paymentSetupCover from './payment-setup.png';
 import pinkFlower from './flower-1.png';
 import blueFlower from './blueFlower.png';
+import sanyaLopez from './user-image.png';
 // add other images as needed
 
 export {
@@ -16,5 +18,7 @@ export {
   addressSetupCover,
   paymentSetupCover,
   pinkFlower,
-  blueFlower
+  blueFlower,
+  darkcocheLogo,
+  sanyaLopez
 };
