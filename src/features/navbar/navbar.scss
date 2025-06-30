@@ -138,8 +138,9 @@
 
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 5px;
     transition: all 0.9s ease-in-out;
+    align-items: center;
 
     button {
         font-family: var(--inter);
@@ -153,10 +154,17 @@
         font-weight: 600;
         transition: all 0.4s ease-in-out;
         color: $primary-color-dark;
-        height: 30px;
+        height: 35px;
+        width: 100%;
 
         &:hover {
             background-color: darken(white, 7%);
         }
+    }
+
+    hr{
+        border: none;
+        border-top: 1px solid #d4d4d4;
+        width: 130px;
     }
 }
