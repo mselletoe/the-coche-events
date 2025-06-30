@@ -30,8 +30,7 @@ function BookingForm() {
       const pointRect = point.getBoundingClientRect();
       const containerRect = point.parentNode.getBoundingClientRect();
 
-      // Move the car to center over the circle
-      const centerX = pointRect.left - containerRect.left + pointRect.width / 2 - 15; // 15 = half car width (30px)
+      const centerX = pointRect.left - containerRect.left + pointRect.width / 2 - 15;
       setCarX(centerX);
     }
   }, [currentStep]);
