@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import './navbar.scss';
-import { darkcocheLogo, sanyaLopez } from '../../assets/images.js';
+import { darkcocheLogo, sanyaLopez, userIcon } from '../../assets/images.js';
 
 function NavBar(){
     const navigate = useNavigate();
@@ -66,8 +66,8 @@ function NavBar(){
                             onClick={() => window.open("https://m.me/thecocheevents", "_blank", "noopener,noreferrer")
                         }>Contact Us</button>
                         <button className='account' onClick={handleAccountClick}>
-                            <img id='account-icon' src={sanyaLopez} alt="account-icon"/>
-                            <p>Sanya</p>
+                            <img id='account-icon' src={user?.profile_picture || userIcon} alt="account-icon"/>
+                            <p>{user?.first_name || 'Guest'}</p>
                             <i className="fa-solid fa-caret-down dropdown-icon"></i>
                         </button>
                     </div>

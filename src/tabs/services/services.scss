@@ -1,0 +1,80 @@
+@import '../../shared_components/global_styles';
+
+.services-container{
+    display: flex;
+    flex-direction: column;
+
+    .services-headings{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2.5em;
+        flex-direction: column;
+        gap: 20px;
+        color:$primary-color-dark;
+
+        p{
+            text-align: center;
+            font-family: var(--archivo);
+            font-size: 3em;
+
+            span{
+                font-family: var(--playfair);
+                font-weight: bold;
+                font-style: italic;
+            }
+        }
+
+        h4{
+            font-family: var(--archivo);
+            font-weight: 400;
+        }
+    }
+    
+    .services-selections{
+        display: flex;
+        padding: 2em 6em 4em 6em;
+        justify-content: space-between;
+
+        .styles-text{
+            p{
+                font-family: var(--playfair);
+                font-weight: bold;
+                font-style: italic;
+                font-size: 2.5em;
+                margin-bottom: 15px;
+                color: $primary-color-dark;
+            }
+
+            h4{
+                font-family: var(--inter);
+                font-weight: 400;
+                font-size: 0.7em;
+                font-style: italic;
+                color: $shade-3;
+            }
+        }
+
+        .services-options{
+            display: flex;
+            gap: 30px;
+
+            .optionX{
+                border: 1px solid #000;
+                width: 200px;
+                height: 240px;
+            }
+        }
+    }
+
+    .book-now{
+        align-self: center;
+        padding: 10px;
+        width: 150px;
+        border: none;
+        background-color: $primary-color-dark;
+        color: white;
+        font-family: var(--inter);
+        cursor: pointer;
+    }
+}

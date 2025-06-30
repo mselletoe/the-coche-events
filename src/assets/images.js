@@ -8,6 +8,8 @@ import paymentSetupCover from './payment-setup.png';
 import pinkFlower from './flower-1.png';
 import blueFlower from './blueFlower.png';
 import sanyaLopez from './user-image.png';
+import carIcon from './CAR-ICON.svg';
+import userIcon from './USER-ICON.png';
 // add other images as needed
 
 export {
@@ -20,5 +22,7 @@ export {
   pinkFlower,
   blueFlower,
   darkcocheLogo,
-  sanyaLopez
+  sanyaLopez,
+  carIcon,
+  userIcon
 };
