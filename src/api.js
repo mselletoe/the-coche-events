@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://c78e-112-202-101-107.ngrok-free.app/the_coche-events', // fixed double slash
+  baseURL: 'https://c1ae-2001-fd8-1791-4286-3055-9b36-30d6-15bd.ngrok-free.app//the_coche-events', // fixed double slash
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
