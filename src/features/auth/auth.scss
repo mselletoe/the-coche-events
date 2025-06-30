@@ -1,10 +1,10 @@
 @import '../../shared_components/global_styles';
 
 .auth-page-wrapper{
-    background-color: $secondary-color;
+    background-color: $shade-1;
     display: flex;
-    height: 100vh;
-    overflow: hidden;
+    height: auto;
+    overflow: auto;
     position: relative;
 
     .auth-container {
@@ -12,7 +12,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        height: auto;
         font-family: var(--inter);
 
         // -------------------- login-form.jsx
@@ -22,48 +22,55 @@
             text-align: center;
             width: 600px;
             padding: 3em;
+            transition: all 0.4s ease-in-out;
 
-            #coche-logo{
-                height: 30px;
+            .login-header{
+                font-size: 1.7em;
+                font-weight: 600;
+                color: $primary-color-dark;
             }
 
             .login-form{
                 display: flex;
                 flex-direction: column;
-                margin: 1.5em 0 3em 0;
+                margin: 1.5em 0 7em 0;
 
                 input, .login_button{
                     height: auto;
                     padding: 12px 20px;
                     border-radius: 5px;
-                    font-size: 1em;
-                    margin: 1.7em 0 0.3em 0;
+                    font-size: 0.9em;
+                    margin: 1.5em 0 0.3em 0;
                     font-family: var(--inter);
-                    border: 1.5px solid darken(white, 15%);
                     transition: all 0.4s ease-in-out;
                 }
 
                 input {
+                    border: 1px solid $shade-2;
+                    font-weight: 500;
+                    color: $shade-3;
+
                     &::placeholder {
-                      font-family: var(--inter);
-                      color: #B4B4B4;
+                        font-family: var(--inter);
+                        color: $shade-2;
                     }
 
                     &:focus {
-                      outline: none;
-                      box-shadow: 0 0 0 2px rgba($secondary-color-dark, 0.7);
+                        border: 1px solid $shade-1;
+                        outline: none;
+                        box-shadow: 0 0 0 2.5px $secondary-color;
                     }
                 }
 
                 .login_button{
-                    color: $secondary-color;
-                    background-color: #9A7447;
+                    color: $shade-1;
+                    background-color: $primary-color-light;
                     border: none;
                     cursor: pointer;
-                    font-weight: bold;
+                    font-weight: 600;
 
                     &:hover{
-                        background-color: darken(#9A7447, 5%);
+                        background-color: darken($primary-color-light, 5%);
                     }
                 }
 
@@ -77,18 +84,31 @@
                 }
             }
 
+            .forgot-password{
+                font-size: 0.8em;
+                color: $secondary-color;
+                font-weight: 600;
+                margin-bottom: 10px;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+
+                &:hover{
+                    color: darken($secondary-color, 10%);
+                }
+            }
+
             .register_q{
-                font-size: 1em;
-                color: #D4C5C8;
+                font-size: 0.8em;
+                color: $shade-2;
     
                 span{
-                    font-weight: bold;
+                    font-weight: 600;
                     cursor: pointer;
-                    color: #9A7447;
+                    color: $secondary-color;
                     transition: all 0.3s ease-in-out;
 
                     &:hover{
-                        color: darken(#9A7447, 5%);
+                        color: darken($secondary-color, 10%);
                     }
                 }
             }
@@ -99,17 +119,38 @@
             display: flex;
             flex-direction: column;
             text-align: center;
-            width: 500px;
+            width: 600px;
             font-family: var(--inter);
+            padding: 3em;
+            transition: all 0.4s ease-in-out;
 
-            #coche-logo{
-                height: 20px;
-                margin-bottom: 1.5em;
+            .regi-header{
+                font-size: 1.7em;
+                font-weight: 600;
+                color: $primary-color-dark;
+                margin-bottom: 10px;
+            }
+
+            .signin_q{
+                font-size: 0.8em;
+                color: $shade-2;
+    
+                span{
+                    font-weight: 600;
+                    cursor: pointer;
+                    color: $secondary-color;
+                    transition: all 0.3s ease-in-out;
+
+                    &:hover{
+                        color: darken($secondary-color, 10%);
+                    }
+                }
             }
 
             .regi-form{
                 display: flex;
                 flex-direction: column;
+                margin: 1.5em 0 0 0;
 
                 .phoneNum-container{
                     display: flex;
@@ -121,32 +162,38 @@
                         margin: 1.5em 0 0.3em 0;
                         font-weight: bold;
                         font-size: 0.9em;
-                        color: #8A6971;
+                        color: $shade-3;
                     }
     
                     input{
                         flex: 0.97;
                     }
                 }
-    
-                input{
+
+                input, .register_button{
                     height: auto;
-                    padding: 10px 15px;
-                    font-size: 1em;
+                    padding: 12px 20px;
                     border-radius: 5px;
-                    border: 1px solid darken(white, 15%);
+                    font-size: 0.9em;
                     margin: 1.5em 0 0.3em 0;
                     font-family: var(--inter);
                     transition: all 0.4s ease-in-out;
+                }
+    
+                input{
+                    border: 1px solid $shade-2;
+                    font-weight: 500;
+                    color: $shade-3;
 
                     &::placeholder{
                         font-family: var(--inter);
-                        color: #B4B4B4;
+                        color: $shade-2;
                     }
 
                     &:focus {
+                        border: 1px solid $shade-1;
                         outline: none;
-                        box-shadow: 0 0 0 2px rgba($secondary-color-dark, 0.7);
+                        box-shadow: 0 0 0 2.5px $secondary-color;
                     }
                 }
 
@@ -164,35 +211,17 @@
                 }
             }
 
-            #regi-buttons{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin: 2em 0 0 0;
+           .register_button{
+                color: $shade-1;
+                background-color: $primary-color-light;
+                border: none;
+                cursor: pointer;
+                font-weight: 600;
 
-                i{
-                    color: $primary-color;
-                    cursor: pointer;
-                    transition: all 0.3s ease-in-out;
+                &:hover{
+                    background-color: darken($primary-color-light, 5%);
                 }
-
-                #register_button{
-                    height: auto;
-                    padding: 10px 50px;
-                    font-size: 1em;
-                    border: none;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    transition: all 0.3s ease-in-out;
-                    background-color: $primary-color;
-                    color: $secondary-color;
-                    font-weight: bold;
-
-                    &:hover{
-                        background-color: darken($primary-color, 5%);
-                    }
-                }
-            }
+           }
 
             .login-error{
                 font-size: 10px;
@@ -204,30 +233,75 @@
             }
         }
     }
+}
 
-    #side-image-container {
-        flex: 0 0 50%;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        justify-content: flex-end;
 
-        #circle{
-            position: absolute;
-            background-color: #FFE0E8;
-            border-radius: 50%;
-            top: 40px;
-            left: 0;
-            width: 900px;
-            height: 910px;
+// Media queries
 
-            img{
-                width: 1200px;
-                height: auto;
-                object-fit: contain;
-                margin-top: -70px;
-                margin-left: -70px;
+@media (max-width: 1280px){ 
+    .auth-page-wrapper{
+        .auth-container {
+            .loginform-container, .regiform-container{
+                width: 500px;
+                padding: 2em;
             }
-        }   
+        }
+        #side-image-container {
+            flex: 0 0 45%;
+            #circle{
+                img{
+                    width: 1150px;
+                    margin-top: -40px;
+                    margin-left: -90px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px){
+    .auth-page-wrapper{
+        flex-direction: column;
+
+        .auth-container {
+            z-index: 2;
+        }
+
+        #side-image-container {
+            position: absolute;
+            top: 75%;
+            z-index: 1;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+
+            #circle{
+                top: 0;
+                left: auto;
+                width: 1400px;
+                img{
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px){
+    .auth-page-wrapper{
+        .auth-container {
+            .loginform-container, .regiform-container{
+                max-width: 400px;
+            }
+            .regiform-container{
+                .regi-form{
+                    .name-2{
+                        .suffix{
+                            min-width: 50px;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

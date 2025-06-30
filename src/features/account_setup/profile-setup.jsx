@@ -2,6 +2,7 @@ import "./profile-setup.scss";
 import axios from 'axios';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import api from '../../api';
 
 function ProfileSetup() {
   const navigate = useNavigate();
@@ -41,12 +42,12 @@ function ProfileSetup() {
     formData.append("userId", userId);
 
     try {
-      const res = await axios.post("/the_coche-events/api/upload.php", formData, {
+      const res = await api.post("/api/upload.php", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (res.data.status === "success") {
-        const imagePath = `/the_coche-events/uploads/${res.data.image}`;
+        const imagePath = `/uploads/${res.data.image}`;
         localStorage.setItem(`profileImage_${userId}`, imagePath);
         navigate("/setup");
       } else {
@@ -64,7 +65,7 @@ function ProfileSetup() {
       const formData = new FormData();
       formData.append("userId", userId);
 
-      const res = await axios.post("/the_coche-events/api/delete.php", formData);
+      const res = await api.post("/api/delete.php", formData);
       if (res.data.status === "success") {
         setPreviewImage(null);
         setImageFile(null);

@@ -1,0 +1,170 @@
+@import '../../shared_components/global_styles';
+
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: white;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--inter);
+
+    .navbar-container{
+        width: 100%;
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 40px;
+        // border: 1px solid red;
+
+        #coche-logo{
+            height: 20px;
+        }
+
+        .navbar-links{
+            position: relative;
+            display: flex;
+            gap: 50px;
+            font-size: 0.9em;
+            align-items: center;
+            width: 300px;
+            justify-content: space-evenly;
+
+            .nav-item{
+                position: relative;
+                margin-bottom: 5px;
+                width: 70px;
+                text-align: center;
+
+                a{
+                    color: $primary-color-dark;
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+            }
+
+            .nav-underline {
+                position: absolute;
+                bottom: 0;
+                height: 3px;
+                background-color: $primary-color-dark;
+                transition: all 0.4s ease-in-out;
+                border-radius: 5px;
+            }
+        }
+
+        .navbar-actions{
+            display: flex;
+            align-items: center;
+            gap: 30px;
+
+            .contact-button{
+                background-color: $primary-color-dark;
+                height: 35px;
+                width: 120px;
+                border: none;
+                color: white;
+                font-family: var(--inter);
+                font-size: 12px;
+                border-radius: 5px;
+                font-weight: 520;
+                transition: all 0.4s ease-in-out;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: darken($primary-color-dark, 10%);
+                }
+            }
+
+            .account{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 150px;
+                border: none;
+                background-color: transparent;
+                cursor: pointer;
+                border-radius: 5px;
+                // border: 1px solid red;
+                color: $shade-4;
+                transition: all 0.4s ease-in-out;
+
+                &:hover{
+                    color: darken($shade-4, 30%);
+                }
+
+                #account-icon{
+                    border-radius: 50%;
+                    height: 35px;
+                }
+
+                p{
+                    font-family: var(--inter);
+                    font-weight: 600;
+                    font-size: 1em;
+                }
+
+                i{
+                    margin: 0 5px 0 30px;
+                }
+            }
+        }
+    }
+}
+
+.dropdown-menu {
+    position: fixed;
+    top: 65px;
+    right: 40px;
+    background-color: white;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 999;
+    width: 170px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: all 0.9s ease-in-out;
+    align-items: center;
+
+    button {
+        font-family: var(--inter);
+        border-radius: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px 12px;
+        text-align: left;
+        font-size: 0.7em;
+        font-weight: 600;
+        transition: all 0.4s ease-in-out;
+        color: $primary-color-dark;
+        height: 35px;
+        width: 100%;
+
+        &:hover {
+            background-color: darken(white, 7%);
+        }
+    }
+
+    hr{
+        border: none;
+        border-top: 1px solid #d4d4d4;
+        width: 130px;
+    }
+}

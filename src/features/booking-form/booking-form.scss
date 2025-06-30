@@ -1,0 +1,168 @@
+@import '../../shared_components/global_styles';
+
+.bookingform-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  padding: 5em;
+
+  .progress-bar {
+    position: relative;
+    width: 50%;
+    height: 4px;
+    background-color: #e0e0e0;
+    border-radius: 2px;
+    margin-bottom: 40px;
+
+    .progress-fill {
+      height: 100%;
+      background-color: $primary-color;
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .progress-car {
+      position: absolute;
+      top: -13px; // adjust as needed to float above line
+      width: 30px;
+      height: 30px;
+      transition: transform 0.4s ease;
+      z-index: 3;
+    }
+
+    .progress-points {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      top: -13px;
+      left: 0;
+      width: 100%;
+      z-index: 2;
+      
+
+      .progress-circle {
+        width: 14px;
+        height: 14px;
+        background-color: #ccc;
+        border-radius: 50%;
+        margin-top: 8px;
+        transition: background-color 1s;
+
+        &.past {
+          background-color: $primary-color;
+        }
+
+        &.active{
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  .booking-form{
+    width: 100%;
+
+    .form-header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2em 0;
+
+      .title{
+        h1{
+          font-family: var(--inter);
+          color: $shade-4;
+          font-size: 1.7em;
+        }
+        p{
+          font-family: var(--inter);
+          font-style: italic;
+          color: $shade-3;
+          font-size: 0.7em;
+        }
+      }
+      
+      .progress-buttons {
+        display: flex;
+        gap: 10px;
+
+        .progress-button {
+          height: fit-content;
+          padding: 8px 50px;
+          background-color: $primary-color-light;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-weight: 500;
+          font-family: var(--inter);
+          transition: background-color 0.3s;
+
+          &:disabled {
+            background-color: transparent;
+            color: $shade-2;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+
+    .form-card{
+      display: flex;
+
+      .step1-container{
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        height: auto;
+        
+        .themes, .addons{
+          background-color: white;
+          border-radius: 5px;
+          box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+          padding: 25px;
+        }
+        .themes{
+          flex: 2;
+        }
+
+        .addons{
+          flex: 1;
+        }
+      }
+
+      .step2-container, .step3-container{
+        width: 100%;
+        height: auto;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+        padding: 25px;
+      }
+
+      .step4-container{
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        height: auto;
+        
+        .receiver, .billing{
+          background-color: white;
+          border-radius: 5px;
+          box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+          padding: 25px;
+        }
+        .receiver{
+          flex: 4;
+        }
+
+        .billing{
+          flex: 3;
+        }
+      }
+    }
+  }
+  
+}

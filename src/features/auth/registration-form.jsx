@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { cocheLogo } from '../../assets/images.js';
+import api from '../../api';
 import "./auth.scss";
 
 function Register(){
@@ -48,12 +48,57 @@ function Register(){
     // Validates user info
     const validate = () => {
         const newErrors = {};
-        if (!form.first_name.trim()) newErrors.first_name = "First name is required.";
-        if (!form.last_name.trim()) newErrors.last_name = "Last name is required.";
-        if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = "Enter a valid email.";
-        if (!/^\d{10}$/.test(form.phone)) newErrors.phone = "Enter a 10-digit phone number.";
-        if (form.password.length < 8) newErrors.password = "Password must be at least 8 characters.";
-        if (form.password !== form.confirmPassword) newErrors.confirmPassword = "Passwords do not match.";
+        const {
+            first_name,
+            last_name,
+            email,
+            phone,
+            password,
+            confirmPassword
+        } = form;
+
+        // Basic validations
+        if (!first_name.trim()) newErrors.first_name = "First name is required.";
+        if (!last_name.trim()) newErrors.last_name = "Last name is required.";
+        if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "Enter a valid email.";
+        if (!/^\d{10}$/.test(phone)) newErrors.phone = "Enter a 10-digit phone number.";
+
+        // Password length
+        if (password.length < 8 || password.length > 16) {
+            newErrors.password = "Password must be 8–16 characters.";
+        }
+
+        // Password requirements
+        const upper = /[A-Z]/.test(password);
+        const lower = /[a-z]/.test(password);
+        const number = /[0-9]/.test(password);
+        const special = /[!@#$%^&*()_\-+=\[\]{};:'",.<>?/\\|]/.test(password);
+
+        if (!(upper && lower && number && special)) {
+            newErrors.password = "Password must include uppercase, lowercase, number, and special character.";
+        }
+
+        // Common passwords
+        const commonPasswords = ["password", "123456", "qwerty", "111111", "abc123"];
+        if (commonPasswords.includes(password.toLowerCase())) {
+            newErrors.password = "Password is too common. Choose a more secure one.";
+        }
+
+        // Avoid using personal info
+        const lowerPassword = password.toLowerCase();
+        if (
+            lowerPassword.includes(first_name.toLowerCase()) ||
+            lowerPassword.includes(last_name.toLowerCase()) ||
+            lowerPassword.includes(email.toLowerCase()) ||
+            lowerPassword.includes(phone)
+        ) {
+            newErrors.password = "Password should not include your name, email, or phone number.";
+        }
+
+        // Confirm password
+        if (password !== confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match.";
+        }
 
         return newErrors;
     };
@@ -71,12 +116,12 @@ function Register(){
         }
 
         try {
-            const response = await axios.post("/the_coche-events/registered_users.php", form);
+            const response = await api.post("/registered_users.php", form);
             const data = response.data;
 
             if (data.success) {
                 localStorage.setItem("user", JSON.stringify(data.user)); // Save user session
-                navigate("/setup", { replace: true });
+                navigate("/account", { replace: true });
                 setForm({
                     first_name: "",
                     last_name: "",
@@ -97,7 +142,9 @@ function Register(){
 
     return (
         <div className="regiform-container">
-            <img id='coche-logo' src={cocheLogo} alt="coche"/>
+            <p className="regi-header">Create your account</p>
+            <p className="signin_q">Already have an account? <span onClick={handleBackToLogin}>Sign In</span></p>
+
             <form className="regi-form" onSubmit={handleSubmit}>
 
                 {/* First Name */}
@@ -128,8 +175,8 @@ function Register(){
                         value={form.suffix}
                         onChange={handleChange}
                     />
-                    {errors.last_name && <p className="login-error">{errors.last_name}</p>}
                 </div>
+                {errors.last_name && <p className="login-error">{errors.last_name}</p>}
                 
                 {/* Email Address */}
                 <input
@@ -177,10 +224,7 @@ function Register(){
 
                 {errors.general && <p className="login-error">{errors.general}</p>}
     
-                <div id="regi-buttons">
-                    <i class="fa-solid fa-arrow-left" onClick={handleBackToLogin}></i>
-                    <button type="submit" id="register_button">Register</button>
-                </div>
+                <button type="submit" className="register_button">Register</button>
             </form>
         </div>
     )

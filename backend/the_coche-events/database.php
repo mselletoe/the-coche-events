@@ -1,14 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
-// Handle preflight request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
 // Database Connection Setup
 $host = 'localhost';
 $user = 'root';
@@ -20,6 +10,9 @@ $conn = mysqli_connect($host, $user, $pass, $dbname);
 
 // Check connection
 if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+    header('Content-Type: application/json; charset=UTF-8');
+    http_response_code(500);
+    echo json_encode(["error" => "Connection failed: " . mysqli_connect_error()]);
+    exit();  // Important: stop execution so no other output happens
 }
 ?>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import './address-setup.scss';
 import { blueFlower } from '../../assets/images.js';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api';
 
 const AddressSetup = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const AddressSetup = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.id) return;
 
-    axios.get(`/the_coche-events/get_address.php?user_id=${user.id}`)
+    api.get(`/get_address.php?user_id=${user.id}`)
       .then(res => {
         if (res.data?.address) {
           const addr = res.data.address;
@@ -51,7 +52,7 @@ const AddressSetup = () => {
 
   // Fetch regions on mount
   useEffect(() => {
-    axios.get('/the_coche-events/regions.php')
+    api.get('/regions.php')
       .then(response => setRegions(response.data))
       .catch(error => console.error('Error fetching regions:', error));
   }, []);
@@ -59,7 +60,7 @@ const AddressSetup = () => {
   // Fetch provinces when a region is selected
   useEffect(() => {
     if (selectedRegion) {
-      axios.get(`/the_coche-events/provinces.php?region_id=${selectedRegion}`)
+      api.get(`/provinces.php?region_id=${selectedRegion}`)
         .then(response => setProvinces(response.data))
         .catch(error => console.error('Error fetching provinces:', error));
       setCities([]);
@@ -72,7 +73,7 @@ const AddressSetup = () => {
   // Fetch cities when a province is selected
   useEffect(() => {
     if (selectedProvince) {
-      axios.get(`/the_coche-events/cities.php?province_id=${selectedProvince}`)
+      api.get(`/cities.php?province_id=${selectedProvince}`)
         .then(response => setCities(response.data))
         .catch(error => console.error('Error fetching cities:', error));
       setBarangays([]);
@@ -83,7 +84,7 @@ const AddressSetup = () => {
   // Fetch barangays when a city is selected
   useEffect(() => {
     if (selectedCity) {
-      axios.get(`/the_coche-events/barangays.php?city_id=${selectedCity}`)
+      api.get(`/barangays.php?city_id=${selectedCity}`)
         .then(response => setBarangays(response.data))
         .catch(error => console.error('Error fetching barangays:', error));
     }
@@ -115,10 +116,10 @@ const AddressSetup = () => {
     // Sends payload to backend sand save
     try {
       const url = isEditing
-      ? "/the_coche-events/update_address.php"
-      : "/the_coche-events/save_address.php";
+      ? "/update_address.php"
+      : "/save_address.php";
 
-      const response = await axios.post(url, payload);
+      const response = await api.post(url, payload);
       if (response.data.success) {
         alert("Address saved successfully!");
         navigate("/setup"); // Redirect after saving address
