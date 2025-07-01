@@ -1,4 +1,5 @@
 import React from 'react';
+import Pending from '../../features/pending/pending';
 import BookingForm from '../../features/booking-form/booking-form';
 import './services.scss'
 
@@ -32,6 +33,7 @@ function Services(){
                 </div>
             </div>
             <button className='book-now'>Book Now</button>
+            <Pending />
             <BookingForm />
         </div>
         
