@@ -10,7 +10,16 @@ import blueFlower from './blueFlower.png';
 import sanyaLopez from './user-image.png';
 import carIcon from './CAR-ICON.svg';
 import userIcon from './USER-ICON.png';
-// add other images as needed
+import vibe1 from './vibe1.png';
+import vibe2 from './vibe2.png';
+import inspirationBanner from './inspirationBanner.png';
+import phone from './phone.png';
+import cestaBanner from './cestaBanner.png';
+import card1 from './card1.png';
+import card2 from './card2.png';
+import card3 from './card3.png';
+import bgpattern from './bgpattern.png';
+
 
 export {
   cocheLogo,
@@ -24,5 +33,14 @@ export {
   darkcocheLogo,
   sanyaLopez,
   carIcon,
-  userIcon
+  userIcon,
+  vibe1,
+  vibe2,
+  inspirationBanner,
+  phone,
+  cestaBanner,
+  card1,
+  card2,
+  card3,
+  bgpattern,
 };
