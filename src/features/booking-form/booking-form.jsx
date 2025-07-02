@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './booking-form.scss';
 import { carIcon } from '../../assets/images.js';
 import Step1 from './step-1.jsx';
@@ -11,6 +12,7 @@ function BookingForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const pointRefs = useRef([]);
   const [carX, setCarX] = useState(0);
+  const navigate = useNavigate();
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
@@ -19,8 +21,10 @@ function BookingForm() {
   };
 
   const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
+  if (currentStep > 1) {
+    setCurrentStep((prev) => prev - 1);
+  } else {
+    navigate('/services'); // 👈 go directly to Services page
     }
   };
 
@@ -30,8 +34,7 @@ function BookingForm() {
       const pointRect = point.getBoundingClientRect();
       const containerRect = point.parentNode.getBoundingClientRect();
 
-      // Move the car to center over the circle
-      const centerX = pointRect.left - containerRect.left + pointRect.width / 2 - 15; // 15 = half car width (30px)
+      const centerX = pointRect.left - containerRect.left + pointRect.width / 2 - 15;
       setCarX(centerX);
     }
   }, [currentStep]);
@@ -81,7 +84,7 @@ function BookingForm() {
             <p>{stepTitles[currentStep].subtitle}</p>
           </div>
           <div className="progress-buttons">
-            <button className="progress-button" onClick={handleBack} disabled={currentStep === 1}>Back</button>
+            <button className="progress-button" onClick={handleBack}>Back</button>
             <button className="progress-button" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
           </div>
         </div>
