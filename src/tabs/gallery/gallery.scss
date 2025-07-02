@@ -1,0 +1,59 @@
+@import '../../shared_components/global_styles';
+
+
+.gallery-page {
+  padding: 30px;
+  text-align: center;
+
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+
+  .gallery-columns {
+    column-count: 4;         // 🔥 4 fixed columns
+    column-gap: 15px;        // spacing between columns
+  }
+
+
+  .picture-frame {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;      // spacing between frames in column
+    break-inside: avoid;      // prevent frames from breaking across columns
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid $shade-2;
+
+
+    .empty-frame {
+      background-color: $shade-3;
+      width: 100%;
+    }
+
+
+    .caption {
+      padding: 8px;
+      font-size: 13px;
+      color: $shade-2;
+      text-align: center;
+    }
+
+
+    &.square .empty-frame {
+      height: 180px;
+    }
+
+
+    &.rect-tall .empty-frame {
+      height: 280px;
+    }
+
+
+    &.rect-wide .empty-frame {
+      height: 140px;
+    }
+  }
+}
