@@ -1,1 +1,293 @@
-@import '../../shared_components/global_styles';
+// === COLORS ===
+$primary-color-light: #9f8365;
+$primary-color: #734f23;
+$primary-color-dark: #26221c;
+$secondary-color: #ff5f88;
+$shade-4: #414141;
+$shade-3: #676767;
+$shade-2: #b6b6b6;
+$shade-1: #f5f5f5;
+
+// === FONTS ===
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@500&family=Inter:wght@400;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+// === GLOBAL BUTTON STYLE ===
+button {
+  font-family: "Archivo", sans-serif;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+// === HERO SECTION ===
+.hero-section {
+  height: 85vh;
+  width: 100%;
+  background: 
+    url('../../assets/bgpattern.png'),
+    linear-gradient(135deg, #fef4f6 0%, #fdf5f1 100%);
+  background-position: center;
+  background-size: 200%;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 400;
+    color: $primary-color-dark;
+
+    em {
+      font-style: italic;
+      font-weight: 700;
+    }
+  }
+}
+
+
+
+
+// === VIBE SECTION ===
+.vibe-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 120px 10%;
+  gap: 60px;
+
+  .text {
+    flex: 1;
+
+    h2 {
+      font-size: 2.8rem;
+      line-height: 1.4;
+
+      em {
+        font-family: "Archivo", sans-serif;
+        font-style: italic;
+        color: $secondary-color;
+        display: block;
+        margin-top: 10px;
+      }
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 28px;
+      background: $primary-color-dark;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+
+  .images {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+    #vibe1 {
+      width: 350px;
+      height: auto;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      z-index: 2;
+    }
+
+    #vibe2 {
+      width: 200px;
+      height: auto;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      transform: translateX(40px) scale(0.95);
+      opacity: 0.85;
+    }
+  }
+}
+
+
+
+// === INSPIRATION BANNER ===
+.inspiration-banner {
+  position: relative;
+  text-align: left;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+  }
+
+  .overlay {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    max-width: 400px;
+    padding-right: 5%;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+
+    h2 {
+      font-size: 2.5rem;
+
+      em {
+        font-style: italic;
+      }
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: none;
+      border: 2px solid white;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
+
+// === PHONE SECTION ===
+.phone-section {
+  display: flex;
+  justify-content: center;
+  padding: 120px 0;
+  background: radial-gradient(circle, $shade-1 0%, white 100%);
+
+  img {
+    width: 220px;
+  }
+}
+
+// === CESTA SECTION ===
+.cesta-section {
+  position: relative;
+  text-align: left;
+
+  img {
+    width: 100%;
+  }
+
+  .text-overlay {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    max-width: 400px;
+    padding-right: 5%;
+    color: $primary-color-dark;
+
+    h2 {
+      font-family: "Archivo", sans-serif;
+      font-size: 4rem;
+      font-weight: 400;
+    }
+
+    p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+      color: $primary-color-dark;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+}
+
+// === GALLERY / CAROUSEL ===
+.carousel-section {
+  padding: 60px 5%;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  .arrow {
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $primary-color-dark;
+  }
+
+  .cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+      img {
+        width: 100%;
+        border-radius: 8px;
+      }
+
+      .info {
+        margin-top: 10px;
+
+        .stars {
+          color: gold;
+        }
+
+        .desc {
+          font-size: 0.9rem;
+          color: $shade-3;
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+}
+
+// === RESPONSIVE ===
+@media (max-width: 768px) {
+  .vibe-section {
+    flex-direction: column;
+    text-align: center;
+
+    .images {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .inspiration-banner .overlay,
+  .cesta-section .text-overlay {
+    top: 10%;
+    left: 5%;
+
+    h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  .carousel-section .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
