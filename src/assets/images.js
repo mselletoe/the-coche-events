@@ -48,7 +48,6 @@ export {
   card2,
   card3,
   bgpattern,
-  userIcon,
   Option1,
   Option2,
   Option3,
