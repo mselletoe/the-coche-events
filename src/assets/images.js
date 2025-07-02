@@ -10,6 +10,10 @@ import blueFlower from './blueFlower.png';
 import sanyaLopez from './user-image.png';
 import carIcon from './CAR-ICON.svg';
 import userIcon from './USER-ICON.png';
+import Option1 from './birthday.jpeg';
+import Option2 from './romantic setup.JPG';
+import Option3 from './anniv.jpg';
+import Option4 from './custom.PNG';
 // add other images as needed
 
 export {
@@ -24,5 +28,9 @@ export {
   darkcocheLogo,
   sanyaLopez,
   carIcon,
-  userIcon
+  userIcon,
+  Option1,
+  Option2,
+  Option3,
+  Option4,
 };

@@ -14,6 +14,7 @@ import Gallery from './tabs/gallery/gallery.jsx';
 import PrivacyPolicy from './features/footer/privacy-policy.jsx';
 import TermsAndConditions from './features/footer/terms-and-conditions.jsx';
 import AccountSettings from './features/account-settings/account-settings.jsx';
+import BookingPage from './features/booking-form/booking-form.jsx';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/services" element={<Services />} />
+          <Route path="services/book/:style" element={<BookingPage />} />
           <Route path="/gallery" element={<Gallery />} />
 
           <Route path="/auth" element={<Auth />}>
@@ -47,6 +49,9 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         </Route>
+
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/book/:style" element={<BookingPage />} />
       </Routes>
     </Router>
   );
