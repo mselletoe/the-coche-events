@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './booking-form.scss';
 import './step-2.scss';
-import Calendar from './calendar.jsx'; // ✅ Corrected import
-import './calendar.scss';
 
-function Step2() {
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [note, setNote] = useState('');
-  const occupiedTimes = ["10:00 AM", "2:00 PM"]; // Example occupied times
+function Step2({ formData, setFormData }) {
+  const occupiedTimes = ["10:00 AM", "2:00 PM"];
+
+  const handleChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   return (
     <div className="step2-container">
@@ -22,19 +20,47 @@ function Step2() {
           </div>
           <div className="section-content location-fields">
             <div className="field-row">
-              <select value={selectedRegion} onChange={e => setSelectedRegion(e.target.value)}>
+              <select
+                value={formData.selectedRegion}
+                onChange={e => handleChange('selectedRegion', e.target.value)}
+              >
                 <option value="">Region III</option>
                 {/* Add more region options here */}
               </select>
-              <input type="text" placeholder="Province" />
+              <input
+                type="text"
+                placeholder="Province"
+                value={formData.province}
+                onChange={e => handleChange('province', e.target.value)}
+              />
             </div>
             <div className="field-row">
-              <input type="text" placeholder="Municipality" />
-              <input type="text" placeholder="Barangay" />
+              <input
+                type="text"
+                placeholder="Municipality"
+                value={formData.municipality}
+                onChange={e => handleChange('municipality', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Barangay"
+                value={formData.barangay}
+                onChange={e => handleChange('barangay', e.target.value)}
+              />
             </div>
             <div className="field-row">
-              <input type="text" placeholder="Address" />
-              <input type="text" placeholder="Zip Code" />
+              <input
+                type="text"
+                placeholder="Address"
+                value={formData.address}
+                onChange={e => handleChange('address', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Zip Code"
+                value={formData.zip}
+                onChange={e => handleChange('zip', e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -61,24 +87,28 @@ function Step2() {
 
           <div className="section-content schedule-fields">
             <div className="field-row">
-              <Calendar onDateChange={setSelectedDate} selectedDate={selectedDate} />
+              <input
+                type="date"
+                value={formData.selectedDate}
+                onChange={e => handleChange('selectedDate', e.target.value)}
+              />
               <div className="time-input-group">
                 <input
                   type="text"
                   placeholder="Select your preferred time"
-                  value={selectedTime || ""}
+                  value={formData.selectedTime}
                   readOnly
                 />
                 <div className="time-grid">
                   {["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"].map(time => {
                     const isOccupied = occupiedTimes.includes(time);
-                    const isSelected = selectedTime === time;
+                    const isSelected = formData.selectedTime === time;
 
                     return (
                       <button
                         key={time}
                         className={`${isSelected ? 'selected' : ''} ${isOccupied ? 'occupied' : ''}`}
-                        onClick={() => !isOccupied && setSelectedTime(time)}
+                        onClick={() => !isOccupied && handleChange('selectedTime', time)}
                         disabled={isOccupied}
                       >
                         {time}
@@ -98,8 +128,8 @@ function Step2() {
           </div>
           <textarea
             placeholder="Add notes here."
-            value={note}
-            onChange={e => setNote(e.target.value)}
+            value={formData.note}
+            onChange={e => handleChange('note', e.target.value)}
           ></textarea>
         </div>
 

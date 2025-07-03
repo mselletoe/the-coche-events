@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import Pending from '../../features/pending/pending';
 import BookingForm from '../../features/booking-form/booking-form';
@@ -17,8 +17,18 @@ function Services() {
     { id: 'custom', label: 'Custom', image: Option4 },
   ];
 
+  // ✅ Load selection from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem('selectedOption');
+    if (stored) {
+      setSelectedOption(stored);
+    }
+  }, []);
+
+  // ✅ Store selection in both state and localStorage
   const handleOptionClick = (id) => {
     setSelectedOption(id);
+    localStorage.setItem('selectedOption', id);
   };
 
   const handleBookNow = () => {

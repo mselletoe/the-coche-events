@@ -17,12 +17,35 @@ function BookingForm() {
 
   const { style } = useParams();
 
+  // ✅ Store style in localStorage for back-navigation persistence
+  useEffect(() => {
+    if (style) {
+      localStorage.setItem('selectedOption', style);
+    }
+  }, [style]);
+
+  // ✅ New state for modal visibility
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
   // ✅ State lifted from Step1
   const [bannerMessage, setBannerMessage] = useState('');
   const [lightboxMessage, setLightboxMessage] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
   const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
+
+  // ✅ State lifted for Step2
+  const [step2FormData, setStep2FormData] = useState({
+    selectedRegion: '',
+    province: '',
+    municipality: '',
+    barangay: '',
+    address: '',
+    zip: '',
+    selectedDate: '',
+    selectedTime: '',
+    note: '',
+  });
 
   const handleNext = () => {
     if (currentStep === 1 && step1Validator.current) {
@@ -35,11 +58,12 @@ function BookingForm() {
     }
   };
 
+  // ✅ Modified handleBack to show modal
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => prev - 1);
     } else {
-      navigate('/services');
+      setShowConfirmModal(true);
     }
   };
 
@@ -119,11 +143,35 @@ function BookingForm() {
               setSelectedAddonOptions={setSelectedAddonOptions}
             />
           )}
-          {currentStep === 2 && <Step2 />}
+          {currentStep === 2 && (
+            <Step2
+              formData={step2FormData}
+              setFormData={setStep2FormData}
+            />
+          )}
           {currentStep === 3 && <Step3 />}
           {currentStep === 4 && <Step4 />}
         </div>
       </div>
+
+      {/* ✅ Custom confirmation modal */}
+      {showConfirmModal && (
+        <div className="custom-modal-overlay fade-in">
+          <div className="custom-modal">
+            <h3>Return to Style Selection?</h3>
+            <p>Are you sure you want to go back? <br/> All progress will be lost.</p>
+            <div className="modal-buttons">
+              <button onClick={() => setShowConfirmModal(false)}>Cancel</button>
+              <button
+                className="danger"
+                onClick={() => navigate('/services')}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
