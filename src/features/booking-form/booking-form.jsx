@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './booking-form.scss';
 import { carIcon } from '../../assets/images.js';
 import Step1 from './step-1.jsx';
@@ -13,18 +13,33 @@ function BookingForm() {
   const pointRefs = useRef([]);
   const [carX, setCarX] = useState(0);
   const navigate = useNavigate();
+  const step1Validator = useRef(null);
+
+  const { style } = useParams();
+
+  // ✅ State lifted from Step1
+  const [bannerMessage, setBannerMessage] = useState('');
+  const [lightboxMessage, setLightboxMessage] = useState('');
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
+  const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
 
   const handleNext = () => {
+    if (currentStep === 1 && step1Validator.current) {
+      const isValid = step1Validator.current();
+      if (!isValid) return;
+    }
+
     if (currentStep < totalSteps) {
       setCurrentStep((prev) => prev + 1);
     }
   };
 
   const handleBack = () => {
-  if (currentStep > 1) {
-    setCurrentStep((prev) => prev - 1);
-  } else {
-    navigate('/services'); // 👈 go directly to Services page
+    if (currentStep > 1) {
+      setCurrentStep((prev) => prev - 1);
+    } else {
+      navigate('/services');
     }
   };
 
@@ -33,9 +48,7 @@ function BookingForm() {
       const point = pointRefs.current[currentStep - 1];
       const pointRect = point.getBoundingClientRect();
       const containerRect = point.parentNode.getBoundingClientRect();
-
-      // Move the car to center over the circle
-      const centerX = pointRect.left - containerRect.left + pointRect.width / 2 - 15; // 15 = half car width (30px)
+      const centerX = pointRect.left - containerRect.left + pointRect.width / 2 - 15;
       setCarX(centerX);
     }
   }, [currentStep]);
@@ -53,14 +66,12 @@ function BookingForm() {
     <div className="bookingform-container">
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
-
         <img
           src={carIcon}
           alt="car"
           className="progress-car"
           style={{ transform: `translateX(${carX}px)` }}
         />
-
         <div className="progress-points">
           {[...Array(totalSteps)].map((_, index) => (
             <div
@@ -89,9 +100,25 @@ function BookingForm() {
             <button className="progress-button" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
           </div>
         </div>
-        
+
         <div className='form-card'>
-          {currentStep === 1 && <Step1 />}
+          {currentStep === 1 && (
+            <Step1
+              selectedStyle={style}
+              onNext={handleNext}
+              registerValidator={(fn) => (step1Validator.current = fn)}
+              bannerMessage={bannerMessage}
+              setBannerMessage={setBannerMessage}
+              lightboxMessage={lightboxMessage}
+              setLightboxMessage={setLightboxMessage}
+              selectedColors={selectedColors}
+              setSelectedColors={setSelectedColors}
+              selectedAddons={selectedAddons}
+              setSelectedAddons={setSelectedAddons}
+              selectedAddonOptions={selectedAddonOptions}
+              setSelectedAddonOptions={setSelectedAddonOptions}
+            />
+          )}
           {currentStep === 2 && <Step2 />}
           {currentStep === 3 && <Step3 />}
           {currentStep === 4 && <Step4 />}

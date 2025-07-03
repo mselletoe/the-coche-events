@@ -4,8 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 60px;
-  padding: 5em;
+  padding: 2em;
 
   .progress-bar {
     position: relative;
@@ -89,16 +88,23 @@
         gap: 10px;
 
         .progress-button {
+          width: 150px;
           height: fit-content;
           padding: 8px 50px;
-          background-color: $primary-color-light;
-          color: white;
+          background-color: transparent;
+          color: $primary-color-light;
           border: none;
           border-radius: 5px;
           cursor: pointer;
           font-weight: 500;
           font-family: var(--inter);
-          transition: background-color 0.3s;
+          transition: background-color 0.3s ease, transform 0.3s ease;
+
+          &:hover {
+            background-color: $primary-color-light;
+            color: white;
+            transform: scale(1.05);
+          }
 
           &:disabled {
             background-color: transparent;
@@ -117,6 +123,10 @@
         gap: 20px;
         width: 100%;
         height: auto;
+        font-family: var(--inter);
+        font-size: 12px;
+        font-weight: 700;
+        color: $shade-4;
         
         .themes, .addons{
           background-color: white;

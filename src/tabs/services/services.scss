@@ -4,11 +4,29 @@
     display: flex;
     flex-direction: column;
 
+    .book-now{
+        align-self: center;
+        padding: 10px;
+        width: 150px;
+        border: none;
+        border-radius: 5px;
+        background-color: $primary-color-dark;
+        color: white;
+        font-family: var(--inter);
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+
+        &:hover {
+            background-color: $primary-color-light;
+            transform: scale(1.05);
+        }
+    }
+
     .services-headings{
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2.5em;
+        padding: 2em;
         flex-direction: column;
         gap: 20px;
         color:$primary-color-dark;
@@ -66,7 +84,8 @@
                 position: relative;
                 overflow: hidden;
                 border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+                cursor: pointer;
 
                     img {
                         width: 100%;
@@ -101,21 +120,24 @@
 
                     &.selected {
                         border: 3px solid $secondary-color;
-                        box-shadow: 0 0 10px rgba(255, 94, 94, 0.4);
+                        box-shadow: 0 3px 5px rgba(255, 94, 94, 0.5);
                     }
                 }
             }
         }
     }
+    
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 1.5s ease-out forwards;
+}
 
-    .book-now{
-        align-self: center;
-        padding: 10px;
-        width: 150px;
-        border: none;
-        background-color: $primary-color-dark;
-        color: white;
-        font-family: var(--inter);
-        cursor: pointer;
-    }
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+
 
