@@ -23,12 +23,21 @@ import {
 function Home() {
   const inspirationImages = [inspirationBanner, inspiration2, inspiration3, inspiration4];
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [activeVibe, setActiveVibe] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const interval = setInterval(() => {
+      setActiveVibe((prev) => (prev + 1) % 3);
+    }, 3000);
+
+    const bannerInterval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % inspirationImages.length);
     }, 4000);
-    return () => clearInterval(timer);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(bannerInterval);
+    };
   }, []);
 
   const cards = [
@@ -80,9 +89,27 @@ function Home() {
           <button>See More</button>
         </div>
         <div className="images">
-          <img id="vibe1" src={vibe1} alt="Vibe Sample 1" />
-          <img id="vibe2" src={vibe2} alt="Vibe Sample 2" />
-          <img id="vibe3" src={vibe3} alt="Vibe Sample 3" />
+          <div
+            className={`vibe-img ${
+              activeVibe === 0 ? "active" : activeVibe === 1 ? "medium" : "small"
+            }`}
+          >
+            <img src={vibe1} alt="Vibe Sample 1" />
+          </div>
+          <div
+            className={`vibe-img ${
+              activeVibe === 1 ? "active" : "medium"
+            }`}
+          >
+            <img src={vibe2} alt="Vibe Sample 2" />
+          </div>
+          <div
+            className={`vibe-img ${
+              activeVibe === 2 ? "active" : activeVibe === 1 ? "small" : "small"
+            }`}
+          >
+            <img src={vibe3} alt="Vibe Sample 3" />
+          </div>
         </div>
       </section>
 
