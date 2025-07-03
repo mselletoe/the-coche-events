@@ -10,7 +10,6 @@
   .page-title {
     color: $shade-4;
     font-weight: 700;
-    font-size: 32px;
     margin-bottom: 10px;
   }
 
@@ -148,8 +147,15 @@
             border: 1px solid $shade-2;
             border-radius: 5px;
             background-color: #fff;
+
+            &:focus {
+              outline: none;
+              border-color: $secondary-color;
+              box-shadow: 0 0 0 2px rgba($secondary-color, 0.2);
+            }
           }
         }
+
 
 
         .full-width {
@@ -166,52 +172,51 @@
     }
 
 
-    .primary-btn {
-      padding: 10px 20px;
-      background-color: $primary-color-light;
-      color: $shade-1;
-      border: none;
-      border-radius: 5px;
-      font-weight: 600;
-      cursor: pointer;
+        .primary-btn {
+          padding: 10px 20px;
+          background-color: $primary-color-light;
+          color: $shade-1;
+          border: none;
+          border-radius: 5px;
+          font-weight: 600;
+          cursor: pointer;
 
+          &:hover {
+            background-color: $primary-color-light;
+            box-shadow: 0 0 0 3px rgba($primary-color-light, 0.3);
+          }
+        }
 
-      &:hover {
-        background-color: $primary-color-dark;
-      }
-    }
+        .secondary-btn {
+          padding: 10px 20px;
+          background-color: transparent;
+          color: $primary-color-light;
+          border: 1px solid $primary-color-light;
+          border-radius: 5px;
+          font-weight: 600;
+          cursor: pointer;
 
+          &:hover {
+            background-color: transparent;
+            box-shadow: 0 0 0 3px rgba($primary-color-light, 0.3);
+          }
+        }
 
-    .secondary-btn {
-      padding: 10px 20px;
-      background-color: transparent;
-      color: $primary-color-light;
-      border: 1px solid $primary-color-light;
-      border-radius: 5px;
-      font-weight: 600;
-      cursor: pointer;
+        .delete-btn {
+          padding: 10px 20px;
+          background-color: $primary-color;
+          color: $shade-1;
+          border: none;
+          border-radius: 5px;
+          font-weight: 600;
+          cursor: pointer;
 
+          &:hover {
+            background-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.3);
+          }
+        }
 
-      &:hover {
-        background-color: $primary-color-dark;
-      }
-    }
-
-
-    .delete-btn {
-      padding: 10px 20px;
-      background-color: $primary-color;
-      color: $shade-1;
-      border: none;
-      border-radius: 5px;
-      font-weight: 600;
-      cursor: pointer;
-
-
-      &:hover {
-        background-color: $primary-color-dark;
-      }
-    }
 
 
     .button-row {
