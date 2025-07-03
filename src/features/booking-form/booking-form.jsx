@@ -96,8 +96,8 @@ function BookingForm() {
             <p>{stepTitles[currentStep].subtitle}</p>
           </div>
           <div className="progress-buttons">
-            <button className="progress-button" onClick={handleBack}>Back</button>
-            <button className="progress-button" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
+            <button className="progress-button back" onClick={handleBack}>Back</button>
+            <button className="progress-button next" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
           </div>
         </div>
 

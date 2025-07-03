@@ -89,27 +89,44 @@
 
         .progress-button {
           width: 150px;
-          height: fit-content;
           padding: 8px 50px;
-          background-color: transparent;
-          color: $primary-color-light;
           border: none;
           border-radius: 5px;
-          cursor: pointer;
-          font-weight: 500;
           font-family: var(--inter);
+          font-weight: 500;
+          cursor: pointer;
           transition: background-color 0.3s ease, transform 0.3s ease;
 
-          &:hover {
+          &.next {
             background-color: $primary-color-light;
             color: white;
-            transform: scale(1.05);
+
+            &:hover {
+              background-color: $primary-color-dark;
+              transform: scale(1.05);
+            }
+
+            &:disabled {
+              background-color: transparent;
+              color: $shade-2;
+              cursor: not-allowed;
+            }
           }
 
-          &:disabled {
+          &.back {
             background-color: transparent;
-            color: $shade-2;
-            cursor: not-allowed;
+            color: $primary-color-light;
+
+            &:hover {
+              transform: scale(1.05);
+              background-color: $primary-color-dark;
+              color: white;
+            }
+
+            &:disabled {
+              color: $shade-2;
+              cursor: not-allowed;
+            }
           }
         }
       }
