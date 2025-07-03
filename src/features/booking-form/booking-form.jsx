@@ -164,7 +164,10 @@ function BookingForm() {
               <button onClick={() => setShowConfirmModal(false)}>Cancel</button>
               <button
                 className="danger"
-                onClick={() => navigate('/services')}
+                onClick={() => {
+                  localStorage.removeItem('selectedOption'); 
+                  navigate('/services');                    
+                }}
               >
                 Confirm
               </button>
