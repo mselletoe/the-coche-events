@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import './booking-form.scss';
+import './step-2.scss';
 
 function Step2(){
     return (
