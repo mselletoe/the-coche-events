@@ -12,12 +12,19 @@ import carIcon from './CAR-ICON.svg';
 import userIcon from './USER-ICON.png';
 import vibe1 from './vibe1.png';
 import vibe2 from './vibe2.png';
+import vibe3 from './vibe3.png'
 import inspirationBanner from './inspirationBanner.png';
+import inspiration2 from './inspiration2.png';
+import inspiration3 from './inspiration3.png';
+import inspiration4 from './inspiration4.png';
 import phone from './phone.png';
 import cestaBanner from './cestaBanner.png';
 import card1 from './card1.png';
 import card2 from './card2.png';
 import card3 from './card3.png';
+import card4 from './card4.png';
+import card5 from './card5.png';
+import card6 from './card6.png';
 import bgpattern from './bgpattern.png';
 
 
@@ -36,11 +43,18 @@ export {
   userIcon,
   vibe1,
   vibe2,
+  vibe3,
   inspirationBanner,
+  inspiration2,
+  inspiration3,
+  inspiration4,
   phone,
   cestaBanner,
   card1,
   card2,
   card3,
+  card4,
+  card5,
+  card6,
   bgpattern,
 };
