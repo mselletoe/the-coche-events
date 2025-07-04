@@ -18,6 +18,8 @@ import inspiration2 from './inspiration2.png';
 import inspiration3 from './inspiration3.png';
 import inspiration4 from './inspiration4.png';
 import phone from './phone.png';
+import appstore from './appstore.svg';
+import playstore from './playstore.svg';
 import cestaBanner from './cestaBanner.png';
 import card1 from './card1.png';
 import card2 from './card2.png';
@@ -26,11 +28,12 @@ import card4 from './card4.png';
 import card5 from './card5.png';
 import card6 from './card6.png';
 import bgpattern from './bgpattern.png';
-
 import Option1 from './birthday.jpeg';
 import Option2 from './romantic setup.JPG';
 import Option3 from './anniv.jpg';
 import Option4 from './custom.PNG';
+import cochesvg from './cochesvg.svg';
+import cartrunk from './cartrunk.png';
 // add other images as needed
 
 export {
@@ -54,6 +57,8 @@ export {
   inspiration3,
   inspiration4,
   phone,
+  appstore,
+  playstore,
   cestaBanner,
   card1,
   card2,
@@ -66,4 +71,6 @@ export {
   Option2,
   Option3,
   Option4,
+  cochesvg,
+  cartrunk,
 };
