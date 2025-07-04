@@ -17,6 +17,11 @@ function Services() {
     { id: 'custom', label: 'Custom', image: Option4 },
   ];
 
+  // ✅ New: Clear the selected option from localStorage on page load
+  useEffect(() => {
+    localStorage.removeItem('selectedOption');
+  }, []);
+
   // ✅ Load selection from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem('selectedOption');
@@ -81,7 +86,7 @@ function Services() {
         Book Now
       </button>
       
-      <Outlet/>
+      <Outlet />
       <Pending />
     </div>
   );
