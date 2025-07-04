@@ -11,6 +11,8 @@ import {
   inspiration3,
   inspiration4,
   phone,
+  appstore,
+  playstore,
   cestaBanner,
   card1,
   card2,
@@ -18,6 +20,8 @@ import {
   card4,
   card5,
   card6,
+  cochesvg,
+  cartrunk,
 } from "../../assets/images.js";
 
 function Home() {
@@ -28,11 +32,11 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveVibe((prev) => (prev + 1) % 3);
-    }, 3000);
+    }, 1500);
 
     const bannerInterval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % inspirationImages.length);
-    }, 4000);
+    }, 2500);
 
     return () => {
       clearInterval(interval);
@@ -71,13 +75,17 @@ function Home() {
     <div className="home-container">
       {/* HERO SECTION */}
       <section className="hero-section">
-        <div className="overlay">
+        <img src={cochesvg} alt="Coche Logo" className="flying-coche" />
+        <div className="hero-content">
           <h1>
             where surprises unfold <br />
             within the <em>confines</em> of a car
           </h1>
         </div>
-      </section>
+
+      <img src={cartrunk} alt="Car Trunk" className="car-trunk" />
+    </section>
+
 
       {/* VIBE SECTION */}
       <section className="vibe-section">
@@ -86,6 +94,9 @@ function Home() {
             Start with a vibe,<br />
             <em>we’ll build the moment</em>
           </h2>
+          <p>
+            Choose a theme, pick a vibe, and leave the magic to us. Every moment starts with the perfect spark.
+          </p>
           <button>See More</button>
         </div>
         <div className="images">
@@ -111,11 +122,20 @@ function Home() {
             <img src={vibe3} alt="Vibe Sample 3" />
           </div>
         </div>
-      </section>
+      </section>  
 
-      {/* INSPIRATION STORY BANNER */}
+    {/* INSPIRATION STORY BANNER */}
       <section className="inspiration-banner">
-        <img src={inspirationImages[currentIndex]} alt="Inspiration Story" />
+        {inspirationImages.map((img, i) => (
+  <img
+    key={i}
+    src={img}
+    alt={`Inspiration ${i}`}
+    className={i === currentIndex ? "fade-in" : ""}
+  />
+))}
+
+
         <div className="overlay">
           <h2>
             Get <em>inspired</em>. <br />
@@ -133,21 +153,6 @@ function Home() {
         </div>
       </section>
 
-      {/* PHONE SECTION */}
-      <section className="phone-section">
-        <div className="phone-wrapper">
-          <img src={phone} alt="Phone App Showcase" />
-        </div>
-      </section>
-
-      {/* CESTA PROMO */}
-      <section className="cesta-section">
-        <div className="text-overlay">
-          <button>View Shop</button>
-        </div>
-        <img src={cestaBanner} alt="Cesta Promo" />
-      </section>
-
       {/* AUTO-SCROLLING CAROUSEL SECTION */}
       <section className="carousel-section">
         <div className="cards">
@@ -162,6 +167,35 @@ function Home() {
           ))}
         </div>
       </section>
+
+      {/* PHONE SECTION */}
+        <section className="phone-section">
+          <div className="phone-wrapper">
+            <img src={phone} alt="Coche App Preview" />
+          </div>
+          <div className="phone-text">
+            <h2>Plan. Personalize. Surprise.</h2>
+            <p>
+              The Coche mobile app lets you design unforgettable in-car surprises with ease —
+              from themes to gifts, it’s all just a few taps away.
+            </p>
+            <div className="store-badges">
+              <img src={appstore} alt="Download on the App Store" />
+              <img src={playstore} alt="Get it on Google Play" />
+            </div>
+          </div>
+        </section>
+
+
+      {/* CESTA PROMO */}
+      <section className="cesta-section">
+        <div className="text-overlay">
+          <button>View Shop</button>
+        </div>
+        <img src={cestaBanner} alt="Cesta Promo" />
+      </section>
+
+      
     </div>
   );
 }
