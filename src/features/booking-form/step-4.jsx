@@ -2,22 +2,67 @@ import React from 'react';
 import './booking-form.scss';
 import './step-4.scss';
 
-function Step4() {
+function Step4({
+  style,
+  bannerMessage,
+  lightboxMessage,
+  selectedColors,
+  selectedAddons,
+  selectedAddonOptions,
+  step2FormData,
+  clientInfo,
+  useAccountDetails,
+  accountInfo
+}) {
+  const baseRate = 2499;
+
+  const addonPrices = {
+    'Satin Bouquet': { '6pcs': 300, '12pcs': 620, 'Acetate': 1000 },
+    'Fresh Flower': { 'Medium': 1700, 'Large': 2800 },
+    'Cake': {
+      'Mary Grace (Mini)': 1000,
+      'Mary Grace (Whole)': 3500,
+      "Conti's (Mango Bravo)": 2200,
+      'Red Ribbon': 850,
+      'Goldilocks': 900
+    },
+    'Teddy Bear': { '2ft': 1800, '3ft': 2000 },
+    'Polaroid Frame': { default: 400 }, // ✅ Fixed
+    'Polaroid Themed Pictures': { default: 350 } // ✅ Fixed
+  };
+
+  const addonLabels = Object.keys(addonPrices);
+
+  const addonList = selectedAddons
+    .map((checked, index) => {
+      if (!checked) return null;
+      const name = addonLabels[index];
+      const option = selectedAddonOptions[name] || 'default';
+      const price = addonPrices[name]?.[option] || 0;
+      return { name, option, price };
+    })
+    .filter(Boolean);
+
+  const totalAddons = addonList.reduce((sum, item) => sum + item.price, 0);
+  const total = baseRate + totalAddons;
+
+  const finalClient = useAccountDetails ? accountInfo : clientInfo;
+
   return (
     <div className="step4-container">
       <div className="left-column receiver">
         <div className="box">
           <h3>Receiver’s Details</h3>
-          <p>Sanya Lopez</p>
-          <p>sanyalopez@gmail.com</p>
-          <p>09123456789</p>
-          <p className="link">Social Media Link</p>
+          <p>{finalClient.firstName} {finalClient.lastName} {finalClient.suffix}</p>
+          <p>{finalClient.email}</p>
+          <p>{finalClient.phoneNumber}</p>
+          <p className="link">{finalClient.accountLink}</p>
 
           <h3>Booking Details</h3>
-          <p>Barangay 123, Metro Manila, Manila 6203</p>
-          <p>June 19, 2025</p>
-          <p>2:00 PM</p>
-          <p>Note: “I’m a hot Maria Clara”</p>
+          <p>{step2FormData.address}</p>
+          <p>{step2FormData.selectedDate}</p>
+          <p>{step2FormData.selectedTime}</p>
+          <p>Note: “{step2FormData.note}”</p>
 
           <h3>Payment Details</h3>
           <p className="note">Select your payment method and fill in the required details</p>
@@ -36,7 +81,7 @@ function Step4() {
       <div className="right-column billing">
         <div className="box">
           <h3>Billing Details</h3>
-          <p><strong>Theme:</strong> Custom</p>
+          <p><strong>Theme:</strong> {style || 'Custom'}</p>
 
           <p><strong>Inclusions:</strong></p>
           <ul>
@@ -50,18 +95,24 @@ function Step4() {
             <li>Soft Copy of Photo and Video Documentation</li>
           </ul>
 
-          <p><strong>Banner:</strong> Custom</p>
-          <p><strong>Light Box:</strong> Custom</p>
-          <p><strong>Colors:</strong> Custom</p>
+          <p><strong>Banner:</strong> {bannerMessage}</p>
+          <p><strong>Light Box:</strong> {lightboxMessage}</p>
+          <p><strong>Colors:</strong> {selectedColors.join(', ')}</p>
 
-          <p className="price"><strong>Base Rate:</strong> ₱ 2,499</p>
+          <p className="price"><strong>Base Rate:</strong> ₱ {baseRate.toLocaleString()}</p>
 
-          <p className="price"><strong>Add-Ons</strong></p>
-          <p className="price">Fresh Flower (Medium) - ₱ 1,700</p>
-          <p className="price">Cake (Mary Grace - Mini) - ₱ 1,000</p>
-          <p className="price">Teddy Bear (2FT) - ₱ 1,800</p>
+          {addonList.length > 0 && (
+            <>
+              <p className="price"><strong>Add-Ons</strong></p>
+              {addonList.map(({ name, option, price }) => (
+                <p key={name} className="price">
+                  {name}{option !== 'default' ? ` (${option})` : ''} - ₱ {price.toLocaleString()}
+                </p>
+              ))}
+            </>
+          )}
 
-          <p className="total">Total: ₱ 6,999</p>
+          <p className="total">Total: ₱ {total.toLocaleString()}</p>
         </div>
       </div>
     </div>
