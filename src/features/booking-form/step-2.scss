@@ -18,9 +18,10 @@
 .section-label {
   h3 {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 18px;
     font-family: var(--inter);
     color: $shade-4;
+    padding-top: 0.5rem;
   }
 }
 
@@ -216,4 +217,18 @@ textarea::placeholder,
 select::placeholder {
   font-size: 10px; 
   color: $shade-2; 
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-message {
+  color: red;
+  font-size: 8px;
+  font-family: var(--inter);
+  font-style: italic;
+  font-weight: 500;
+  margin-top: 5px;
 }

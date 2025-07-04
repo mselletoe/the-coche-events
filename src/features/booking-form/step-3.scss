@@ -15,7 +15,7 @@
 
     .step3-subtitle {
         font-size: 0.9rem;
-        color: #7d7d7d;
+        color: $shade-2;
         margin-bottom: 2rem;
     }
 
@@ -24,6 +24,17 @@
         flex-direction: column;
         gap: 1.5rem;
 
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: $shade-3;
+            font-family: var(--inter);
+            margin-bottom: 1rem;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 200px 1fr;
@@ -31,9 +42,11 @@
             gap: 1.5rem;
 
             .form-label {
-                font-size: 10px;
-                font-weight: 500;
+                font-size: 17px;
+                font-weight: 600;
+                color: $shade-4;
                 padding-top: 0.5rem;
+                font-family: var(--inter);
             }
 
             .form-inputs {
@@ -41,23 +54,47 @@
                 flex-wrap: wrap;
                 gap: 1rem;
 
-                input, select {
-                    padding: 0.75rem;
-                    border: 1px solid #c0a080;
-                    border-radius: 8px;
-                    font-size: 1rem;
+                .field-container {
+                    display: flex;
+                    flex-direction: column;
                     flex: 1;
-
-                    &:focus {
-                        border-color: #a67c52;
-                        outline: none;
-                    }
-                }
-
-                select {
                     min-width: 150px;
+
+                    input, select {
+                        padding: 8px;
+                        border: 1px solid;
+                        border-color: $primary-color;
+                        border-radius: 8px;
+                        font-size: 12px;
+                        flex: 1;
+
+                        &:focus {
+                            border-color: $primary-color-light;
+                            outline: none;
+                        }
+                    }
+
+                    select {
+                        min-width: 150px;
+                    }
+
+                    .error-message {
+                        color: red;
+                        font-size: 8px;
+                        font-family: var(--inter);
+                        font-style: italic;
+                        font-weight: 500;
+                        margin-top: 5px;
+                    }
                 }
             }
         }
     }
+}
+
+input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    accent-color: $primary-color;
+    cursor: pointer;
 }
