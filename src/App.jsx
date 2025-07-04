@@ -1,4 +1,6 @@
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import api from './api';
 import Auth from './features/auth/auth.jsx';
 import MainLayout from './main_layout.jsx';
 import LoginForm from './features/auth/login-form.jsx';
@@ -17,6 +19,16 @@ import AccountSettings from './features/account-settings/account-settings.jsx';
 import BookingPage from './features/booking-form/booking-form.jsx';
 
 function App() {
+  useEffect(() => {
+    api.get('track_visit.php')
+      .then(() => {
+        console.log('Visit recorded');
+      })
+      .catch((error) => {
+        console.error('Error recording visit:', error);
+      });
+  }, []);
+  
   return (
     <Router>
       <Routes>
