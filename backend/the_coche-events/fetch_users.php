@@ -22,6 +22,7 @@ $sql = "
         u.suffix, 
         u.email, 
         u.phone, 
+        u.date_registered,
         a.region_name, 
         a.province_name, 
         a.city_name, 
@@ -38,10 +39,12 @@ $users = [];
 
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
-        $row['date_registered'] = '2025-06-01'; // hardcoded for now
         $users[] = $row;
     }
-    echo json_encode($users);
+    echo json_encode([
+        "users" => $users,
+        "total" => count($users) 
+    ]);
 } else {
     http_response_code(500);
     echo json_encode(["error" => "Query failed"]);
