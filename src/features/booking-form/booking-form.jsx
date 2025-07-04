@@ -13,19 +13,18 @@ function BookingForm() {
   const pointRefs = useRef([]);
   const [carX, setCarX] = useState(0);
   const navigate = useNavigate();
+  const { style } = useParams();
+
   const step1Validator = useRef(null);
   const step2Validator = useRef(null);
   const step3Validator = useRef(null);
-
-  const { style } = useParams();
-
-  useEffect(() => {
-    if (style) {
-      localStorage.setItem('selectedOption', style);
-    }
-  }, [style]);
+  const bookButtonRef = useRef(null);
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showFinalBookingModal, setShowFinalBookingModal] = useState(false);
+  const [hasAgreed, setHasAgreed] = useState(false);
+  const [showNavigationModal, setShowNavigationModal] = useState(false);
+  const [pendingNavigationPath, setPendingNavigationPath] = useState(null);
 
   const [bannerMessage, setBannerMessage] = useState('');
   const [lightboxMessage, setLightboxMessage] = useState('');
@@ -33,7 +32,6 @@ function BookingForm() {
   const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
   const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
 
-  // Step 2 form data (booking details only)
   const [step2FormData, setStep2FormData] = useState({
     selectedRegion: '',
     province: '',
@@ -46,7 +44,6 @@ function BookingForm() {
     note: ''
   });
 
-  // Dedicated client info state
   const [clientInfo, setClientInfo] = useState({
     firstName: '',
     lastName: '',
@@ -57,6 +54,7 @@ function BookingForm() {
     accountLink: ''
   });
 
+  const [manualClientInfo, setManualClientInfo] = useState(clientInfo);
   const [useAccountDetails, setUseAccountDetails] = useState(false);
 
   const accountInfo = {
@@ -69,24 +67,36 @@ function BookingForm() {
     accountLink: 'facebook.com/alleahbayas'
   };
 
+  useEffect(() => {
+    if (style) {
+      localStorage.setItem('selectedOption', style);
+    }
+  }, [style]);
+
+  useEffect(() => {
+    if (useAccountDetails) {
+      setClientInfo({ ...accountInfo });
+    } else {
+      setClientInfo({ ...manualClientInfo });
+    }
+  }, [useAccountDetails]);
+
+  const handleSetClientInfo = (info) => {
+    setClientInfo(info);
+    if (!useAccountDetails) {
+      setManualClientInfo(info);
+    }
+  };
+
   const handleNext = () => {
-    if (currentStep === 1 && step1Validator.current) {
-      const isValid = step1Validator.current();
-      if (!isValid) return;
-    }
-
-    if (currentStep === 2 && step2Validator.current) {
-      const isValid = step2Validator.current();
-      if (!isValid) return;
-    }
-
-    if (currentStep === 3 && step3Validator.current) {
-      const isValid = step3Validator.current();
-      if (!isValid) return;
-    }
+    if (currentStep === 1 && step1Validator.current && !step1Validator.current()) return;
+    if (currentStep === 2 && step2Validator.current && !step2Validator.current()) return;
+    if (currentStep === 3 && step3Validator.current && !step3Validator.current()) return;
 
     if (currentStep < totalSteps) {
       setCurrentStep(prev => prev + 1);
+    } else if (hasAgreed) {
+      setShowFinalBookingModal(true);
     }
   };
 
@@ -108,6 +118,36 @@ function BookingForm() {
     }
   }, [currentStep]);
 
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = ''; // Required for most browsers
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      const anchor = e.target.closest('a');
+      if (anchor && !anchor.href.includes(window.location.pathname)) {
+        e.preventDefault();
+        setPendingNavigationPath(anchor.href);
+        setShowNavigationModal(true);
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
 
   const stepTitles = {
@@ -121,12 +161,7 @@ function BookingForm() {
     <div className="bookingform-container">
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
-        <img
-          src={carIcon}
-          alt="car"
-          className="progress-car"
-          style={{ transform: `translateX(${carX}px)` }}
-        />
+        <img src={carIcon} alt="car" className="progress-car" style={{ transform: `translateX(${carX}px)` }} />
         <div className="progress-points">
           {[...Array(totalSteps)].map((_, index) => (
             <div
@@ -146,7 +181,14 @@ function BookingForm() {
           </div>
           <div className="progress-buttons">
             <button className="progress-button back" onClick={handleBack}>Back</button>
-            <button className="progress-button next" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
+            <button
+              ref={bookButtonRef}
+              className="progress-button next"
+              onClick={handleNext}
+              disabled={currentStep === totalSteps && !hasAgreed}
+            >
+              {currentStep === totalSteps ? 'Book' : 'Next'}
+            </button>
           </div>
         </div>
 
@@ -179,7 +221,7 @@ function BookingForm() {
             <Step3
               registerValidator={fn => (step3Validator.current = fn)}
               clientInfo={clientInfo}
-              setClientInfo={setClientInfo}
+              setClientInfo={handleSetClientInfo}
               useAccountDetails={useAccountDetails}
               setUseAccountDetails={setUseAccountDetails}
               accountInfo={accountInfo}
@@ -197,12 +239,21 @@ function BookingForm() {
               clientInfo={clientInfo}
               useAccountDetails={useAccountDetails}
               accountInfo={accountInfo}
-              onBack={handleBack}
+              hasAgreed={hasAgreed}
+              setHasAgreed={(value) => {
+                setHasAgreed(value);
+                if (value && bookButtonRef.current) {
+                  setTimeout(() => {
+                    bookButtonRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }, 100);
+                }
+              }}
             />
           )}
         </div>
       </div>
 
+      {/* Back to style confirm modal */}
       {showConfirmModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
@@ -218,6 +269,48 @@ function BookingForm() {
                 }}
               >
                 Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Booking confirmation modal */}
+      {showFinalBookingModal && (
+        <div className="custom-modal-overlay fade-in">
+          <div className="custom-modal">
+            <h3>Booking Confirmed</h3>
+            <p>Thank you for booking with us!</p>
+            <div className="modal-buttons">
+              <button
+                onClick={() => {
+                  setShowFinalBookingModal(false);
+                  navigate('/');
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Navigation away confirm modal */}
+      {showNavigationModal && (
+        <div className="custom-modal-overlay fade-in">
+          <div className="custom-modal">
+            <h3>Leave This Page?</h3>
+            <p>All unsaved progress will be lost. Are you sure you want to leave?</p>
+            <div className="modal-buttons">
+              <button onClick={() => setShowNavigationModal(false)}>Cancel</button>
+              <button
+                className="danger"
+                onClick={() => {
+                  window.removeEventListener('beforeunload', () => {});
+                  window.location.href = pendingNavigationPath;
+                }}
+              >
+                Leave
               </button>
             </div>
           </div>
