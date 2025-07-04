@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './booking-form.scss';
 import { carIcon } from '../../assets/images.js';
 import Step1 from './step-1.jsx';
@@ -13,18 +13,57 @@ function BookingForm() {
   const pointRefs = useRef([]);
   const [carX, setCarX] = useState(0);
   const navigate = useNavigate();
+  const step1Validator = useRef(null);
+
+  const { style } = useParams();
+
+  // ✅ Store style in localStorage for back-navigation persistence
+  useEffect(() => {
+    if (style) {
+      localStorage.setItem('selectedOption', style);
+    }
+  }, [style]);
+
+  // ✅ New state for modal visibility
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  // ✅ State lifted from Step1
+  const [bannerMessage, setBannerMessage] = useState('');
+  const [lightboxMessage, setLightboxMessage] = useState('');
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
+  const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
+
+  // ✅ State lifted for Step2
+  const [step2FormData, setStep2FormData] = useState({
+    selectedRegion: '',
+    province: '',
+    municipality: '',
+    barangay: '',
+    address: '',
+    zip: '',
+    selectedDate: '',
+    selectedTime: '',
+    note: '',
+  });
 
   const handleNext = () => {
+    if (currentStep === 1 && step1Validator.current) {
+      const isValid = step1Validator.current();
+      if (!isValid) return;
+    }
+
     if (currentStep < totalSteps) {
       setCurrentStep((prev) => prev + 1);
     }
   };
 
+  // ✅ Modified handleBack to show modal
   const handleBack = () => {
-  if (currentStep > 1) {
-    setCurrentStep((prev) => prev - 1);
-  } else {
-    navigate('/services'); // 👈 go directly to Services page
+    if (currentStep > 1) {
+      setCurrentStep((prev) => prev - 1);
+    } else {
+      setShowConfirmModal(true);
     }
   };
 
@@ -33,7 +72,6 @@ function BookingForm() {
       const point = pointRefs.current[currentStep - 1];
       const pointRect = point.getBoundingClientRect();
       const containerRect = point.parentNode.getBoundingClientRect();
-
       const centerX = pointRect.left - containerRect.left + pointRect.width / 2 - 15;
       setCarX(centerX);
     }
@@ -52,14 +90,12 @@ function BookingForm() {
     <div className="bookingform-container">
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
-
         <img
           src={carIcon}
           alt="car"
           className="progress-car"
           style={{ transform: `translateX(${carX}px)` }}
         />
-
         <div className="progress-points">
           {[...Array(totalSteps)].map((_, index) => (
             <div
@@ -84,18 +120,61 @@ function BookingForm() {
             <p>{stepTitles[currentStep].subtitle}</p>
           </div>
           <div className="progress-buttons">
-            <button className="progress-button" onClick={handleBack}>Back</button>
-            <button className="progress-button" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
+            <button className="progress-button back" onClick={handleBack}>Back</button>
+            <button className="progress-button next" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
           </div>
         </div>
-        
+
         <div className='form-card'>
-          {currentStep === 1 && <Step1 />}
-          {currentStep === 2 && <Step2 />}
+          {currentStep === 1 && (
+            <Step1
+              selectedStyle={style}
+              onNext={handleNext}
+              registerValidator={(fn) => (step1Validator.current = fn)}
+              bannerMessage={bannerMessage}
+              setBannerMessage={setBannerMessage}
+              lightboxMessage={lightboxMessage}
+              setLightboxMessage={setLightboxMessage}
+              selectedColors={selectedColors}
+              setSelectedColors={setSelectedColors}
+              selectedAddons={selectedAddons}
+              setSelectedAddons={setSelectedAddons}
+              selectedAddonOptions={selectedAddonOptions}
+              setSelectedAddonOptions={setSelectedAddonOptions}
+            />
+          )}
+          {currentStep === 2 && (
+            <Step2
+              formData={step2FormData}
+              setFormData={setStep2FormData}
+            />
+          )}
           {currentStep === 3 && <Step3 />}
           {currentStep === 4 && <Step4 />}
         </div>
       </div>
+
+      {/* ✅ Custom confirmation modal */}
+      {showConfirmModal && (
+        <div className="custom-modal-overlay fade-in">
+          <div className="custom-modal">
+            <h3>Return to Style Selection?</h3>
+            <p>Are you sure you want to go back? <br/> All progress will be lost.</p>
+            <div className="modal-buttons">
+              <button onClick={() => setShowConfirmModal(false)}>Cancel</button>
+              <button
+                className="danger"
+                onClick={() => {
+                  localStorage.removeItem('selectedOption'); 
+                  navigate('/services');                    
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import Pending from '../../features/pending/pending';
 import BookingForm from '../../features/booking-form/booking-form';
 import { Option1, Option2, Option3, Option4 } from '../../assets/images.js';
@@ -8,6 +8,7 @@ import './services.scss';
 function Services() {
   const [selectedOption, setSelectedOption] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const options = [
     { id: 'birthday', label: 'Birthday', image: Option1 },
@@ -16,8 +17,18 @@ function Services() {
     { id: 'custom', label: 'Custom', image: Option4 },
   ];
 
+  // ✅ Load selection from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem('selectedOption');
+    if (stored) {
+      setSelectedOption(stored);
+    }
+  }, []);
+
+  // ✅ Store selection in both state and localStorage
   const handleOptionClick = (id) => {
     setSelectedOption(id);
+    localStorage.setItem('selectedOption', id);
   };
 
   const handleBookNow = () => {
@@ -27,7 +38,7 @@ function Services() {
   };
 
   return (
-    <div className='services-container'>
+    <div className='services-container fade-in' key={location.key}>
       <div className='services-headings'>
         <p>
           Every celebration deserves a <span>twist</span>—and<br />

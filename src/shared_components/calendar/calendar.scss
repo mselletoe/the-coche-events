@@ -1,0 +1,77 @@
+@import '../../shared_components/global_styles';
+
+.calendar {
+  font-family: var(--inter);
+  background-color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+  width: 100%;
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h4 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: $shade-4;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: $primary-color;
+
+      &:hover {
+        color: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+  }
+
+  .calendar-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: $shade-4;
+
+    &.day {
+      cursor: pointer;
+      background-color: #f8f8f8;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
+
+      &.selected {
+        background-color: $primary-color;
+        color: white;
+        font-weight: bold;
+      }
+    }
+
+    &.empty {
+      background-color: transparent;
+      pointer-events: none;
+    }
+
+    &.label {
+      font-weight: bold;
+      color: $shade-3;
+    }
+  }
+}
