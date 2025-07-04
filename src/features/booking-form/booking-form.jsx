@@ -33,6 +33,7 @@ function BookingForm() {
   const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
   const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
 
+  // Step 2 form data (booking details only)
   const [step2FormData, setStep2FormData] = useState({
     selectedRegion: '',
     province: '',
@@ -42,17 +43,11 @@ function BookingForm() {
     zip: '',
     selectedDate: '',
     selectedTime: '',
-    note: '',
-    firstName: '',
-    lastName: '',
-    suffix: '',
-    email: '',
-    phoneNumber: '',
-    socialPlatform: '',
-    accountLink: ''
+    note: ''
   });
 
-  const [manualClientInfo, setManualClientInfo] = useState({
+  // Dedicated client info state
+  const [clientInfo, setClientInfo] = useState({
     firstName: '',
     lastName: '',
     suffix: '',
@@ -65,13 +60,13 @@ function BookingForm() {
   const [useAccountDetails, setUseAccountDetails] = useState(false);
 
   const accountInfo = {
-    firstName: 'John',
-    lastName: 'Doe',
-    suffix: 'Jr.',
-    email: 'john@example.com',
+    firstName: 'Alleah Marie',
+    lastName: 'Bayas',
+    suffix: '',
+    email: 'alleahmarie87@gmail.com',
     phoneNumber: '1234567890',
     socialPlatform: 'Facebook',
-    accountLink: 'facebook.com/johndoe'
+    accountLink: 'facebook.com/alleahbayas'
   };
 
   const handleNext = () => {
@@ -119,7 +114,7 @@ function BookingForm() {
     1: { title: "Package Details", subtitle: "Add and specify the details of your setup" },
     2: { title: "Booking Details", subtitle: "Fill in the required booking details" },
     3: { title: "Client Information", subtitle: "Enter the receiver’s details" },
-    4: { title: "Review & Confirm", subtitle: "Kindly review the information provided before proceeding" },
+    4: { title: "Review & Confirm", subtitle: "Kindly review the information provided before proceeding" }
   };
 
   return (
@@ -183,16 +178,28 @@ function BookingForm() {
           {currentStep === 3 && (
             <Step3
               registerValidator={fn => (step3Validator.current = fn)}
-              formData={step3FormData}
-              setFormData={setStep2FormData}
+              clientInfo={clientInfo}
+              setClientInfo={setClientInfo}
               useAccountDetails={useAccountDetails}
               setUseAccountDetails={setUseAccountDetails}
               accountInfo={accountInfo}
-              manualClientInfo={manualClientInfo}
-              setManualClientInfo={setManualClientInfo}
             />
           )}
-          {currentStep === 4 && <Step4 />}
+          {currentStep === 4 && (
+            <Step4
+              style={style}
+              bannerMessage={bannerMessage}
+              lightboxMessage={lightboxMessage}
+              selectedColors={selectedColors}
+              selectedAddons={selectedAddons}
+              selectedAddonOptions={selectedAddonOptions}
+              step2FormData={step2FormData}
+              clientInfo={clientInfo}
+              useAccountDetails={useAccountDetails}
+              accountInfo={accountInfo}
+              onBack={handleBack}
+            />
+          )}
         </div>
       </div>
 

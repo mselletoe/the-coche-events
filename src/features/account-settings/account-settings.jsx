@@ -53,9 +53,8 @@ function AccountSettings() {
 
     api.get('/fetch_users.php')
       .then(res => {
-        const userData = res.data.find(u => u.id == user.id);
-        console.log("User ID from localStorage:", user.id, typeof user.id);
-console.log("First result ID from API:", res.data[0].id, typeof res.data[0].id);
+        const users = Array.isArray(res.data) ? res.data : res.data.users;
+        const userData = users?.find(u => u.id == user.id);
         console.log("Fetched user data:", userData);
         if (userData) {
           setFirstName(userData.first_name || '');
