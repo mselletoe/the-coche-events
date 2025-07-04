@@ -70,10 +70,11 @@ button {
     transform: translate(-50%, -50%);
     z-index: 3;
     opacity: 0;
+    z-index: 4;
     animation: showText 1.5s ease-out forwards;
 
     h1 {
-      font-size: 4rem;
+      font-size: 4.4rem;
       font-weight: 400;
       color: $primary-color-dark;
       line-height: 4rem;
@@ -100,21 +101,9 @@ button {
 
 // === KEYFRAMES ===
 
-@keyframes flyCoche {
-  from {
-    left: -300px;
-    opacity: 1;
-  }
-  to {
-    left: 110%;
-    opacity: 0;
-  }
-}
-
-
 @keyframes showText {
   to {
-    left: 5%;
+    left: 3%;
     transform: translateY(-50%);
     opacity: 1;
   }
@@ -197,8 +186,6 @@ button {
     }
   }
 
-
-
   .images {
     padding-top: 10px;
     display: flex;
@@ -250,6 +237,7 @@ button {
   }
 }
 
+
 // === INSPIRATION BANNER ===
 .inspiration-banner {
   position: relative;
@@ -262,29 +250,12 @@ button {
     left: 0;
     height: 100%;
     width: 100%;
-    object-fit: fill;
+    object-fit: cover;
     z-index: 1;
     filter: brightness(0.6);
-    opacity: 0;
-    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+    border-radius: 10px;
   }
-
-  img.fade-in {
-    animation: fadeInImage 1s ease-in-out forwards;
-    z-index: 2;
-  }
-
-  @keyframes fadeInImage {
-    0% {
-      opacity: 1;
-      transform: scale(1.1); // slight zoom-in for a modern feel
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
 
   .overlay {
     position: relative;
@@ -437,31 +408,12 @@ button {
 
 // === CESTA SECTION ===
 .cesta-section {
-  padding: 20px 8% 0px;
+  padding: 20px 0 0px;
   position: relative;
   text-align: center;
 
   img {
     width: 100%;
-  }
-
-  .text-overlay {
-    position: absolute;
-    top: 60%;
-    left: 10%;
-    padding-right: 5%;
-    color: $primary-color-dark;
-
-    button {
-      padding: 14px 90px;
-      font-size: 14px;
-      background: white;
-      color: #bc7878;
-      border: none;
-      cursor: pointer;
-      margin-left: 103px;
-      margin-top: 20px;
-    }
   }
 }
 
@@ -516,7 +468,6 @@ button {
     }
   }
 
-
   @keyframes scrollCards {
     0% {
       transform: translateX(0);
@@ -528,32 +479,109 @@ button {
 }
 
 // === RESPONSIVE ===
-@media (max-width: 768px) {
+@media (max-width: 480px) {
+  .hero-section {
+    background: radial-gradient(
+      circle at 75% 30%, // 👉 This positions the center 70% from the left, 50% from the top
+      rgba(255, 221, 153, 0.4) 0%,     // light yellow
+      rgba(255, 153, 204, 0.25) 35%,   // soft pink
+      rgba(255, 105, 180, 0) 55%       // hot pink (fade out)
+    );
+  }
+
+  .car-trunk {
+    width: 350px !important; // Adjust size for mobile
+    left: 300px !important; // Adjust position as needed
+    animation: driveInMobile 1.1s ease-out 0.5s forwards !important;
+    position: absolute;
+    top: 17% !important;
+    z-index: 3;
+    text-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  .vibe-section .images,
+  .phone-section .phone-wrapper {
+    display: none;
+  }
+
+  .flying-coche {
+    position: absolute;
+    left: 120px;
+    top: 85px;
+    height: 670px;
+    opacity: 50%;
+  }
+
   .vibe-section {
     flex-direction: column;
     text-align: center;
-
-    .images {
-      flex-direction: column;
-      align-items: center;
-    }
+    padding: 80px 5% 230px;
   }
 
   .inspiration-banner .overlay,
   .cesta-section .text-overlay {
-    top: 10%;
-    left: 5%;
+    padding: 30px 30px;
 
     h2 {
       font-size: 1.8rem;
     }
   }
 
-  .carousel-section {
-    flex-direction: column;
+  .inspiration-banner .overlay h2 {
+    font-size: 3rem;
+  }
 
-    .cards {
-      flex-direction: column;
+  .carousel-section {
+  padding: 230px 0;
+
+  .cards {
+    flex-wrap: nowrap;              // Keep this
+    display: flex;
+    animation: scrollCards 30s linear infinite; // ✅ Restore this
+    gap: 16px;
+    padding: 0 20px;
+
+    .card {
+      flex: 0 0 auto;
+      width: 280px;
     }
   }
+}
+
+  .phone-section {
+  flex-direction: column;
+  padding: 10px 5% 10px;
+  background: radial-gradient(
+    circle at 40% 50%,
+    rgba(255, 206, 120, 0.45) 0%,
+    rgba(255, 220, 150, 0.2) 35%,
+    rgba(255, 220, 150, 0) 45%
+  );
+
+  .phone-text {
+    padding-right: 10px;
+    margin-right: 0;
+    width: 100%;
+
+    h2 {
+      font-size: 2.2rem;
+      line-height: 2.4rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    .store-badges {
+      flex-direction: row;
+      align-items: flex-start;
+
+      img {
+        height: 35px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
 }
