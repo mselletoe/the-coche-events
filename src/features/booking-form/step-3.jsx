@@ -19,6 +19,8 @@ function Step3({
     accountLink: ''
   });
 
+  const [manualClientInfo, setManualClientInfo] = useState(clientInfo);
+
   useEffect(() => {
     if (registerValidator) {
       registerValidator(validate);
@@ -37,24 +39,20 @@ function Step3({
         accountLink: accountInfo.accountLink || ''
       });
     } else {
-      const cleared = {
-        firstName: '',
-        lastName: '',
-        suffix: '',
-        email: '',
-        phoneNumber: '',
-        socialPlatform: '',
-        accountLink: ''
-      };
-      setClientInfo(cleared);
+      setClientInfo(manualClientInfo); // restore manual input
     }
   }, [useAccountDetails]);
 
   const handleChange = (field, value) => {
-    setClientInfo(prev => ({
-      ...prev,
+    const updated = {
+      ...clientInfo,
       [field]: value
-    }));
+    };
+    setClientInfo(updated);
+
+    if (!useAccountDetails) {
+      setManualClientInfo(updated); // keep manual input safe
+    }
   };
 
   const validate = () => {

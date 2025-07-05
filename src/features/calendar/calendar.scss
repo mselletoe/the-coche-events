@@ -118,12 +118,12 @@
 
       // FULLY BOOKED DATE (gray)
       &.fully-booked {
-        background: #a0aec0;
+        background: $shade-2;
         color: #ffffff;
         cursor: not-allowed;
 
         &:hover {
-          background: #a0aec0;
+          background: $shade-2;
         }
       }
 

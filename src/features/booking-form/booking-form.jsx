@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './booking-form.scss';
 import { carIcon } from '../../assets/images.js';
 import Step1 from './step-1.jsx';
@@ -13,19 +13,21 @@ function BookingForm() {
   const pointRefs = useRef([]);
   const [carX, setCarX] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+
   const step1Validator = useRef(null);
   const step2Validator = useRef(null);
   const step3Validator = useRef(null);
 
   const { style } = useParams();
 
-  useEffect(() => {
-    if (style) {
-      localStorage.setItem('selectedOption', style);
-    }
-  }, [style]);
-
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showFinalBookingModal, setShowFinalBookingModal] = useState(false);
+  const [showNavigationWarningModal, setShowNavigationWarningModal] = useState(false);
+  const [targetPath, setTargetPath] = useState(null);
+
+  const [hasAgreed, setHasAgreed] = useState(false);
+  const bookButtonRef = useRef(null);
 
   const [bannerMessage, setBannerMessage] = useState('');
   const [lightboxMessage, setLightboxMessage] = useState('');
@@ -33,7 +35,6 @@ function BookingForm() {
   const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
   const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
 
-  // Step 2 form data (booking details only)
   const [step2FormData, setStep2FormData] = useState({
     selectedRegion: '',
     province: '',
@@ -46,7 +47,6 @@ function BookingForm() {
     note: ''
   });
 
-  // Dedicated client info state
   const [clientInfo, setClientInfo] = useState({
     firstName: '',
     lastName: '',
@@ -57,6 +57,7 @@ function BookingForm() {
     accountLink: ''
   });
 
+  const [manualClientInfo, setManualClientInfo] = useState(clientInfo);
   const [useAccountDetails, setUseAccountDetails] = useState(false);
 
   const accountInfo = {
@@ -69,24 +70,36 @@ function BookingForm() {
     accountLink: 'facebook.com/alleahbayas'
   };
 
+  useEffect(() => {
+    if (style) {
+      localStorage.setItem('selectedOption', style);
+    }
+  }, [style]);
+
+  useEffect(() => {
+    if (useAccountDetails) {
+      setClientInfo({ ...accountInfo });
+    } else {
+      setClientInfo({ ...manualClientInfo });
+    }
+  }, [useAccountDetails]);
+
+  const handleSetClientInfo = (info) => {
+    setClientInfo(info);
+    if (!useAccountDetails) {
+      setManualClientInfo(info);
+    }
+  };
+
   const handleNext = () => {
-    if (currentStep === 1 && step1Validator.current) {
-      const isValid = step1Validator.current();
-      if (!isValid) return;
-    }
-
-    if (currentStep === 2 && step2Validator.current) {
-      const isValid = step2Validator.current();
-      if (!isValid) return;
-    }
-
-    if (currentStep === 3 && step3Validator.current) {
-      const isValid = step3Validator.current();
-      if (!isValid) return;
-    }
+    if (currentStep === 1 && step1Validator.current && !step1Validator.current()) return;
+    if (currentStep === 2 && step2Validator.current && !step2Validator.current()) return;
+    if (currentStep === 3 && step3Validator.current && !step3Validator.current()) return;
 
     if (currentStep < totalSteps) {
       setCurrentStep(prev => prev + 1);
+    } else if (hasAgreed) {
+      setShowFinalBookingModal(true);
     }
   };
 
@@ -108,6 +121,37 @@ function BookingForm() {
     }
   }, [currentStep]);
 
+  const handleInterceptNavigation = (event) => {
+    const tag = event.target.closest('a');
+    if (!tag) return;
+
+    const href = tag.getAttribute('href');
+    if (!href || href === location.pathname) return;
+
+    if (href === '/services') {
+      // Prevent navigation and no modal for services tab
+      event.preventDefault();
+      return; // user stays on page, no modal
+    }
+
+    // For other tabs, show modal
+    event.preventDefault();
+    setTargetPath(href);
+    setShowNavigationWarningModal(true);
+  };
+
+  useEffect(() => {
+    const navRoot = document.querySelector('nav');
+    if (navRoot) {
+      navRoot.addEventListener('click', handleInterceptNavigation);
+    }
+    return () => {
+      if (navRoot) {
+        navRoot.removeEventListener('click', handleInterceptNavigation);
+      }
+    };
+  }, [location.pathname]);
+
   const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
 
   const stepTitles = {
@@ -119,14 +163,10 @@ function BookingForm() {
 
   return (
     <div className="bookingform-container">
+      {/* Progress Bar */}
       <div className="progress-bar">
-        <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
-        <img
-          src={carIcon}
-          alt="car"
-          className="progress-car"
-          style={{ transform: `translateX(${carX}px)` }}
-        />
+        <div className="progress-fill" style={{ width: `${progressPercentage}%` }} />
+        <img src={carIcon} alt="car" className="progress-car" style={{ transform: `translateX(${carX}px)` }} />
         <div className="progress-points">
           {[...Array(totalSteps)].map((_, index) => (
             <div
@@ -138,19 +178,27 @@ function BookingForm() {
         </div>
       </div>
 
-      <div className='booking-form'>
-        <div className='form-header'>
-          <div className='title'>
+      {/* Main Form */}
+      <div className="booking-form">
+        <div className="form-header">
+          <div className="title">
             <h1>{stepTitles[currentStep].title}</h1>
             <p>{stepTitles[currentStep].subtitle}</p>
           </div>
           <div className="progress-buttons">
             <button className="progress-button back" onClick={handleBack}>Back</button>
-            <button className="progress-button next" onClick={handleNext} disabled={currentStep === totalSteps}>Next</button>
+            <button
+              ref={bookButtonRef}
+              className="progress-button next"
+              onClick={handleNext}
+              disabled={currentStep === totalSteps && !hasAgreed}
+            >
+              {currentStep === totalSteps ? 'Book' : 'Next'}
+            </button>
           </div>
         </div>
 
-        <div className='form-card'>
+        <div className="form-card">
           {currentStep === 1 && (
             <Step1
               selectedStyle={style}
@@ -169,17 +217,13 @@ function BookingForm() {
             />
           )}
           {currentStep === 2 && (
-            <Step2
-              formData={step2FormData}
-              setFormData={setStep2FormData}
-              registerValidator={fn => (step2Validator.current = fn)}
-            />
+            <Step2 formData={step2FormData} setFormData={setStep2FormData} registerValidator={fn => (step2Validator.current = fn)} />
           )}
           {currentStep === 3 && (
             <Step3
               registerValidator={fn => (step3Validator.current = fn)}
               clientInfo={clientInfo}
-              setClientInfo={setClientInfo}
+              setClientInfo={handleSetClientInfo}
               useAccountDetails={useAccountDetails}
               setUseAccountDetails={setUseAccountDetails}
               accountInfo={accountInfo}
@@ -197,12 +241,21 @@ function BookingForm() {
               clientInfo={clientInfo}
               useAccountDetails={useAccountDetails}
               accountInfo={accountInfo}
-              onBack={handleBack}
+              hasAgreed={hasAgreed}
+              setHasAgreed={(value) => {
+                setHasAgreed(value);
+                if (value && bookButtonRef.current) {
+                  setTimeout(() => {
+                    bookButtonRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }, 100);
+                }
+              }}
             />
           )}
         </div>
       </div>
 
+      {/* Confirm Return Modal */}
       {showConfirmModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
@@ -218,6 +271,49 @@ function BookingForm() {
                 }}
               >
                 Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Final Booking Modal */}
+      {showFinalBookingModal && (
+        <div className="custom-modal-overlay fade-in">
+          <div className="custom-modal">
+            <h3>Booking Confirmed</h3>
+            <p>Thank you for booking with us!</p>
+            <div className="modal-buttons">
+              <button
+                onClick={() => {
+                  setShowFinalBookingModal(false);
+                  navigate('/');
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Navigation Intercept Modal */}
+      {showNavigationWarningModal && (
+        <div className="custom-modal-overlay fade-in">
+          <div className="custom-modal">
+            <h3>Leave Booking?</h3>
+            <p>You’ll lose all current progress if you leave this page.</p>
+            <div className="modal-buttons">
+              <button onClick={() => setShowNavigationWarningModal(false)}>Cancel</button>
+              <button
+                className="danger"
+                onClick={() => {
+                  localStorage.removeItem('selectedOption');
+                  setShowNavigationWarningModal(false);
+                  navigate('/services');
+                }}
+              >
+                Leave Page
               </button>
             </div>
           </div>

@@ -39,7 +39,6 @@
       left: 0;
       width: 100%;
       z-index: 2;
-      
 
       .progress-circle {
         width: 14px;
@@ -53,36 +52,36 @@
           background-color: $primary-color;
         }
 
-        &.active{
+        &.active {
           background-color: transparent;
         }
       }
     }
   }
 
-  .booking-form{
+  .booking-form {
     width: 100%;
 
-    .form-header{
+    .form-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 2em 0;
 
-      .title{
-        h1{
+      .title {
+        h1 {
           font-family: var(--inter);
           color: $shade-4;
           font-size: 1.7em;
         }
-        p{
+        p {
           font-family: var(--inter);
           font-style: italic;
           color: $shade-3;
           font-size: 0.7em;
         }
       }
-      
+
       .progress-buttons {
         display: flex;
         gap: 10px;
@@ -107,9 +106,11 @@
             }
 
             &:disabled {
-              background-color: transparent;
+              background-color: #f0f0f0;
               color: $shade-2;
+              border: 1px solid $shade-1;
               cursor: not-allowed;
+              opacity: 0.6;
             }
           }
 
@@ -132,10 +133,10 @@
       }
     }
 
-    .form-card{
+    .form-card {
       display: flex;
 
-      .step1-container{
+      .step1-container {
         display: flex;
         gap: 20px;
         width: 100%;
@@ -144,54 +145,55 @@
         font-size: 12px;
         font-weight: 700;
         color: $shade-4;
-        
-        .themes, .addons{
+
+        .themes, .addons {
           background-color: white;
           border-radius: 5px;
-          box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+          box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
           padding: 25px;
         }
-        .themes{
+
+        .themes {
           flex: 2;
         }
 
-        .addons{
+        .addons {
           flex: 1;
         }
       }
 
-      .step2-container, .step3-container{
+      .step2-container, .step3-container {
         width: 100%;
         height: auto;
         background-color: white;
         border-radius: 5px;
-        box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
         padding: 25px;
       }
 
-      .step4-container{
+      .step4-container {
         display: flex;
         gap: 20px;
         width: 100%;
         height: auto;
-        
-        .receiver, .billing{
+
+        .receiver, .billing {
           background-color: white;
           border-radius: 5px;
-          box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+          box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
           padding: 25px;
         }
-        .receiver{
+
+        .receiver {
           flex: 4;
         }
 
-        .billing{
+        .billing {
           flex: 3;
         }
       }
     }
   }
-  
 }
 
 .fade-in {
@@ -208,8 +210,10 @@
 
 .custom-modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -217,11 +221,11 @@
   justify-content: center;
   align-items: center;
   z-index: 999;
-  animation: fadeIn 0.3s ease forwards; 
+  animation: fadeIn 0.3s ease forwards;
 }
 
 .custom-modal {
-  background: rgba(255,255,255,1);
+  background: rgba(255, 255, 255, 1);
   padding: 2em;
   border-radius: 1em;
   max-width: 400px;
@@ -242,6 +246,7 @@
   justify-content: space-around;
   margin-top: 1.5em;
   transition: all 0.2s ease;
+  font-size: 15px;
 }
 
 .modal-buttons button {
@@ -253,7 +258,7 @@
   font-family: var(--inter);
 
   &:hover {
-    background-color: $primary-color-dark;
+    background-color: $primary-color-light;
     color: white;
   }
 }
@@ -266,4 +271,3 @@
     background-color: $primary-color-dark;
   }
 }
-
