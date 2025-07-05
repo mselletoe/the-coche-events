@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './booking-form.scss';
 import './step-1.scss';
+import api from '../../api';
 
 function Step1({
   selectedStyle,
@@ -17,6 +18,11 @@ function Step1({
   selectedAddonOptions,
   setSelectedAddonOptions
 }) {
+  const [addonsFromDB, setAddonsFromDB] = useState([]);
+  const [loadingAddons, setLoadingAddons] = useState(true);
+  const [addonError, setAddonError] = useState(null);
+  const [errors, setErrors] = useState({});
+
   const mapStyle = (style) => {
     switch (style?.toLowerCase()) {
       case 'birthday': return { key: 'birthday', label: 'Birthday' };
@@ -30,13 +36,30 @@ function Step1({
   const { key: normalizedStyle, label: displayLabel } = mapStyle(selectedStyle);
   const isCustom = normalizedStyle === 'custom';
 
+  useEffect(() => {
+    setLoadingAddons(true);
+    api.get('/get_addons.php')
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setAddonsFromDB(res.data);
+          setAddonError(null);
+        } else {
+          setAddonError("Invalid data format received.");
+        }
+      })
+      .catch(() => {
+        setAddonError("Unable to fetch add-ons.");
+      })
+      .finally(() => {
+        setLoadingAddons(false);
+      });
+  }, []);
+
   const predefinedMessages = {
     birthday: 'Happy Birthday',
     'romantic setups': 'I Love You',
     anniversaries: 'Happy Anniversary',
   };
-
-  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (!isCustom) {
@@ -81,13 +104,6 @@ function Step1({
       }
       return prev;
     });
-  };
-
-  const addonOptions = {
-    'Satin Bouquet': ['6pcs', '12pcs', 'Acetate'],
-    'Fresh Flower': ['Medium', 'Large'],
-    'Cake': ['Mary Grace (Mini)', 'Mary Grace (Whole)', "Conti's (Mango Bravo)", 'Red Ribbon', 'Goldilocks'],
-    'Teddy Bear': ['2ft', '3ft']
   };
 
   return (
@@ -161,45 +177,49 @@ function Step1({
         <h3>Add-Ons</h3>
         <p className="addon-instructions">For Custom Package, select your add-ons</p>
 
-        {[
-          'Satin Bouquet',
-          'Fresh Flower',
-          'Cake',
-          'Teddy Bear',
-          'Polaroid Frame',
-          'Polaroid Themed Pictures'
-        ].map((item, index) => (
-          <div className="addon-item" key={index}>
-            <div className="addon-name">{item}</div>
-            <div className="addon-checkbox">
-              <input
-                type="checkbox"
-                checked={!!selectedAddons[index]}
-                onChange={() => {
-                  const updated = [...selectedAddons];
-                  updated[index] = !updated[index];
-                  setSelectedAddons(updated);
-                }}
-              />
-            </div>
-            <div className="addon-select-wrapper">
-              {selectedAddons[index] && addonOptions[item] && (
-                <select
-                  className="addon-select"
-                  value={selectedAddonOptions[item] || ''}
-                  onChange={(e) => {
-                    setSelectedAddonOptions(prev => ({ ...prev, [item]: e.target.value }));
+        {loadingAddons ? (
+          <p>Loading add-ons...</p>
+        ) : addonError ? (
+          <p className="error-text">{addonError}</p>
+        ) : (
+          addonsFromDB.map((addon, index) => (
+            <div className="addon-item" key={addon.id}>
+              <div className="addon-name">{addon.label}</div>
+              <div className="addon-checkbox">
+                <input
+                  type="checkbox"
+                  checked={!!selectedAddons[addon.id]}
+                  onChange={() => {
+                    const updated = { ...selectedAddons };
+                    updated[addon.id] = !updated[addon.id];
+                    setSelectedAddons(updated);
                   }}
-                >
-                  <option value="">Select option</option>
-                  {addonOptions[item].map((option, optIndex) => (
-                    <option key={optIndex} value={option}>{option}</option>
-                  ))}
-                </select>
-              )}
+                />
+              </div>
+              <div className="addon-select-wrapper">
+                {selectedAddons[addon.id] && addon.dropdownOptions && addon.dropdownOptions.length > 0 && (
+                  <select
+                    className="addon-select"
+                    value={selectedAddonOptions[addon.id] || ''}
+                    onChange={(e) => {
+                      setSelectedAddonOptions(prev => ({
+                        ...prev,
+                        [addon.id]: e.target.value
+                      }));
+                    }}
+                  >
+                    <option value="">Select option</option>
+                    {addon.dropdownOptions.map((option, optIndex) => (
+                      <option key={optIndex} value={option.value}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
 
         <p className="clarification-note">
           For more clarification, you can reach us by clicking the <span>Contact Us</span> button.

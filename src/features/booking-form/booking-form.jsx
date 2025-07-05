@@ -6,6 +6,7 @@ import Step1 from './step-1.jsx';
 import Step2 from './step-2.jsx';
 import Step3 from './step-3.jsx';
 import Step4 from './step-4.jsx';
+import api from '../../api';
 
 function BookingForm() {
   const totalSteps = 4;
@@ -34,6 +35,8 @@ function BookingForm() {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
   const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
+
+  const [addonsFromDB, setAddonsFromDB] = useState([]);
 
   const [step2FormData, setStep2FormData] = useState({
     selectedRegion: '',
@@ -69,6 +72,18 @@ function BookingForm() {
     socialPlatform: 'Facebook',
     accountLink: 'facebook.com/alleahbayas'
   };
+
+  useEffect(() => {
+    api.get('/get_addons.php')
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setAddonsFromDB(res.data);
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching add-ons", err);
+      });
+  }, []);
 
   useEffect(() => {
     if (style) {
@@ -214,6 +229,7 @@ function BookingForm() {
               setSelectedAddons={setSelectedAddons}
               selectedAddonOptions={selectedAddonOptions}
               setSelectedAddonOptions={setSelectedAddonOptions}
+              addonsFromDB={addonsFromDB}
             />
           )}
           {currentStep === 2 && (
@@ -232,6 +248,7 @@ function BookingForm() {
           {currentStep === 4 && (
             <Step4
               style={style}
+              addonsFromDB={addonsFromDB}
               bannerMessage={bannerMessage}
               lightboxMessage={lightboxMessage}
               selectedColors={selectedColors}

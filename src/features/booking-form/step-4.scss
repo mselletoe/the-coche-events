@@ -86,7 +86,7 @@
       margin-bottom: 10px;
 
       .label {
-        font-size: 15px;
+        font-size: 1.1em;
         color: $shade-4;
         margin-right: 10px;
       }
@@ -100,9 +100,9 @@
     }
 
     .price {
-      margin: 12px 0 8px;
+      margin: 12px 0 0;
       font-weight: 500;
-      font-size: 15px;
+      font-size: 1.1em;
     }
 
     ul {
@@ -111,7 +111,7 @@
       padding: 0;
 
       li {
-        font-size: 12px;
+        font-size: 0.7em;
         margin-bottom: 4px;
         font-style: italic;
       }
@@ -120,7 +120,7 @@
     .total {
       display: flex;
       justify-content: space-between;
-      font-size: 17px;
+      font-size: 1.2em;
       font-weight: 700;
       margin-top: 16px;
       padding-top: 10px;
