@@ -24,7 +24,7 @@
 
     .progress-car {
       position: absolute;
-      top: -13px; // adjust as needed to float above line
+      top: -13px;
       width: 30px;
       height: 30px;
       transition: transform 0.4s ease;
@@ -64,24 +64,33 @@
 
     .form-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      margin: 2em 0;
+      text-align: center;
+      padding: 20px 0 10px;
 
       .title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
         h1 {
           font-family: var(--inter);
           color: $shade-4;
-          font-size: 1.7em;
+          font-size: 2em;
         }
+
         p {
           font-family: var(--inter);
           font-style: italic;
           color: $shade-3;
-          font-size: 0.7em;
+          padding: 10px;
+          font-size: 0.8em;
         }
       }
 
+
+      // Top buttons (now optional – leave it if you want to reuse for desktop)
       .progress-buttons {
         display: flex;
         gap: 10px;
@@ -158,8 +167,41 @@
         }
 
         .addons {
-          flex: 1;
-        }
+  flex: 1;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px;
+  font-size: 11px;           // 👈 smaller font
+  line-height: 1;          // 👈 reduced line height
+  font-weight: 600;
+  color: $shade-4;
+
+  .addon-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(0.9); // optional: make checkbox smaller
+    }
+
+    select {
+      font-size: 10px;
+      padding: 2px 4px;
+    }
+  }
+}
+
       }
 
       .step2-container, .step3-container {
@@ -193,9 +235,63 @@
         }
       }
     }
+
+    // 🔽 Bottom Buttons Here
+    .bottom-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 2em;
+
+      .progress-button {
+        width: 150px;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        font-family: var(--inter);
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+
+        &.next {
+          background-color: $primary-color-light;
+          color: white;
+
+          &:hover {
+            background-color: $primary-color-dark;
+            transform: scale(1.05);
+          }
+
+          &:disabled {
+            background-color: #f0f0f0;
+            color: $shade-2;
+            border: 1px solid $shade-1;
+            cursor: not-allowed;
+            opacity: 0.6;
+          }
+        }
+
+        &.back {
+          background-color: transparent;
+          color: $primary-color-light;
+
+          &:hover {
+            transform: scale(1.05);
+            background-color: $primary-color-dark;
+            color: white;
+          }
+
+          &:disabled {
+            color: $shade-2;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
   }
 }
 
+// Modals & Animations (unchanged)
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
