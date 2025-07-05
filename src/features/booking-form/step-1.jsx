@@ -91,7 +91,7 @@ function Step1({
   };
 
   return (
-    <div className='step1-container fade-in'>
+    <div className='step1-container'>
       <div className='themes'>
         <h3>Package Details</h3>
         <p className="subtitle">Add and specify the details of your setup</p>
