@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, UserRef } from "react";
 import "./home.scss";
+import { NavLink } from "react-router-dom";
 
 // Import images
 import {
@@ -43,6 +44,7 @@ function Home() {
       clearInterval(bannerInterval);
     };
   }, []);
+
 
   const cards = [
     {
@@ -97,7 +99,9 @@ function Home() {
           <p>
             Choose a theme, pick a vibe, and leave the magic to us. Every moment starts with the perfect spark.
           </p>
-          <button>See More</button>
+          <NavLink to="/services">
+            <button>See More</button>
+          </NavLink>
         </div>
         <div className="images">
           <div
@@ -126,22 +130,16 @@ function Home() {
 
     {/* INSPIRATION STORY BANNER */}
       <section className="inspiration-banner">
-        {inspirationImages.map((img, i) => (
-  <img
-    key={i}
-    src={img}
-    alt={`Inspiration ${i}`}
-    className={i === currentIndex ? "fade-in" : ""}
-  />
-))}
-
-
+        <img src={inspirationImages[currentIndex]} alt="Inspiration Story" />
         <div className="overlay">
           <h2>
             Get <em>inspired</em>. <br />
             Imagine yours.
           </h2>
-          <button>View Gallery</button>
+          <NavLink to="/gallery">
+            <button>View Gallery</button>
+          </NavLink>
+
         </div>
         <div className="story-bar">
           {inspirationImages.map((_, i) => (
@@ -189,13 +187,8 @@ function Home() {
 
       {/* CESTA PROMO */}
       <section className="cesta-section">
-        <div className="text-overlay">
-          <button>View Shop</button>
-        </div>
         <img src={cestaBanner} alt="Cesta Promo" />
       </section>
-
-      
     </div>
   );
 }
