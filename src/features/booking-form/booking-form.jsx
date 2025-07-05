@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './booking-form.scss';
 import { carIcon } from '../../assets/images.js';
 import Step1 from './step-1.jsx';
@@ -13,18 +13,21 @@ function BookingForm() {
   const pointRefs = useRef([]);
   const [carX, setCarX] = useState(0);
   const navigate = useNavigate();
-  const { style } = useParams();
+  const location = useLocation();
 
   const step1Validator = useRef(null);
   const step2Validator = useRef(null);
   const step3Validator = useRef(null);
-  const bookButtonRef = useRef(null);
+
+  const { style } = useParams();
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showFinalBookingModal, setShowFinalBookingModal] = useState(false);
+  const [showNavigationWarningModal, setShowNavigationWarningModal] = useState(false);
+  const [targetPath, setTargetPath] = useState(null);
+
   const [hasAgreed, setHasAgreed] = useState(false);
-  const [showNavigationModal, setShowNavigationModal] = useState(false);
-  const [pendingNavigationPath, setPendingNavigationPath] = useState(null);
+  const bookButtonRef = useRef(null);
 
   const [bannerMessage, setBannerMessage] = useState('');
   const [lightboxMessage, setLightboxMessage] = useState('');
@@ -118,35 +121,36 @@ function BookingForm() {
     }
   }, [currentStep]);
 
+  const handleInterceptNavigation = (event) => {
+    const tag = event.target.closest('a');
+    if (!tag) return;
+
+    const href = tag.getAttribute('href');
+    if (!href || href === location.pathname) return;
+
+    if (href === '/services') {
+      // Prevent navigation and no modal for services tab
+      event.preventDefault();
+      return; // user stays on page, no modal
+    }
+
+    // For other tabs, show modal
+    event.preventDefault();
+    setTargetPath(href);
+    setShowNavigationWarningModal(true);
+  };
+
   useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = ''; // Required for most browsers
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
+    const navRoot = document.querySelector('nav');
+    if (navRoot) {
+      navRoot.addEventListener('click', handleInterceptNavigation);
+    }
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      const anchor = e.target.closest('a');
-      if (anchor && !anchor.href.includes(window.location.pathname)) {
-        e.preventDefault();
-        setPendingNavigationPath(anchor.href);
-        setShowNavigationModal(true);
+      if (navRoot) {
+        navRoot.removeEventListener('click', handleInterceptNavigation);
       }
     };
-
-    document.addEventListener('click', handleClick);
-
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  }, []);
+  }, [location.pathname]);
 
   const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
 
@@ -159,8 +163,9 @@ function BookingForm() {
 
   return (
     <div className="bookingform-container">
+      {/* Progress Bar */}
       <div className="progress-bar">
-        <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
+        <div className="progress-fill" style={{ width: `${progressPercentage}%` }} />
         <img src={carIcon} alt="car" className="progress-car" style={{ transform: `translateX(${carX}px)` }} />
         <div className="progress-points">
           {[...Array(totalSteps)].map((_, index) => (
@@ -173,9 +178,10 @@ function BookingForm() {
         </div>
       </div>
 
-      <div className='booking-form'>
-        <div className='form-header'>
-          <div className='title'>
+      {/* Main Form */}
+      <div className="booking-form">
+        <div className="form-header">
+          <div className="title">
             <h1>{stepTitles[currentStep].title}</h1>
             <p>{stepTitles[currentStep].subtitle}</p>
           </div>
@@ -192,7 +198,7 @@ function BookingForm() {
           </div>
         </div>
 
-        <div className='form-card'>
+        <div className="form-card">
           {currentStep === 1 && (
             <Step1
               selectedStyle={style}
@@ -211,11 +217,7 @@ function BookingForm() {
             />
           )}
           {currentStep === 2 && (
-            <Step2
-              formData={step2FormData}
-              setFormData={setStep2FormData}
-              registerValidator={fn => (step2Validator.current = fn)}
-            />
+            <Step2 formData={step2FormData} setFormData={setStep2FormData} registerValidator={fn => (step2Validator.current = fn)} />
           )}
           {currentStep === 3 && (
             <Step3
@@ -253,7 +255,7 @@ function BookingForm() {
         </div>
       </div>
 
-      {/* Back to style confirm modal */}
+      {/* Confirm Return Modal */}
       {showConfirmModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
@@ -275,7 +277,7 @@ function BookingForm() {
         </div>
       )}
 
-      {/* Booking confirmation modal */}
+      {/* Final Booking Modal */}
       {showFinalBookingModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
@@ -295,22 +297,23 @@ function BookingForm() {
         </div>
       )}
 
-      {/* Navigation away confirm modal */}
-      {showNavigationModal && (
+      {/* Navigation Intercept Modal */}
+      {showNavigationWarningModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
-            <h3>Leave This Page?</h3>
-            <p>All unsaved progress will be lost. Are you sure you want to leave?</p>
+            <h3>Leave Booking?</h3>
+            <p>You’ll lose all current progress if you leave this page.</p>
             <div className="modal-buttons">
-              <button onClick={() => setShowNavigationModal(false)}>Cancel</button>
+              <button onClick={() => setShowNavigationWarningModal(false)}>Cancel</button>
               <button
                 className="danger"
                 onClick={() => {
-                  window.removeEventListener('beforeunload', () => {});
-                  window.location.href = pendingNavigationPath;
+                  localStorage.removeItem('selectedOption');
+                  setShowNavigationWarningModal(false);
+                  navigate('/services');
                 }}
               >
-                Leave
+                Leave Page
               </button>
             </div>
           </div>

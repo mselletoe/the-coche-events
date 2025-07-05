@@ -62,6 +62,11 @@ function Step4({
     }
   }, [hasAgreed]);
 
+  const displayDate = new Intl.DateTimeFormat('en-PH', {
+    timeZone: 'Asia/Manila',
+    dateStyle: 'long',
+  }).format(new Date(`${step2FormData.selectedDate}T00:00:00`));
+
   return (
     <div className="step4-wrapper">
       <div className="step4-container">
@@ -78,6 +83,21 @@ function Step4({
             <p>{step2FormData.selectedDate}</p>
             <p>{step2FormData.selectedTime}</p>
             <p>Note: “{step2FormData.note}”</p>
+          <h3>Booking Details</h3>
+          <p>
+            {step2FormData.address}, 
+            {step2FormData.barangayName && `${step2FormData.barangayName}, `}
+            {step2FormData.municipalityName && `${step2FormData.municipalityName}, `}
+            {step2FormData.provinceName && `${step2FormData.provinceName}, `}
+            {step2FormData.selectedRegionName && `${step2FormData.selectedRegionName} `}
+            {step2FormData.zip && step2FormData.zip}
+          </p>
+
+          <p>{displayDate}</p>
+
+
+          <p>{step2FormData.selectedTime}</p>
+          <p>Note: “{step2FormData.note}”</p>
 
             <h3>Payment Details</h3>
             <p className="note">Select your payment method and fill in the required details</p>
