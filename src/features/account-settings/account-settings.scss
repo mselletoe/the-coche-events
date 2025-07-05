@@ -1,4 +1,4 @@
-@import '../../shared_components/global_styles';
+@use '../../shared_components/global_styles' as *;
 
 .accountsettings-container {
   display: flex;
@@ -57,8 +57,7 @@
           width: 150px;
           height: 150px;
           border-radius: 50%;
-          background-color: $shade-2;
-          flex-shrink: 0;
+          background-color: $shade-3;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -79,22 +78,21 @@
 
           .section-header {
             margin-bottom: 15px;
-
-            h3 {
-              color: $shade-4;
-              font-size: 22px;
-              margin-bottom: 5px;
-            }
-
-            p {
-              color: $shade-3;
-              font-size: 14px;
-            }
           }
 
           .button-group {
             display: flex;
             gap: 10px;
+
+            button {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              i {
+                font-size: 14px;
+              }
+            }
 
             .primary-btn,
             .secondary-btn {
@@ -123,11 +121,33 @@
             font-size: 14px;
           }
 
-          input, select {
+          input,
+          select {
             padding: 10px;
             border: 1px solid $shade-2;
             border-radius: 5px;
             background-color: #fff;
+            color: $shade-4;
+            font-family: var(--inter);
+            font-size: 14px;
+            transition: all 0.3s ease;
+
+            &:focus {
+              outline: none;
+              border-color: $secondary-color;
+              box-shadow: 0 0 0 2px rgba($secondary-color, 0.2);
+            }
+          }
+
+          select {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23A4C4DE" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px 14px;
           }
         }
 
@@ -153,7 +173,8 @@
       cursor: pointer;
 
       &:hover {
-        background-color: $primary-color-dark;
+        background-color: $primary-color-light;
+        box-shadow: 0 0 0 3px rgba($primary-color-light, 0.3);
       }
     }
 
@@ -167,7 +188,8 @@
       cursor: pointer;
 
       &:hover {
-        background-color: $primary-color-dark;
+        background-color: transparent;
+        box-shadow: 0 0 0 3px rgba($primary-color-light, 0.3);
       }
     }
 
@@ -181,7 +203,8 @@
       cursor: pointer;
 
       &:hover {
-        background-color: $primary-color-dark;
+        background-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.3);
       }
     }
 
@@ -192,12 +215,10 @@
     }
 
     .account-deletion-container {
-      .section-header {
-        p {
-          color: $warning-text;
-          font-size: 14px;
-          margin-bottom: 20px;
-        }
+      .section-header p {
+        color: $warning-text;
+        font-size: 14px;
+        margin-bottom: 20px;
       }
     }
   }

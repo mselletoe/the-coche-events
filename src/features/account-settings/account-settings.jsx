@@ -1,200 +1,102 @@
-import { useState, useEffect } from 'react';
-import api from '../../api';
+import React, { useState, useEffect, useRef } from 'react';
 import './account-settings.scss';
+import axios from 'axios';
 
 function AccountSettings() {
-  const [currentUserName, setCurrentUserName] = useState('');
-  const [isEditing, setIsEditing] = useState(false); // true if address exists
-  
-  // Store options for dropdowns
+  const [currentUserName, setCurrentUserName] = useState(' ');
+  const [profileImage, setProfileImage] = useState(null);
+  const fileInputRef = useRef(null);
+
   const [regions, setRegions] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [cities, setCities] = useState([]);
   const [barangays, setBarangays] = useState([]);
 
-  // Stores the user's selected options from each dropdown
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedBarangay, setSelectedBarangay] = useState('');
 
-  // Stores text input values
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [suffix, setSuffix] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [addressLine1, setAddressLine1] = useState('');
-  const [addressLine2, setAddressLine2] = useState('');
-  const [zipCode, setZipCode] = useState('');
-
-  // load user data
+  // Fetch Regions on load
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user?.id) return;
-
-    // Load saved address with proper dropdown hydration
-    const loadUserAndAddress = async () => {
-      try {
-        // Fetch user info
-        const usersRes = await api.get('/fetch_users.php');
-        const users = Array.isArray(usersRes.data) ? usersRes.data : usersRes.data.users;
-        const userData = users.find(u => u.id == user.id);
-        if (userData) {
-          setFirstName(userData.first_name || '');
-          setLastName(userData.last_name || '');
-          setSuffix(userData.suffix || '');
-          setEmail(userData.email || '');
-          setPhone(userData.phone || '');
-          setCurrentUserName(`${userData.first_name} ${userData.last_name}`);
-        }
-
-        // Fetch regions first (important!)
-        const regRes = await api.get('/regions.php');
-        const regionList = regRes.data;
-        setRegions(regionList);
-
-        // Fetch address
-        const addrRes = await api.get(`/get_address.php?user_id=${user.id}`);
-        const addr = addrRes.data?.address;
-        if (!addr) return;
-        setIsEditing(true);
-
-        // Match region by name
-        const region = regionList.find(r => r.name === addr.region_id);
-        if (!region) return;
-        setSelectedRegion(region.id);
-
-        // Fetch & set province
-        const provRes = await api.get(`/provinces.php?region_id=${region.id}`);
-        const provinceList = provRes.data || [];
-        setProvinces(provinceList);
-        const province = provinceList.find(p => p.name === addr.province_id);
-        if (!province) return;
-        setSelectedProvince(province.id);
-
-        // Fetch & set city
-        const cityRes = await api.get(`/cities.php?province_id=${province.id}`);
-        const cityList = cityRes.data || [];
-        setCities(cityList);
-        const city = cityList.find(c => c.name === addr.city_id);
-        if (!city) return;
-        setSelectedCity(city.id);
-
-        // Fetch & set barangay
-        const brgyRes = await api.get(`/barangays.php?city_id=${city.id}`);
-        const brgyList = brgyRes.data || [];
-        setBarangays(brgyList);
-        const barangay = brgyList.find(b => b.name === addr.barangay_id);
-        if (!barangay) return;
-        setSelectedBarangay(barangay.id);
-
-        // Set other fields
-        setAddressLine1(addr.address_line_1 || '');
-        setAddressLine2(addr.address_line_2 || '');
-        setZipCode(addr.zip_code || '');
-      } catch (err) {
-        console.error("Error loading profile/address data:", err);
-      }
-    };
-
-    loadUserAndAddress();
+    axios.get('http://localhost/regions.php')
+      .then(res => setRegions(res.data))
+      .catch(err => console.error(err));
   }, []);
 
-  // Fetch regions on mount
-  useEffect(() => {
-    api.get('/regions.php')
-      .then(response => setRegions(response.data))
-      .catch(error => console.error('Error fetching regions:', error));
-  }, []);
-
-  // Fetch provinces when a region is selected
+  // Fetch Provinces when Region changes
   useEffect(() => {
     if (selectedRegion) {
-      api.get(`/provinces.php?region_id=${selectedRegion}`)
-        .then(response => setProvinces(response.data))
-        .catch(error => console.error('Error fetching provinces:', error));
+      axios.get(`http://localhost/provinces.php?region_id=${selectedRegion}`)
+        .then(res => setProvinces(res.data))
+        .catch(err => console.error(err));
+    } else {
+      setProvinces([]);
       setCities([]);
       setBarangays([]);
       setSelectedProvince('');
       setSelectedCity('');
+      setSelectedBarangay('');
     }
   }, [selectedRegion]);
 
-  // Fetch cities when a province is selected
+  // Fetch Cities when Province changes
   useEffect(() => {
     if (selectedProvince) {
-      api.get(`/cities.php?province_id=${selectedProvince}`)
-        .then(response => setCities(response.data))
-        .catch(error => console.error('Error fetching cities:', error));
+      axios.get(`http://localhost/cities.php?province_id=${selectedProvince}`)
+        .then(res => setCities(res.data))
+        .catch(err => console.error(err));
+    } else {
+      setCities([]);
       setBarangays([]);
       setSelectedCity('');
+      setSelectedBarangay('');
     }
   }, [selectedProvince]);
 
-  // Fetch barangays when a city is selected
+  // Fetch Barangays when City changes
   useEffect(() => {
     if (selectedCity) {
-      api.get(`/barangays.php?city_id=${selectedCity}`)
-        .then(response => setBarangays(response.data))
-        .catch(error => console.error('Error fetching barangays:', error));
+      axios.get(`http://localhost/barangays.php?city_id=${selectedCity}`)
+        .then(res => setBarangays(res.data))
+        .catch(err => console.error(err));
+    } else {
+      setBarangays([]);
+      setSelectedBarangay('');
     }
   }, [selectedCity]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
 
-    // Check if user is logged in
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || !user.id) {
-      alert("User not logged in.");
-      navigate("/auth/login");
-      return;
-    }
-
-    // Prepare the payload to send to backend
-    const payload = {
-      user_id: user.id,
-      first_name: firstName,
-      last_name: lastName,
-      suffix,
-      email,
-      phone,
-      region_name: selectedRegion ? regions.find(region => region.id === selectedRegion)?.name : '', 
-      province_name: selectedProvince ? provinces.find(province => province.id === selectedProvince)?.name : '', 
-      city_name: selectedCity ? cities.find(city => city.id === selectedCity)?.name : '', 
-      barangay_name: selectedBarangay ? barangays.find(barangay => barangay.id === selectedBarangay)?.name : '', 
-      address_line_1: addressLine1,
-      address_line_2: addressLine2,
-      zip_code: zipCode
-    };
-
-    // Sends payload to backend sand save
-    try {
-      const response = await api.post("/save_user_profile.php", payload);
-      if (response.data.success) {
-        alert("Profile & address updated successfully!");
-      } else {
-        alert(response.data.error || "Failed to update.");
-      }
-    } catch (err) {
-      console.error("Error saving profile:", err);
-      alert("Server error.");
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
     }
   };
 
+  const handleRemoveImage = () => {
+    setProfileImage(null);
+    fileInputRef.current.value = null;
+  };
+
   return (
-    <div className='accountsettings-container'>
-      <p className='page-title'>Account</p>
+    <div className="accountsettings-container">
+      <p className="page-title">Account</p>
       <hr />
 
-      <div className='main-container'>
-
-        {/* Profile Picture */}
-        <div className='profile-picture-container'>
+      <div className="main-container">
+        <div className="profile-picture-container">
           <div className="profile-content">
             <div className="profile-image">
-              <span>{currentUserName ? currentUserName.charAt(0).toUpperCase() : ''}</span>
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+              ) : (
+                <span>{currentUserName ? currentUserName.charAt(0).toUpperCase() : ''}</span>
+              )}
             </div>
 
             <div className="profile-details">
@@ -202,71 +104,74 @@ function AccountSettings() {
                 <h3>Profile Picture</h3>
                 <p>Upload a new image or remove your current picture.</p>
               </div>
+
               <div className="button-group">
-                <button className="primary-btn">Upload</button>
-                <button className="secondary-btn">Remove</button>
+                <button className="primary-btn" onClick={handleUploadClick}>
+                  <i className="fa-solid fa-upload" style={{ marginRight: '6px' }}></i> Upload
+                </button>
+                <button className="secondary-btn" onClick={handleRemoveImage}>
+                  <i className="fa-solid fa-trash" style={{ marginRight: '6px' }}></i> Remove
+                </button>
+                <input type="file" accept="image/*" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Personal & Address Information */}
-        <div className='information-container'>
-
-          {/* Personal Information */}
-          <div className="section-header">
-            <h3>Personal Information</h3>
-          </div>
+        <div className="information-container">
+          <div className="section-header"><h3>Personal Information</h3></div>
 
           <div className="info-row">
             <div className="info-item">
               <label>First Name</label>
-              <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+              <input type="text" placeholder=" " />
             </div>
             <div className="info-item">
               <label>Last Name</label>
-              <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+              <input type="text" placeholder=" " />
             </div>
             <div className="info-item">
               <label>Suffix</label>
-              <input type="text" value={suffix} onChange={(e) => setSuffix(e.target.value)} />
+              <input type="text" placeholder=" " />
             </div>
           </div>
 
           <div className="info-row">
             <div className="info-item">
               <label>Email Address</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" placeholder=" " />
             </div>
-            <button className="secondary-btn verify-btn">Verify Email</button>
+            <button className="secondary-btn verify-btn">
+              <i className="fa-solid fa-check" style={{ marginRight: '6px' }}></i> Verify Email
+            </button>
           </div>
 
           <div className="info-row">
             <div className="info-item">
               <label>Phone Number</label>
-              <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <input type="text" placeholder=" " />
             </div>
-            <button className="secondary-btn verify-btn">Verify Number</button>
+            <button className="secondary-btn verify-btn">
+              <i className="fa-solid fa-check" style={{ marginRight: '6px' }}></i> Verify Number
+            </button>
           </div>
 
-          {/* Address Information */}
-          <div className="section-header">
-            <h3>Address Information</h3>
-          </div>
+          <div className="section-header"><h3>Address Information</h3></div>
 
           <div className="info-row">
             <div className="info-item">
               <label>Region</label>
-              <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
+              <select value={selectedRegion} onChange={e => setSelectedRegion(e.target.value)}>
                 <option value="">Select Region</option>
                 {regions.map(region => (
                   <option key={region.id} value={region.id}>{region.name}</option>
                 ))}
               </select>
             </div>
+
             <div className="info-item">
               <label>Province</label>
-              <select value={selectedProvince} onChange={(e) => setSelectedProvince(e.target.value)}>
+              <select value={selectedProvince} onChange={e => setSelectedProvince(e.target.value)} disabled={!provinces.length}>
                 <option value="">Select Province</option>
                 {provinces.map(province => (
                   <option key={province.id} value={province.id}>{province.name}</option>
@@ -278,16 +183,17 @@ function AccountSettings() {
           <div className="info-row">
             <div className="info-item">
               <label>City/Municipality</label>
-              <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
-                <option value="">Select City</option>
+              <select value={selectedCity} onChange={e => setSelectedCity(e.target.value)} disabled={!cities.length}>
+                <option value="">Select City/Municipality</option>
                 {cities.map(city => (
                   <option key={city.id} value={city.id}>{city.name}</option>
                 ))}
               </select>
             </div>
+
             <div className="info-item">
               <label>Barangay</label>
-              <select value={selectedBarangay} onChange={(e) => setSelectedBarangay(e.target.value)}>
+              <select value={selectedBarangay} onChange={e => setSelectedBarangay(e.target.value)} disabled={!barangays.length}>
                 <option value="">Select Barangay</option>
                 {barangays.map(barangay => (
                   <option key={barangay.id} value={barangay.id}>{barangay.name}</option>
@@ -299,52 +205,23 @@ function AccountSettings() {
           <div className="info-row">
             <div className="info-item full-width">
               <label>House / Building No. / Street</label>
-              <input
-                type="text"
-                value={`${addressLine1} ${addressLine2}`.trim()}
-                onChange={(e) => {
-                  const parts = e.target.value.split(' ');
-                  setAddressLine1(parts.slice(0, Math.ceil(parts.length / 2)).join(' '));
-                  setAddressLine2(parts.slice(Math.ceil(parts.length / 2)).join(' '));
-                }}
-              />
+              <input type="text" placeholder="House / Building No. / Street" />
             </div>
           </div>
 
           <div className="info-row">
             <div className="info-item">
               <label>Zip Code</label>
-              <input type="text" value={zipCode} onChange={(e) => setZipCode(e.target.value)}/>
+              <input type="text" placeholder="Zip Code" />
             </div>
           </div>
 
           <div className="button-row">
-            <button className="primary-btn save-btn" onClick={handleSubmit}>Save Changes</button>
+            <button className="primary-btn save-btn">
+              <i className="fa-solid fa-floppy-disk" style={{ marginRight: '6px' }}></i> Save Changes
+            </button>
           </div>
         </div>
-
-        {/* Your Data */}
-        <div className='your-data-container'>
-          <div className="section-header">
-            <h3>Your Data</h3>
-            <p>Download a copy of your account data.</p>
-          </div>
-          <div className="button-row">
-            <button className="secondary-btn">Download My Data</button>
-          </div>
-        </div>
-
-        {/* Account Deletion */}
-        <div className='account-deletion-container'>
-          <div className="section-header">
-            <h3>Account Deletion</h3>
-            <p>Deleting your account is permanent and cannot be undone. All your data will be permanently removed.</p>
-          </div>
-          <div className="button-row">
-            <button className="delete-btn">Delete Account</button>
-          </div>
-        </div>
-
       </div>
     </div>
   );

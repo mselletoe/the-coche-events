@@ -1,37 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import api from '../../api'; // assuming this is axios
+import React from 'react';
 import './gallery.scss';
 
-function Gallery() {
-  const [photos, setPhotos] = useState([]);
-  const frameTypes = ['square', 'rect-tall', 'rect-wide'];
 
-  useEffect(() => {
-    api.get('/get_gallery.php')
-      .then((response) => {
-        const fetchedPhotos = response.data.map(photo => ({
-          ...photo,
-          src: `http://localhost/the_coche-events/${photo.filename}`,
-        }));
-        setPhotos(fetchedPhotos);
-      })
-      .catch((error) => {
-        console.error('Failed to load gallery:', error);
-      });
-  }, []);
+function Gallery() {
+  const frameTypes = ['square', 'rect-tall', 'rect-wide'];
+  const frames = new Array(20).fill(null);
+
 
   return (
-    <div className="gallery-container">
-      <p className='headings'>Get <span>inspired</span>.<br />Imagine yours.</p>
+    <div className="gallery-page">
+      <h2>Gallery</h2>
       <div className="gallery-columns">
-        {photos.map((photo, index) => {
+        {frames.map((_, index) => {
           const randomType = frameTypes[Math.floor(Math.random() * frameTypes.length)];
           return (
-            <div key={photo.id || index} className={`picture-frame ${randomType}`}>
-              <div className="image-wrapper">
-                <img src={photo.src} alt={photo.caption || 'Gallery Image'} />
-              </div>
-              {photo.caption && <p className="caption">{photo.caption}</p>}
+            <div key={index} className={`picture-frame ${randomType}`}>
+              <div className="empty-frame"></div>
+              <p className="caption">Caption of the Picture</p>
             </div>
           );
         })}
@@ -39,5 +24,6 @@ function Gallery() {
     </div>
   );
 }
+
 
 export default Gallery;
