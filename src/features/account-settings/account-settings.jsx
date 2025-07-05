@@ -141,7 +141,7 @@ function AccountSettings() {
     }
   }, [selectedCity]);
 
-  const handleSubmit = async (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
 
     // Check if user is logged in
@@ -319,7 +319,7 @@ function AccountSettings() {
           </div>
 
           <div className="button-row">
-            <button className="primary-btn save-btn" onClick={handleSubmit}>Save Changes</button>
+            <button className="primary-btn save-btn" onClick={handleSave}>Save Changes</button>
           </div>
         </div>
 

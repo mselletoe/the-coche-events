@@ -21,7 +21,7 @@ function Login(){
       const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
         console.log("Already logged in:", user);
-        navigate("/setup", { replace: true });
+        navigate("/account", { replace: true });
       }
     }, [navigate]);
 

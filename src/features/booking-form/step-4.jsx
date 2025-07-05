@@ -92,7 +92,7 @@ const addonList = addonsFromDB
             {/* Payment Details */}
             <h3>Payment Details</h3>
             <p className="note">Select your payment method and fill in the required details</p>
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+            <div className="payment-options">
               <label><input type="radio" name="payment" /> Cash</label>
               <label><input type="radio" name="payment" /> Bank Transfer</label>
               <label><input type="radio" name="payment" /> e-Wallet</label>

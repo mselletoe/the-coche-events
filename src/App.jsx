@@ -5,10 +5,6 @@ import Auth from './features/auth/auth.jsx';
 import MainLayout from './main_layout.jsx';
 import LoginForm from './features/auth/login-form.jsx';
 import RegisterForm from './features/auth/registration-form.jsx';
-import AccountSetup from './features/account_setup/account-setup.jsx';
-import ProfileSetup from './features/account_setup/profile-setup.jsx';
-import AddressSetup from './features/account_setup/address-setup.jsx';
-import PaymentSetup from './features/account_setup/payment-setup.jsx';
 import ProtectedRoute from './features/routeprotection.jsx';
 import Home from './tabs/home/home.jsx';
 import Services from './tabs/services/services.jsx';
@@ -47,15 +43,9 @@ function App() {
             <Route path="login" element={<LoginForm />} />
             <Route path="register" element={<RegisterForm />} />
           </Route>
-
-          {/* Setup entry point */}
-          {/* <Route path="/setup" element={<ProtectedRoute><AccountSetup showWelcome /></ProtectedRoute>} /> */}
           
           {/* Protected Standalone pages */}
           <Route path="/account" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><ProfileSetup /></ProtectedRoute>} />
-          <Route path="/address" element={<ProtectedRoute><AddressSetup /></ProtectedRoute>} />
-          <Route path="/payment" element={<ProtectedRoute><PaymentSetup /></ProtectedRoute>} />
 
           {/* Standalone pages */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

@@ -62,16 +62,19 @@ function BookingForm() {
 
   const [manualClientInfo, setManualClientInfo] = useState(clientInfo);
   const [useAccountDetails, setUseAccountDetails] = useState(false);
+  const [accountInfo, setAccountInfo] = useState(null);
 
-  const accountInfo = {
-    firstName: 'Alleah Marie',
-    lastName: 'Bayas',
-    suffix: '',
-    email: 'alleahmarie87@gmail.com',
-    phoneNumber: '1234567890',
-    socialPlatform: 'Facebook',
-    accountLink: 'facebook.com/alleahbayas'
-  };
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const parsed = JSON.parse(userData);
+      setAccountInfo(parsed);
+      setClientInfo(prev => ({
+        ...prev,
+        ...parsed
+      }));
+    }
+  }, []);
 
   useEffect(() => {
     api.get('/get_addons.php')
@@ -92,12 +95,12 @@ function BookingForm() {
   }, [style]);
 
   useEffect(() => {
-    if (useAccountDetails) {
+    if (useAccountDetails && accountInfo) {
       setClientInfo({ ...accountInfo });
-    } else {
+    } else if (!useAccountDetails) {
       setClientInfo({ ...manualClientInfo });
     }
-  }, [useAccountDetails]);
+  }, [useAccountDetails, accountInfo, manualClientInfo]);
 
   const handleSetClientInfo = (info) => {
     setClientInfo(info);

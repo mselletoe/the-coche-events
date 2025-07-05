@@ -12,7 +12,7 @@ function Register(){
       const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
         console.log("Already logged in:", user);
-        navigate("/setup", { replace: true });
+        navigate("/account", { replace: true });
       }
     }, [navigate]);
 
@@ -106,7 +106,6 @@ function Register(){
     // Submit user info to database
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // navigate("/setup"); // bypass
         setErrors({});
         const validationErrors = validate();
 

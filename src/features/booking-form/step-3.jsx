@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './booking-form.scss';
 import './step-3.scss';
+import api from '../../api';
 
 function Step3({
   registerValidator,
@@ -10,6 +11,17 @@ function Step3({
   setUseAccountDetails,
   accountInfo
 }) {
+  const [useAccountInfo, setUseAccountInfo] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const [userFirstName, setUserFirstName] = useState('');
+const [userLastName, setUserLastName] = useState('');
+const [userEmail, setUserEmail] = useState('');
+const [userPhone, setUserPhone] = useState('');
+
   const [errors, setErrors] = useState({
     firstName: '',
     lastName: '',
@@ -25,23 +37,43 @@ function Step3({
     if (registerValidator) {
       registerValidator(validate);
     }
-  }, [registerValidator, clientInfo]);
+  }, [registerValidator, clientInfo, accountInfo]); // ✅ add accountInfo
 
   useEffect(() => {
     if (useAccountDetails) {
-      setClientInfo({
-        firstName: accountInfo.firstName || '',
-        lastName: accountInfo.lastName || '',
-        suffix: accountInfo.suffix || '',
-        email: accountInfo.email || '',
-        phoneNumber: accountInfo.phoneNumber || '',
-        socialPlatform: accountInfo.socialPlatform || '',
-        accountLink: accountInfo.accountLink || ''
-      });
+      if (accountInfo) {
+        setClientInfo({
+          firstName: accountInfo.first_name ?? '',
+          lastName: accountInfo.last_name ?? '',
+          email: accountInfo.email ?? '',
+          phoneNumber: accountInfo.phone ?? '',
+          socialPlatform: '',
+          accountLink: '',
+        });
+      }
     } else {
       setClientInfo(manualClientInfo); // restore manual input
     }
-  }, [useAccountDetails]);
+  }, [useAccountDetails, accountInfo]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.id) return;
+
+    // Optionally fetch from API, or just use saved info:
+    api.get('/fetch_users.php')
+      .then((res) => {
+        const users = Array.isArray(res.data) ? res.data : res.data.users;
+        const u = users.find(usr => usr.id == user.id);
+        if (u) {
+          setUserFirstName(u.first_name || '');
+          setUserLastName(u.last_name || '');
+          setUserEmail(u.email || '');
+          setUserPhone(u.phone || '');
+        }
+      })
+      .catch(err => console.error("Error loading user info:", err));
+  }, []);
 
   const handleChange = (field, value) => {
     const updated = {
@@ -99,14 +131,37 @@ function Step3({
     <div className="step3-container">
       <form className="step3-form">
         <div className="checkbox-row">
-          <input
-            type="checkbox"
-            id="useAccountDetails"
-            checked={useAccountDetails}
-            onChange={() => setUseAccountDetails(prev => !prev)}
-          />
-          <span className="checkmark"></span>
-          <label htmlFor="useAccountDetails">Use my account details</label>
+          <label>
+            <input
+              type="checkbox"
+              checked={useAccountInfo}
+              onChange={(e) => {
+              const checked = e.target.checked;
+              setUseAccountInfo(checked);
+
+                if (checked) {
+                  const updated = {
+                    ...clientInfo,
+                    firstName: userFirstName,
+                    lastName: userLastName,
+                    email: userEmail,
+                    phoneNumber: userPhone,
+                  };
+                  setClientInfo(updated);
+                } else {
+                  const updated = {
+                    ...clientInfo,
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phoneNumber: '',
+                  };
+                  setClientInfo(updated);
+                }
+              }}
+              />
+              Use my account details
+          </label>
         </div>
 
         <div className="form-row">
@@ -116,7 +171,7 @@ function Step3({
               <input
                 type="text"
                 placeholder="First Name"
-                value={clientInfo.firstName}
+                value={clientInfo.firstName ?? ''}
                 onChange={e => handleChange('firstName', e.target.value)}
                 disabled={useAccountDetails}
                 className={useAccountDetails ? 'disabled-input' : ''}
@@ -128,7 +183,7 @@ function Step3({
               <input
                 type="text"
                 placeholder="Last Name"
-                value={clientInfo.lastName}
+                value={clientInfo.lastName ?? ''}
                 onChange={e => handleChange('lastName', e.target.value)}
                 disabled={useAccountDetails}
                 className={useAccountDetails ? 'disabled-input' : ''}
@@ -140,7 +195,7 @@ function Step3({
               <input
                 type="text"
                 placeholder="Suffix (Optional)"
-                value={clientInfo.suffix}
+                value={clientInfo.suffix ?? ''}
                 onChange={e => handleChange('suffix', e.target.value)}
                 disabled={useAccountDetails}
                 className={useAccountDetails ? 'disabled-input' : ''}
@@ -157,7 +212,7 @@ function Step3({
               <input
                 type="email"
                 placeholder="Email"
-                value={clientInfo.email}
+                value={clientInfo.email ?? ''}
                 onChange={e => handleChange('email', e.target.value)}
                 disabled={useAccountDetails}
                 className={useAccountDetails ? 'disabled-input' : ''}
