@@ -189,12 +189,21 @@ function Step2({ formData, setFormData, registerValidator }) {
 
   // Update formData when local state changes
   useEffect(() => {
+    const getNameById = (list, id) => {
+      const item = list.find(i => i.id === id);
+      return item ? item.name : '';
+    };
+
     setFormData(prev => ({
       ...prev,
       selectedRegion,
+      selectedRegionName: getNameById(regions, selectedRegion),
       province: selectedProvince,
+      provinceName: getNameById(provinces, selectedProvince),
       municipality: selectedCity,
+      municipalityName: getNameById(cities, selectedCity),
       barangay: selectedBarangay,
+      barangayName: getNameById(barangays, selectedBarangay),
       address: addressLine1,
       zip: zipCode
     }));
@@ -239,7 +248,11 @@ function Step2({ formData, setFormData, registerValidator }) {
             <h3>Location</h3>
           </div>
           <div className="section-content location-fields">
+
+            {/* First Row */}
             <div className="field-row">
+
+              {/* Region */}
               <div className="field-container">
                 <select
                   value={selectedRegion}
@@ -253,6 +266,7 @@ function Step2({ formData, setFormData, registerValidator }) {
                 {errors.selectedRegion && <span className="error-message">{errors.selectedRegion}</span>}
               </div>
 
+              {/* Province */}
               <div className="field-container">
                 <select
                   value={selectedProvince}
@@ -268,7 +282,10 @@ function Step2({ formData, setFormData, registerValidator }) {
               </div>
             </div>
 
+            {/* Second Row */}
             <div className="field-row">
+
+              {/* City */}
               <div className="field-container">
                 <select
                   value={selectedCity}
@@ -283,6 +300,7 @@ function Step2({ formData, setFormData, registerValidator }) {
                 {errors.municipality && <span className="error-message">{errors.municipality}</span>}
               </div>
 
+              {/* Barangay */}
               <div className="field-container">
                 <select
                   value={selectedBarangay}
@@ -298,7 +316,10 @@ function Step2({ formData, setFormData, registerValidator }) {
               </div>
             </div>
 
+            {/* Third Row */}
             <div className="field-row">
+
+              {/* Address Line */}
               <div className="field-container">
                 <input
                   type="text"
@@ -309,6 +330,7 @@ function Step2({ formData, setFormData, registerValidator }) {
                 {errors.address && <span className="error-message">{errors.address}</span>}
               </div>
 
+              {/* Zip Code */}
               <div className="field-container">
                 <input
                   type="text"

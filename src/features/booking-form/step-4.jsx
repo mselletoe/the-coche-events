@@ -66,10 +66,10 @@ function Step4({
           <h3>Booking Details</h3>
           <p>
             {step2FormData.address}, 
-            {step2FormData.barangay && `${step2FormData.barangay}, `}
-            {step2FormData.municipality && `${step2FormData.municipality}, `}
-            {step2FormData.province && `${step2FormData.province}, `}
-            {step2FormData.selectedRegion && `${step2FormData.selectedRegion} `}
+            {step2FormData.barangayName && `${step2FormData.barangayName}, `}
+            {step2FormData.municipalityName && `${step2FormData.municipalityName}, `}
+            {step2FormData.provinceName && `${step2FormData.provinceName}, `}
+            {step2FormData.selectedRegionName && `${step2FormData.selectedRegionName} `}
             {step2FormData.zip && step2FormData.zip}
           </p>
 
