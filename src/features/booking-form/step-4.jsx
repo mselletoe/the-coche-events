@@ -48,6 +48,11 @@ function Step4({
 
   const finalClient = useAccountDetails ? accountInfo : clientInfo;
 
+  const displayDate = new Intl.DateTimeFormat('en-PH', {
+    timeZone: 'Asia/Manila',
+    dateStyle: 'long',
+  }).format(new Date(`${step2FormData.selectedDate}T00:00:00`));
+
   return (
     <div className="step4-container">
       <div className="left-column receiver">
@@ -59,8 +64,18 @@ function Step4({
           <p className="link">{finalClient.accountLink}</p>
 
           <h3>Booking Details</h3>
-          <p>{step2FormData.address}</p>
-          <p>{step2FormData.selectedDate}</p>
+          <p>
+            {step2FormData.address}, 
+            {step2FormData.barangay && `${step2FormData.barangay}, `}
+            {step2FormData.municipality && `${step2FormData.municipality}, `}
+            {step2FormData.province && `${step2FormData.province}, `}
+            {step2FormData.selectedRegion && `${step2FormData.selectedRegion} `}
+            {step2FormData.zip && step2FormData.zip}
+          </p>
+
+          <p>{displayDate}</p>
+
+
           <p>{step2FormData.selectedTime}</p>
           <p>Note: “{step2FormData.note}”</p>
 
