@@ -14,27 +14,26 @@ function BookingForm() {
   const [carX, setCarX] = useState(0);
   const navigate = useNavigate();
   const step1Validator = useRef(null);
+  const step2Validator = useRef(null);
+  const step3Validator = useRef(null);
 
   const { style } = useParams();
 
-  // ✅ Store style in localStorage for back-navigation persistence
   useEffect(() => {
     if (style) {
       localStorage.setItem('selectedOption', style);
     }
   }, [style]);
 
-  // ✅ New state for modal visibility
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  // ✅ State lifted from Step1
   const [bannerMessage, setBannerMessage] = useState('');
   const [lightboxMessage, setLightboxMessage] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
   const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
 
-  // ✅ State lifted for Step2
+  // Step 2 form data (booking details only)
   const [step2FormData, setStep2FormData] = useState({
     selectedRegion: '',
     province: '',
@@ -44,8 +43,31 @@ function BookingForm() {
     zip: '',
     selectedDate: '',
     selectedTime: '',
-    note: '',
+    note: ''
   });
+
+  // Dedicated client info state
+  const [clientInfo, setClientInfo] = useState({
+    firstName: '',
+    lastName: '',
+    suffix: '',
+    email: '',
+    phoneNumber: '',
+    socialPlatform: '',
+    accountLink: ''
+  });
+
+  const [useAccountDetails, setUseAccountDetails] = useState(false);
+
+  const accountInfo = {
+    firstName: 'Alleah Marie',
+    lastName: 'Bayas',
+    suffix: '',
+    email: 'alleahmarie87@gmail.com',
+    phoneNumber: '1234567890',
+    socialPlatform: 'Facebook',
+    accountLink: 'facebook.com/alleahbayas'
+  };
 
   const handleNext = () => {
     if (currentStep === 1 && step1Validator.current) {
@@ -53,15 +75,24 @@ function BookingForm() {
       if (!isValid) return;
     }
 
+    if (currentStep === 2 && step2Validator.current) {
+      const isValid = step2Validator.current();
+      if (!isValid) return;
+    }
+
+    if (currentStep === 3 && step3Validator.current) {
+      const isValid = step3Validator.current();
+      if (!isValid) return;
+    }
+
     if (currentStep < totalSteps) {
-      setCurrentStep((prev) => prev + 1);
+      setCurrentStep(prev => prev + 1);
     }
   };
 
-  // ✅ Modified handleBack to show modal
   const handleBack = () => {
     if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
+      setCurrentStep(prev => prev - 1);
     } else {
       setShowConfirmModal(true);
     }
@@ -83,7 +114,7 @@ function BookingForm() {
     1: { title: "Package Details", subtitle: "Add and specify the details of your setup" },
     2: { title: "Booking Details", subtitle: "Fill in the required booking details" },
     3: { title: "Client Information", subtitle: "Enter the receiver’s details" },
-    4: { title: "Review & Confirm", subtitle: "Kindly review the information provided before proceeding" },
+    4: { title: "Review & Confirm", subtitle: "Kindly review the information provided before proceeding" }
   };
 
   return (
@@ -100,14 +131,8 @@ function BookingForm() {
           {[...Array(totalSteps)].map((_, index) => (
             <div
               key={index}
-              ref={(el) => (pointRefs.current[index] = el)}
-              className={`progress-circle ${
-                index < currentStep - 1
-                  ? 'past'
-                  : index === currentStep - 1
-                  ? 'active'
-                  : ''
-              }`}
+              ref={el => (pointRefs.current[index] = el)}
+              className={`progress-circle ${index < currentStep - 1 ? 'past' : index === currentStep - 1 ? 'active' : ''}`}
             />
           ))}
         </div>
@@ -130,7 +155,7 @@ function BookingForm() {
             <Step1
               selectedStyle={style}
               onNext={handleNext}
-              registerValidator={(fn) => (step1Validator.current = fn)}
+              registerValidator={fn => (step1Validator.current = fn)}
               bannerMessage={bannerMessage}
               setBannerMessage={setBannerMessage}
               lightboxMessage={lightboxMessage}
@@ -147,26 +172,49 @@ function BookingForm() {
             <Step2
               formData={step2FormData}
               setFormData={setStep2FormData}
+              registerValidator={fn => (step2Validator.current = fn)}
             />
           )}
-          {currentStep === 3 && <Step3 />}
-          {currentStep === 4 && <Step4 />}
+          {currentStep === 3 && (
+            <Step3
+              registerValidator={fn => (step3Validator.current = fn)}
+              clientInfo={clientInfo}
+              setClientInfo={setClientInfo}
+              useAccountDetails={useAccountDetails}
+              setUseAccountDetails={setUseAccountDetails}
+              accountInfo={accountInfo}
+            />
+          )}
+          {currentStep === 4 && (
+            <Step4
+              style={style}
+              bannerMessage={bannerMessage}
+              lightboxMessage={lightboxMessage}
+              selectedColors={selectedColors}
+              selectedAddons={selectedAddons}
+              selectedAddonOptions={selectedAddonOptions}
+              step2FormData={step2FormData}
+              clientInfo={clientInfo}
+              useAccountDetails={useAccountDetails}
+              accountInfo={accountInfo}
+              onBack={handleBack}
+            />
+          )}
         </div>
       </div>
 
-      {/* ✅ Custom confirmation modal */}
       {showConfirmModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
             <h3>Return to Style Selection?</h3>
-            <p>Are you sure you want to go back? <br/> All progress will be lost.</p>
+            <p>Are you sure you want to go back? <br /> All progress will be lost.</p>
             <div className="modal-buttons">
               <button onClick={() => setShowConfirmModal(false)}>Cancel</button>
               <button
                 className="danger"
                 onClick={() => {
-                  localStorage.removeItem('selectedOption'); 
-                  navigate('/services');                    
+                  localStorage.removeItem('selectedOption');
+                  navigate('/services');
                 }}
               >
                 Confirm

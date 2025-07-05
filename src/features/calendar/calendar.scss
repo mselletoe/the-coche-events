@@ -1,0 +1,152 @@
+@import '../../shared_components/global_styles.scss';
+
+.calendar-container {
+  border: 1px solid $primary-color;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%; // Fully responsive based on parent
+  font-family: var(--inter), 'Segoe UI', Roboto, sans-serif;
+  min-height: 370px;
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3%;
+
+    .nav-button {
+      background: #f8f9fa;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      width: 10%;
+      height: 30px;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: clamp(12px, 1.2vw, 16px);
+      }
+
+      &:hover {
+        background: #e2e8f0;
+        border-color: #cbd5e0;
+      }
+    }
+
+    .month-title {
+      font-size: clamp(14px, 4vw, 18px);
+      font-weight: 700;
+      color: $shade-4;
+      letter-spacing: 1px;
+    }
+  }
+
+  .day-headers {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1%;
+    margin-bottom: 2%;
+
+    .day-header {
+      text-align: center;
+      font-size: clamp(10px, 2.5vw, 14px);
+      font-weight: 500;
+      color: $primary-color;
+      padding: 2% 0;
+    }
+  }
+
+  .calendar-grid {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2%;
+
+    .calendar-day {
+      width: 100%;
+      aspect-ratio: 1;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: clamp(10px, 2.5vw, 14px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #4a5568;
+      position: relative;
+
+      &:hover {
+        background: #f7fafc;
+      }
+
+      &.other-month {
+        color: #cbd5e0;
+        cursor: default;
+      }
+
+      &.current-month {
+        color: #2d3748;
+        font-weight: 500;
+      }
+
+      // AVAILABLE DATE
+      &.available {
+        background: transparent;
+        color: #2d3748;
+
+        &:hover {
+          background: #edf2f7;
+        }
+      }
+
+      // BOOKED DATE (brown)
+      &.booked {
+        background: $primary-color;
+        color: #ffffff;
+
+        &:hover {
+          background: darken($primary-color, 5%);
+        }
+      }
+
+      // FULLY BOOKED DATE (gray)
+      &.fully-booked {
+        background: #a0aec0;
+        color: #ffffff;
+        cursor: not-allowed;
+
+        &:hover {
+          background: #a0aec0;
+        }
+      }
+
+      // TODAY (bold text)
+      &.today {
+        font-weight: 800;
+        color: $secondary-color;
+
+        &:hover {
+          background: #e2e8f0;
+        }
+      }
+
+      // SELECTED DATE (black background)
+      &.selected {
+        background: $primary-color-dark;
+        color: #ffffff;
+        font-weight: 600;
+
+        &:hover {
+          background: #1a1a1a;
+        }
+      }
+    }
+  }
+}
