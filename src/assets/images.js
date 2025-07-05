@@ -1,5 +1,6 @@
 import cocheLogo from './coche-logo.svg';
 import darkcocheLogo from './dark-coche-logo.svg';
+import darkcocheLogoMobile from './darkcocheLogoMobile.svg';
 import sideimage from './image-3.png';
 import googleLogo from './google-icon-1.png';
 import profileSetupCover from './profile-setup.png';
@@ -38,6 +39,7 @@ import cartrunk from './cartrunk.png';
 
 export {
   cocheLogo,
+  darkcocheLogoMobile,
   sideimage,
   googleLogo,
   profileSetupCover,

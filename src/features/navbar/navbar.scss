@@ -25,9 +25,14 @@
         padding: 0 40px;
         // border: 1px solid red;
 
-        #coche-logo{
+        #coche-logo-desktop {
+            display: block;
             height: 20px;
-        }
+            }
+
+            #coche-logo-mobile {
+            display: none;
+            }
 
         .navbar-links{
             position: relative;
@@ -53,7 +58,7 @@
 
             .nav-underline {
                 position: absolute;
-                bottom: -8px;
+                bottom: -9px;
                 height: 3px;
                 background-color: $primary-color-dark;
                 transition: all 0.4s ease-in-out;
@@ -181,15 +186,19 @@
       justify-content: space-between;
       align-items: center;
 
-      #coche-logo {
-        display: block; // ✅ SHOW the logo again
-        height: 11.5px;    // ✅ Make it smaller
-      }
+      #coche-logo-desktop {
+            display: none;
+        }
+
+        #coche-logo-mobile {
+            display: block;
+            height: 15px;
+        }
 
       .navbar-links {
         position: absolute;
         left: 50%;
-        transform: translateX(-52%); // ✅ Center the nav links
+        transform: translateX(-53%); // ✅ Center the nav links
         display: flex;
         gap: 20px;
         font-size: 0.7em;
@@ -207,7 +216,7 @@
         .nav-underline {
           height: 2px;
           width: 45px !important;
-          bottom: -8px;
+          bottom: -9px;
           transform: translateX(12px); // Adjust if needed
         }
       }

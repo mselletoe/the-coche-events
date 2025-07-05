@@ -61,3 +61,12 @@
     }
   }
 }
+
+@media (max-width: 480px) {
+    .gallery-container 
+    .gallery-columns {
+    column-count: 2;
+    column-gap: 25px;
+    }
+    
+}
