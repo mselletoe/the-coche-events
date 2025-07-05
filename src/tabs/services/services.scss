@@ -1,136 +1,134 @@
 @import '../../shared_components/global_styles';
 
-.services-container{
-    display: flex;
-    flex-direction: column;
+.services-container {
+  display: flex;
+  flex-direction: column;
 
-    .book-now{
-        align-self: center;
-        padding: 10px;
-        width: 150px;
-        border: none;
-        border-radius: 5px;
-        background-color: $primary-color-dark;
-        color: white;
+  .book-now {
+    align-self: center;
+    padding: 10px;
+    width: 150px;
+    border: none;
+    border-radius: 5px;
+    background-color: $primary-color-dark;
+    color: white;
+    font-family: var(--inter);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background-color: $primary-color-light;
+      transform: scale(1.05);
+    }
+  }
+
+  .services-headings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+    flex-direction: column;
+    gap: 20px;
+    color: $primary-color-dark;
+
+    p {
+      text-align: center;
+      font-family: var(--archivo);
+      font-size: 3em;
+
+      span {
+        font-family: var(--playfair);
+        font-weight: bold;
+        font-style: italic;
+      }
+    }
+
+    h4 {
+      font-family: var(--archivo);
+      font-weight: 400;
+    }
+  }
+
+  .services-selections {
+    display: flex;
+    padding: 2em 6em 4em 6em;
+    justify-content: space-between;
+
+    .styles-text {
+      p {
+        font-family: var(--playfair);
+        font-weight: bold;
+        font-style: italic;
+        font-size: 2.5em;
+        padding: 0px 0px 15px;
+        color: $primary-color-dark;
+      }
+
+      h4 {
         font-family: var(--inter);
+        font-weight: 400;
+        font-size: 0.7em;
+        font-style: italic;
+        color: $shade-3;
+      }
+    }
+
+    .services-options {
+      display: flex;
+      gap: 30px;
+
+      .optionX {
+        width: 200px;
+        height: 240px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.3s ease;
+        }
+
+        .caption {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          color: $primary-color;
+          text-align: left;
+          padding: 17px;
+          font-family: var(--inter);
+          font-size: 1em;
+          font-weight: bold;
+          border-top-right-radius: 20px;
+        }
 
         &:hover {
-            background-color: $primary-color-light;
+          img {
             transform: scale(1.05);
+          }
         }
+
+        &.selected {
+          border: 3px solid $secondary-color;
+          box-shadow: 0 3px 5px rgba(255, 94, 94, 0.5);
+        }
+      }
     }
+  }
+}
 
-    .services-headings{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2em;
-        flex-direction: column;
-        gap: 20px;
-        color:$primary-color-dark;
-
-        p{
-            text-align: center;
-            font-family: var(--archivo);
-            font-size: 3em;
-
-            span{
-                font-family: var(--playfair);
-                font-weight: bold;
-                font-style: italic;
-            }
-        }
-
-        h4{
-            font-family: var(--archivo);
-            font-weight: 400;
-        }
-    }
-    
-    .services-selections{
-        display: flex;
-        padding: 2em 6em 4em 6em;
-        justify-content: space-between;
-
-        .styles-text{
-            p{
-                font-family: var(--playfair);
-                font-weight: bold;
-                font-style: italic;
-                font-size: 2.5em;
-                margin-bottom: 15px;
-                color: $primary-color-dark;
-            }
-
-            h4{
-                font-family: var(--inter);
-                font-weight: 400;
-                font-size: 0.7em;
-                font-style: italic;
-                color: $shade-3;
-            }
-        }
-
-        .services-options{
-            display: flex;
-            gap: 30px;
-
-            .optionX{
-                width: 200px;
-                height: 240px;
-
-                position: relative;
-                overflow: hidden;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                cursor: pointer;
-
-                    img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        display: block;
-                        transition: transform 0.3s ease;
-                    }
-
-                    .caption {
-                    position: absolute;
-                    bottom: 0;
-                    width: 100%;
-                    background: rgba(255, 255, 255, 0.8);
-                    backdrop-filter: blur(4px);
-                    -webkit-backdrop-filter: blur(4px); 
-                    color: $primary-color;    
-                    text-align: left;
-                    padding: 17px;
-                    font-family: var(--inter);
-                    font-size: 1em;
-                    font-weight: bold;
-
-                    border-top-right-radius: 20px;
-                    }
-
-                    &:hover {
-                        img {
-                            transform: scale(1.05);
-                        }
-                    }
-
-                    &.selected {
-                        border: 3px solid $secondary-color;
-                        box-shadow: 0 3px 5px rgba(255, 94, 94, 0.5);
-                    }
-                }
-            }
-        }
-    }
-    
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeIn 1.5s ease-out forwards;
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
 @keyframes fadeIn {
@@ -141,3 +139,118 @@
 
 
 
+
+
+@media (max-width: 480px) {
+  .services-container {
+    .services-headings {
+      padding: 1.5em 1em;
+      gap: 10px;
+
+      p {
+        font-size: 2rem;
+        padding: 0px 0px 20px;
+      }
+
+      h4 {
+        font-size: 0.85em;
+        text-align: center;
+        padding: 0 10px;
+      }
+    }
+
+    .services-selections {
+      flex-direction: column;
+      padding: 1.5em 1em;
+
+      .styles-text {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1em;
+        padding: 0 40px;
+        gap: 10px;
+
+        p {
+            font-size: 1.7em;
+            font-family: var(--playfair);
+            font-weight: bold;
+            font-style: italic;
+            color: $primary-color-dark;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        h4 {
+            font-size: 0.8em;
+            font-family: var(--inter);
+            font-weight: 400;
+            font-style: italic;
+            color: $shade-3;
+            margin: 4px 0 0;
+            flex: 1;
+            text-align: left;
+            line-height: 1.2;
+            padding: 0px 10px;
+        }
+        }
+
+
+      .services-options {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px;
+        padding-bottom: 10px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        .optionX {
+          flex: 0 0 auto;
+          scroll-snap-align: start;
+          width: 170px;
+          height: 210px;
+
+          .caption {
+            font-size: 0.85em;
+            padding: 14px;
+          }
+        }
+      }
+
+      .scroll-slider-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+
+        .scroll-slider-track {
+          width: 40%;
+          height: 5px;
+          background-color: #e0e0e0;
+          border-radius: 2px;
+          overflow: hidden;
+
+          .scroll-slider-thumb {
+            height: 100%;
+            background-color: $primary-color-dark;
+            transition: width 0.1s ease;
+          }
+        }
+      }
+    }
+
+    .book-now {
+        font-size: 0.9em;
+        padding: 8px;
+        width: 130px;
+    }
+  }
+}

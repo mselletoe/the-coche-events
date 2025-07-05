@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import './navbar.scss';
-import { darkcocheLogo, sanyaLopez, userIcon } from '../../assets/images.js';
+import { darkcocheLogo, darkcocheLogoMobile, sanyaLopez, userIcon } from '../../assets/images.js';
 
 function NavBar(){
     const navigate = useNavigate();
@@ -50,8 +50,8 @@ function NavBar(){
         <>
             <div className="navbar">
                 <div className="navbar-container">
-                    <img id='coche-logo' src={darkcocheLogo} alt="coche"/>
-
+                    <img id="coche-logo-desktop" src={darkcocheLogo} alt="coche desktop logo" />
+                    <img id="coche-logo-mobile" src={darkcocheLogoMobile} alt="coche mobile logo" />
                     <nav className="navbar-links">
                         <nav className="navbar-links">
                             <div className="nav-item" ref={navRefs.home}><NavLink to="/home">Home</NavLink></div>

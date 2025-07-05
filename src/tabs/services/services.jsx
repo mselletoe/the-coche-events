@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import Pending from '../../features/pending/pending';
 import BookingForm from '../../features/booking-form/booking-form';
@@ -7,8 +7,10 @@ import './services.scss';
 
 function Services() {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [scrollProgress, setScrollProgress] = useState(25);
   const navigate = useNavigate();
   const location = useLocation();
+  const optionsRef = useRef(null);
 
   const options = [
     { id: 'birthday', label: 'Birthday', image: Option1 },
@@ -17,12 +19,10 @@ function Services() {
     { id: 'custom', label: 'Custom', image: Option4 },
   ];
 
-  // ✅ New: Clear the selected option from localStorage on page load
   useEffect(() => {
     localStorage.removeItem('selectedOption');
   }, []);
 
-  // ✅ Load selection from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem('selectedOption');
     if (stored) {
@@ -30,7 +30,6 @@ function Services() {
     }
   }, []);
 
-  // ✅ Store selection in both state and localStorage
   const handleOptionClick = (id) => {
     setSelectedOption(id);
     localStorage.setItem('selectedOption', id);
@@ -41,6 +40,27 @@ function Services() {
       navigate(`/services/book/${selectedOption}`);
     }
   };
+
+  useEffect(() => {
+    const scrollEl = optionsRef.current;
+
+    const handleScroll = () => {
+      const scrollLeft = scrollEl.scrollLeft;
+      const maxScrollLeft = scrollEl.scrollWidth - scrollEl.clientWidth;
+      const progress = (scrollLeft / maxScrollLeft) * 100;
+      setScrollProgress(progress || 0);
+    };
+
+    if (scrollEl) {
+      scrollEl.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (scrollEl) {
+        scrollEl.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
 
   return (
     <div className='services-container fade-in' key={location.key}>
@@ -59,12 +79,12 @@ function Services() {
           <p>Styles</p>
           <h4>
             Select the kind of <br />
-            surprise you'd love us<br />
-            to set up.
+            surprise you'd love us to set up.<br />
+            
           </h4>
         </div>
 
-        <div className='services-options'>
+        <div className='services-options' ref={optionsRef}>
           {options.map((option) => (
             <div
               key={option.id}
@@ -76,6 +96,16 @@ function Services() {
             </div>
           ))}
         </div>
+
+        {/* 👇 Progress slider bar */}
+        <div className="scroll-slider-wrapper">
+          <div className="scroll-slider-track">
+            <div
+              className="scroll-slider-thumb"
+              style={{ width: `${scrollProgress}%` }}
+            ></div>
+          </div>
+        </div>
       </div>
 
       <button
@@ -85,7 +115,7 @@ function Services() {
       >
         Book Now
       </button>
-      
+
       <Outlet />
       <Pending />
     </div>
