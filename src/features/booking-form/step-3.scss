@@ -92,6 +92,12 @@
     }
 }
 
+.disabled-input {
+  background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+}
+
 input[type='checkbox'] {
     width: 18px;
     height: 18px;

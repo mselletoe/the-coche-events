@@ -33,29 +33,13 @@ function AccountSettings() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.id) return;
 
-    api.get(`/get_address.php?user_id=${user.id}`)
-      .then(res => {
-        if (res.data?.address) {
-          const addr = res.data.address;
-          setIsEditing(true);
-          setAddressLine1(addr.address_line_1);
-          setAddressLine2(addr.address_line_2);
-          setZipCode(addr.zip_code);
-          setSelectedRegion(addr.region_id);
-          setSelectedProvince(addr.province_id);
-          setSelectedCity(addr.city_id);
-          setSelectedBarangay(addr.barangay_id);
-        }
-      })
-      .catch(err => {
-        console.error("Failed to fetch address", err);
-      });
-
-    api.get('/fetch_users.php')
-      .then(res => {
-        const users = Array.isArray(res.data) ? res.data : res.data.users;
-        const userData = users?.find(u => u.id == user.id);
-        console.log("Fetched user data:", userData);
+    // Load saved address with proper dropdown hydration
+    const loadUserAndAddress = async () => {
+      try {
+        // Fetch user info
+        const usersRes = await api.get('/fetch_users.php');
+        const users = Array.isArray(usersRes.data) ? usersRes.data : usersRes.data.users;
+        const userData = users.find(u => u.id == user.id);
         if (userData) {
           setFirstName(userData.first_name || '');
           setLastName(userData.last_name || '');
@@ -64,10 +48,57 @@ function AccountSettings() {
           setPhone(userData.phone || '');
           setCurrentUserName(`${userData.first_name} ${userData.last_name}`);
         }
-      })
-      .catch(err => {
-        console.error("Failed to fetch user data", err);
-      });
+
+        // Fetch regions first (important!)
+        const regRes = await api.get('/regions.php');
+        const regionList = regRes.data;
+        setRegions(regionList);
+
+        // Fetch address
+        const addrRes = await api.get(`/get_address.php?user_id=${user.id}`);
+        const addr = addrRes.data?.address;
+        if (!addr) return;
+        setIsEditing(true);
+
+        // Match region by name
+        const region = regionList.find(r => r.name === addr.region_id);
+        if (!region) return;
+        setSelectedRegion(region.id);
+
+        // Fetch & set province
+        const provRes = await api.get(`/provinces.php?region_id=${region.id}`);
+        const provinceList = provRes.data || [];
+        setProvinces(provinceList);
+        const province = provinceList.find(p => p.name === addr.province_id);
+        if (!province) return;
+        setSelectedProvince(province.id);
+
+        // Fetch & set city
+        const cityRes = await api.get(`/cities.php?province_id=${province.id}`);
+        const cityList = cityRes.data || [];
+        setCities(cityList);
+        const city = cityList.find(c => c.name === addr.city_id);
+        if (!city) return;
+        setSelectedCity(city.id);
+
+        // Fetch & set barangay
+        const brgyRes = await api.get(`/barangays.php?city_id=${city.id}`);
+        const brgyList = brgyRes.data || [];
+        setBarangays(brgyList);
+        const barangay = brgyList.find(b => b.name === addr.barangay_id);
+        if (!barangay) return;
+        setSelectedBarangay(barangay.id);
+
+        // Set other fields
+        setAddressLine1(addr.address_line_1 || '');
+        setAddressLine2(addr.address_line_2 || '');
+        setZipCode(addr.zip_code || '');
+      } catch (err) {
+        console.error("Error loading profile/address data:", err);
+      }
+    };
+
+    loadUserAndAddress();
   }, []);
 
   // Fetch regions on mount
