@@ -6,6 +6,7 @@ import Step1 from './step-1.jsx';
 import Step2 from './step-2.jsx';
 import Step3 from './step-3.jsx';
 import Step4 from './step-4.jsx';
+import api from '../../api';
 
 function BookingForm() {
   const totalSteps = 4;
@@ -35,6 +36,8 @@ function BookingForm() {
   const [selectedAddons, setSelectedAddons] = useState(Array(6).fill(false));
   const [selectedAddonOptions, setSelectedAddonOptions] = useState({});
 
+  const [addonsFromDB, setAddonsFromDB] = useState([]);
+
   const [step2FormData, setStep2FormData] = useState({
     selectedRegion: '',
     province: '',
@@ -59,16 +62,94 @@ function BookingForm() {
 
   const [manualClientInfo, setManualClientInfo] = useState(clientInfo);
   const [useAccountDetails, setUseAccountDetails] = useState(false);
+  const [accountInfo, setAccountInfo] = useState(null);
+  
+  const [paymentDetails, setPaymentDetails] = useState({
+    method: '',
+    accountName: '',
+    accountNumber: ''
+  });
 
-  const accountInfo = {
-    firstName: 'Alleah Marie',
-    lastName: 'Bayas',
-    suffix: '',
-    email: 'alleahmarie87@gmail.com',
-    phoneNumber: '1234567890',
-    socialPlatform: 'Facebook',
-    accountLink: 'facebook.com/alleahbayas'
+  const [fullTotalRate, setFullTotalRate] = useState(0);
+
+  const submitBooking = async () => {
+    const finalClient = useAccountDetails ? accountInfo : clientInfo;
+
+    const addonList = addonsFromDB
+      .map((addon, index) => {
+        if (!selectedAddons[index]) return null;
+        const option = selectedAddonOptions[addon.name] || '';
+        return { name: addon.name, option, price: addon.price };
+      })
+      .filter(Boolean);
+
+    const totalRate = addonList.reduce((sum, item) => sum + Number(item.price || 0), 0);
+
+    const payload = {
+      user_id: finalClient.id || 0,
+      first_name: finalClient.firstName,
+      last_name: finalClient.lastName,
+      suffix: finalClient.suffix,
+      email: finalClient.email,
+      phone_number: finalClient.phoneNumber,
+      social_media_link: finalClient.accountLink,
+      location: `${step2FormData.address}, ${step2FormData.barangay}, ${step2FormData.municipality}, ${step2FormData.province}, ${step2FormData.selectedRegion} ${step2FormData.zip}`,
+      schedule_date: step2FormData.selectedDate,
+      schedule_time: step2FormData.selectedTime,
+      note: step2FormData.note,
+      theme: style,
+      banner_message: bannerMessage,
+      lightbox_message: lightboxMessage,
+      colors: selectedColors.join(', '),
+      addons: addonList,
+      mode_of_payment: paymentDetails.method,
+      account_name: paymentDetails.accountName,
+      account_number: paymentDetails.accountNumber,
+      total_rate: fullTotalRate
+    };
+
+    // 🔍 LOG THE PAYLOAD TO THE CONSOLE
+    console.log("Submitting booking with payload:", payload);
+
+    try {
+      const response = await api.post('/submit_booking.php', payload);
+
+      console.log("Server response:", response.data); // 🔍 Log server response
+
+      if (response.data.success) {
+        setShowFinalBookingModal(true);
+      } else {
+        alert("Booking failed: " + (response.data.message || 'Unknown error.'));
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      alert("Error submitting booking. Please try again.");
+    }
   };
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const parsed = JSON.parse(userData);
+      setAccountInfo(parsed);
+      setClientInfo(prev => ({
+        ...prev,
+        ...parsed
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    api.get('/get_addons.php')
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setAddonsFromDB(res.data);
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching add-ons", err);
+      });
+  }, []);
 
   useEffect(() => {
     if (style) {
@@ -77,12 +158,12 @@ function BookingForm() {
   }, [style]);
 
   useEffect(() => {
-    if (useAccountDetails) {
+    if (useAccountDetails && accountInfo) {
       setClientInfo({ ...accountInfo });
-    } else {
+    } else if (!useAccountDetails) {
       setClientInfo({ ...manualClientInfo });
     }
-  }, [useAccountDetails]);
+  }, [useAccountDetails, accountInfo, manualClientInfo]);
 
   const handleSetClientInfo = (info) => {
     setClientInfo(info);
@@ -100,8 +181,10 @@ function BookingForm() {
       setCurrentStep(prev => prev + 1);
     } else if (hasAgreed) {
       setShowFinalBookingModal(true);
+      submitBooking();
     }
   };
+
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -199,6 +282,7 @@ function BookingForm() {
               setSelectedAddons={setSelectedAddons}
               selectedAddonOptions={selectedAddonOptions}
               setSelectedAddonOptions={setSelectedAddonOptions}
+              addonsFromDB={addonsFromDB}
             />
           )}
           {currentStep === 2 && (
@@ -217,6 +301,10 @@ function BookingForm() {
           {currentStep === 4 && (
             <Step4
               style={style}
+              setFullTotalRate={setFullTotalRate}
+              paymentDetails={paymentDetails}
+              setPaymentDetails={setPaymentDetails}
+              addonsFromDB={addonsFromDB}
               bannerMessage={bannerMessage}
               lightboxMessage={lightboxMessage}
               selectedColors={selectedColors}

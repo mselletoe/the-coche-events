@@ -14,43 +14,50 @@ function Step4({
   useAccountDetails,
   accountInfo,
   hasAgreed,
-  setHasAgreed
+  setHasAgreed,
+  addonsFromDB,
+  paymentDetails,
+  setPaymentDetails,
+  setFullTotalRate
 }) {
   const baseRate = 2499;
+  const finalClient = useAccountDetails ? accountInfo : clientInfo;
 
-  const addonPrices = {
-    'Satin Bouquet': { '6pcs': 300, '12pcs': 620, 'Acetate': 1000 },
-    'Fresh Flower': { 'Medium': 1700, 'Large': 2800 },
-    'Cake': {
-      'Mary Grace (Mini)': 1000,
-      'Mary Grace (Whole)': 3500,
-      "Conti's (Mango Bravo)": 2200,
-      'Red Ribbon': 850,
-      'Goldilocks': 900
-    },
-    'Teddy Bear': { '2ft': 1800, '3ft': 2000 },
-    'Polaroid Frame': { default: 400 },
-    'Polaroid Themed Pictures': { default: 350 }
-  };
+  const addonList = addonsFromDB
+    ? Object.entries(selectedAddons)
+        .filter(([id, checked]) => checked)
+        .map(([id]) => {
+          const addon = addonsFromDB.find((a) => String(a.id) === String(id));
+          if (!addon) return null;
 
-  const addonLabels = Object.keys(addonPrices);
+          const optionValue = selectedAddonOptions[id] || '';
+          let price = 0;
 
-  const addonList = selectedAddons
-    .map((checked, index) => {
-      if (!checked) return null;
-      const name = addonLabels[index];
-      const option = selectedAddonOptions[name] || 'default';
-      const price = addonPrices[name]?.[option] || 0;
-      return { name, option, price };
-    })
-    .filter(Boolean);
+          if (addon.dropdownOptions && addon.dropdownOptions.length > 0) {
+            const optionObj = addon.dropdownOptions.find(o => o.value === optionValue);
+            price = Number(optionObj?.price) || 0;
+          } else {
+            price = Number(addon.price) || 0; // fallback to addon base price
+          }
+
+          return {
+            name: addon.label,
+            option: optionValue || '',
+            price,
+          };
+        })
+        .filter(Boolean)
+    : [];
 
   const totalAddons = addonList.reduce((sum, item) => sum + item.price, 0);
   const total = baseRate + totalAddons;
 
-  const finalClient = useAccountDetails ? accountInfo : clientInfo;
+  // Update full total to parent
+  useEffect(() => {
+    setFullTotalRate(total);
+  }, [total, setFullTotalRate]);
 
-  // ✅ Scroll to Book button smoothly when checkbox is checked
+  // Scroll to Book button smoothly when checkbox is checked
   useEffect(() => {
     if (hasAgreed) {
       const bookBtn = document.querySelector('.progress-button.next');
@@ -72,49 +79,70 @@ function Step4({
       <div className="step4-container">
         <div className="left-column receiver">
           <div className="box">
+
+            {/* Receiver’s Details */}
             <h3>Receiver’s Details</h3>
             <p>{finalClient.firstName} {finalClient.lastName} {finalClient.suffix}</p>
             <p>{finalClient.email}</p>
             <p>{finalClient.phoneNumber}</p>
             <p className="link">{finalClient.accountLink}</p>
 
+            {/* Booking Details */}
             <h3>Booking Details</h3>
-            <p>{step2FormData.address}</p>
-            <p>{step2FormData.selectedDate}</p>
+            <p>
+              {step2FormData.address}, 
+              {step2FormData.barangayName && `${step2FormData.barangayName}, `}
+              {step2FormData.municipalityName && `${step2FormData.municipalityName}, `}
+              {step2FormData.provinceName && `${step2FormData.provinceName}, `}
+              {step2FormData.selectedRegionName && `${step2FormData.selectedRegionName} `}
+              {step2FormData.zip && step2FormData.zip}
+            </p>
+
+            <p>{displayDate}</p>
+
             <p>{step2FormData.selectedTime}</p>
             <p>Note: “{step2FormData.note}”</p>
-          <h3>Booking Details</h3>
-          <p>
-            {step2FormData.address}, 
-            {step2FormData.barangayName && `${step2FormData.barangayName}, `}
-            {step2FormData.municipalityName && `${step2FormData.municipalityName}, `}
-            {step2FormData.provinceName && `${step2FormData.provinceName}, `}
-            {step2FormData.selectedRegionName && `${step2FormData.selectedRegionName} `}
-            {step2FormData.zip && step2FormData.zip}
-          </p>
 
-          <p>{displayDate}</p>
-
-
-          <p>{step2FormData.selectedTime}</p>
-          <p>Note: “{step2FormData.note}”</p>
-
+            {/* Payment Details */}
             <h3>Payment Details</h3>
             <p className="note">Select your payment method and fill in the required details</p>
-
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
-              <label><input type="radio" name="payment" /> Cash</label>
-              <label><input type="radio" name="payment" /> Bank Transfer</label>
-              <label><input type="radio" name="payment" /> e-Wallet</label>
+            <div className="payment-options">
+              <label>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="bank"
+                  checked={paymentDetails.method === 'bank'}
+                  onChange={(e) => setPaymentDetails(prev => ({ ...prev, method: e.target.value }))}
+                /> Bank Transfer
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="ewallet"
+                  checked={paymentDetails.method === 'ewallet'}
+                  onChange={(e) => setPaymentDetails(prev => ({ ...prev, method: e.target.value }))}
+                /> e-Wallet
+              </label>
             </div>
 
             <div className="input-group">
               <label>Account Name</label>
-              <input type="text" />
+              <input
+                type="text"
+                value={paymentDetails.accountName}
+                onChange={(e) => setPaymentDetails(prev => ({ ...prev, accountName: e.target.value }))}
+              />
             </div>
+
             <div className="input-group">
               <label>Account Number</label>
-              <input type="text" />
+              <input
+                type="text"
+                value={paymentDetails.accountNumber}
+                onChange={(e) => setPaymentDetails(prev => ({ ...prev, accountNumber: e.target.value }))}
+              />
             </div>
           </div>
         </div>
@@ -157,10 +185,10 @@ function Step4({
             {addonList.length > 0 && (
               <>
                 <p className="price"><strong>Add-Ons</strong></p>
-                {addonList.map(({ name, option, price }) => (
-                  <div key={name} className="line-item">
+                {addonList.map(({ name, option, price }, index) => (
+                  <div key={`${name}-${index}`} className="line-item">
                     <span className="label">
-                      {name}{option !== 'default' ? ` (${option})` : ''}
+                      {name}{option ? ` (${option})` : ''}
                     </span>
                     <span className="price">₱ {price.toLocaleString()}</span>
                   </div>

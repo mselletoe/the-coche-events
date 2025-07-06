@@ -33,6 +33,20 @@
             color: $shade-3;
             font-family: var(--inter);
             margin-bottom: 1rem;
+
+            label{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                input[type='checkbox'] {
+                    width: 18px;
+                    height: 18px;
+                    accent-color: $primary-color;
+                    cursor: pointer;
+                }
+            }
         }
 
         .form-row {
@@ -96,11 +110,4 @@
   background-color: #f0f0f0;
   color: #888;
   cursor: not-allowed;
-}
-
-input[type='checkbox'] {
-    width: 18px;
-    height: 18px;
-    accent-color: $primary-color;
-    cursor: pointer;
 }
