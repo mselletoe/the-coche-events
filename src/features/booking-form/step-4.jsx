@@ -18,7 +18,8 @@ function Step4({
   addonsFromDB,
   paymentDetails,
   setPaymentDetails,
-  setFullTotalRate
+  setFullTotalRate,
+  setFinalLocationName
 }) {
   const baseRate = 2499;
   const finalClient = useAccountDetails ? accountInfo : clientInfo;
@@ -74,6 +75,27 @@ function Step4({
     dateStyle: 'long',
   }).format(new Date(`${step2FormData.selectedDate}T00:00:00`));
 
+  useEffect(() => {
+    const {
+      address,
+      barangayName,
+      municipalityName,
+      provinceName,
+      selectedRegionName,
+      zip
+    } = step2FormData;
+
+    const locationString = `${address}, ${barangayName}, ${municipalityName}, ${provinceName}, ${selectedRegionName} ${zip}`;
+    setFinalLocationName(locationString);
+  }, [
+    step2FormData.address,
+    step2FormData.barangayName,
+    step2FormData.municipalityName,
+    step2FormData.provinceName,
+    step2FormData.selectedRegionName,
+    step2FormData.zip
+  ]);
+
   return (
     <div className="step4-wrapper">
       <div className="step4-container">
@@ -90,8 +112,8 @@ function Step4({
             {/* Booking Details */}
             <h3>Booking Details</h3>
             <p>
-              {step2FormData.address}, 
-              {step2FormData.barangayName && `${step2FormData.barangayName}, `}
+              {step2FormData.address},  
+              {step2FormData.barangayName && `${step2FormData.barangayName}, `} 
               {step2FormData.municipalityName && `${step2FormData.municipalityName}, `}
               {step2FormData.provinceName && `${step2FormData.provinceName}, `}
               {step2FormData.selectedRegionName && `${step2FormData.selectedRegionName} `}

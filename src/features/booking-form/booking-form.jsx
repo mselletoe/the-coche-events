@@ -75,13 +75,34 @@ function BookingForm() {
   const submitBooking = async () => {
     const finalClient = useAccountDetails ? accountInfo : clientInfo;
 
-    const addonList = addonsFromDB
-      .map((addon, index) => {
-        if (!selectedAddons[index]) return null;
-        const option = selectedAddonOptions[addon.name] || '';
-        return { name: addon.name, option, price: addon.price };
+    const addonList = Object.entries(selectedAddons)
+      .filter(([id, isSelected]) => isSelected)
+      .map(([id]) => {
+        const addon = addonsFromDB.find(a => String(a.id) === String(id));
+        if (!addon) return null;
+
+        const optionValue = selectedAddonOptions[id] || '';
+        let price = 0;
+
+        if (addon.dropdownOptions?.length > 0) {
+          const matchedOption = addon.dropdownOptions.find(opt => opt.value === optionValue);
+          price = Number(matchedOption?.price) || 0;
+        } else {
+          price = Number(addon.price) || 0;
+        }
+
+        return {
+          name: addon.label,
+          option: optionValue,
+          price,
+        };
       })
       .filter(Boolean);
+
+      console.log("Add-on list before submission:", addonList);
+      console.log("addonsFromDB:", addonsFromDB);
+      console.log("selectedAddons:", selectedAddons);
+      console.log("selectedAddonOptions:", selectedAddonOptions);
 
     const totalRate = addonList.reduce((sum, item) => sum + Number(item.price || 0), 0);
 
@@ -93,7 +114,7 @@ function BookingForm() {
       email: finalClient.email,
       phone_number: finalClient.phoneNumber,
       social_media_link: finalClient.accountLink,
-      location: `${step2FormData.address}, ${step2FormData.barangay}, ${step2FormData.municipality}, ${step2FormData.province}, ${step2FormData.selectedRegion} ${step2FormData.zip}`,
+      location: step2FormData.finalLocationName,
       schedule_date: step2FormData.selectedDate,
       schedule_time: step2FormData.selectedTime,
       note: step2FormData.note,
@@ -105,7 +126,8 @@ function BookingForm() {
       mode_of_payment: paymentDetails.method,
       account_name: paymentDetails.accountName,
       account_number: paymentDetails.accountNumber,
-      total_rate: fullTotalRate
+      total_rate: fullTotalRate,
+      status: 'pending'
     };
 
     // 🔍 LOG THE PAYLOAD TO THE CONSOLE
@@ -184,7 +206,6 @@ function BookingForm() {
       submitBooking();
     }
   };
-
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -338,6 +359,7 @@ function BookingForm() {
                   }, 100);
                 }
               }}
+              setFinalLocationName={(location) => setStep2FormData(prev => ({ ...prev, finalLocationName: location }))}
             />
           )}
         </div>
