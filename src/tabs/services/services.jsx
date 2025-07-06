@@ -17,12 +17,12 @@ function Services() {
     { id: 'custom', label: 'Custom', image: Option4 },
   ];
 
-  // ✅ New: Clear the selected option from localStorage on page load
+  // Clear the selected option from localStorage on page load
   useEffect(() => {
     localStorage.removeItem('selectedOption');
   }, []);
 
-  // ✅ Load selection from localStorage on mount
+  // Load selection from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem('selectedOption');
     if (stored) {
@@ -30,7 +30,7 @@ function Services() {
     }
   }, []);
 
-  // ✅ Store selection in both state and localStorage
+  // Store selection in both state and localStorage
   const handleOptionClick = (id) => {
     setSelectedOption(id);
     localStorage.setItem('selectedOption', id);

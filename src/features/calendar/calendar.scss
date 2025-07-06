@@ -108,11 +108,11 @@
 
       // BOOKED DATE (brown)
       &.booked {
-        background: $primary-color;
+        background: $primary-color-light;
         color: #ffffff;
 
         &:hover {
-          background: darken($primary-color, 5%);
+          background: darken($primary-color-light, 5%);
         }
       }
 

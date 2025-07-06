@@ -149,67 +149,67 @@
 
     // Updated buttons at the bottom
     .progress-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 2em;
-  padding-top: 1.5em;
-  // border-top: 1px solid #eee; // Remove this if you don't want the thin line
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 2em;
+      padding-top: 1.5em;
+      // border-top: 1px solid #eee; // Remove this if you don't want the thin line
 
-  .progress-button {
-    width: 150px;
-    padding: 8px 50px;
-    border: none;
-    border-radius: 5px;
-    font-family: var(--inter);
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+      .progress-button {
+        width: 150px;
+        padding: 8px 50px;
+        border: none;
+        border-radius: 5px;
+        font-family: var(--inter);
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
 
-    &.next {
-      background-color: $primary-color-light;
-      color: white;
+        &.next {
+          background-color: $primary-color-light;
+          color: white;
 
-      &:hover {
-        background-color: $primary-color-dark;
-        transform: scale(1.05);
+          &:hover {
+            background-color: darken($primary-color-light, 5%);
+            transform: scale(1.05);
+          }
+
+          &:disabled {
+            background-color: #f0f0f0;
+            color: $shade-2;
+            border: 1px solid $shade-1;
+            cursor: not-allowed;
+            opacity: 0.6;
+          }
+        }
+
+        &.back {
+          background-color: transparent;
+          color: $primary-color-light;
+
+          &:hover {
+            transform: scale(1.05);
+            background-color: darken(white, 10%);
+            color: darken($primary-color-light, 5%);
+          }
+
+          &:disabled {
+            color: $shade-2;
+            cursor: not-allowed;
+          }
+        }
       }
 
-      &:disabled {
-        background-color: #f0f0f0;
-        color: $shade-2;
-        border: 1px solid $shade-1;
-        cursor: not-allowed;
-        opacity: 0.6;
+      // 📱 Center-align side-by-side buttons on mobile
+      @media (max-width: 480px) {
+        justify-content: center;
+        .progress-button {
+          width: 130px;
+          padding: 8px 30px;
+        }
       }
     }
-
-    &.back {
-      background-color: transparent;
-      color: $primary-color-light;
-
-      &:hover {
-        transform: scale(1.05);
-        background-color: $primary-color-dark;
-        color: white;
-      }
-
-      &:disabled {
-        color: $shade-2;
-        cursor: not-allowed;
-      }
-    }
-  }
-
-  // 📱 Center-align side-by-side buttons on mobile
-  @media (max-width: 480px) {
-    justify-content: center;
-    .progress-button {
-      width: 130px;
-      padding: 8px 30px;
-    }
-  }
-}
   }}
 
 .fade-in {
@@ -284,7 +284,7 @@
   color: white;
 
   &:hover {
-    background-color: $primary-color-dark;
+    background-color: darken($primary-color-light, 5%);
   }
 }
 
