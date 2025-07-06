@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import api from '../../api';
 import './navbar.scss';
 import { darkcocheLogo, darkcocheLogoMobile, sanyaLopez, userIcon } from '../../assets/images.js';
 
@@ -8,6 +9,7 @@ function NavBar(){
     const location = useLocation();
     const underlineRef = useRef(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [profilePic, setProfilePic] = useState(null);
 
     const navRefs = {
         home: useRef(null),
@@ -17,6 +19,24 @@ function NavBar(){
 
     const user = JSON.parse(localStorage.getItem('user'));
     const isLoggedIn = !!user;
+
+    const loadProfilePicture = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.id) return;
+
+    try {
+        const res = await api.get(`/fetch_profile_picture.php?user_id=${user.id}`);
+        if (res.data.success && res.data.profile_picture) {
+        setProfilePic(res.data.profile_picture); // this assumes it's already a full URL or a relative path
+        }
+    } catch (err) {
+        console.error('Error fetching profile picture:', err);
+    }
+    };
+
+    useEffect(() => {
+    loadProfilePicture();
+    }, []);
 
     const handleAccountClick = () => {
         setDropdownOpen(!dropdownOpen);
@@ -66,7 +86,20 @@ function NavBar(){
                             onClick={() => window.open("https://m.me/thecocheevents", "_blank", "noopener,noreferrer")
                         }>Contact Us</button>
                         <button className='account' onClick={handleAccountClick}>
-                            <img id='account-icon' src={user?.profile_picture || userIcon} alt="account-icon"/>
+                            <div className='account-icon'>
+                                {profilePic ? (
+                                    <img
+                                        src={
+                                        profilePic.startsWith('blob:')
+                                            ? profilePic
+                                            : `http://localhost/the_coche-events/${profilePic}`
+                                        }
+                                        alt="account-icon"
+                                    />
+                                ) : (
+                                <span>{user?.first_name?.charAt(0).toUpperCase() || 'G'}</span>
+                                )}
+                            </div>
                             <p>{user?.first_name || 'Guest'}</p>
                             <i className="fa-solid fa-caret-down dropdown-icon"></i>
                         </button>
