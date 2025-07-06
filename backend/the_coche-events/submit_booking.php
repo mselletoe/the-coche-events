@@ -11,10 +11,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Database Connection
-include 'database.php'; // this defines $conn
+include 'database.php'; // make sure this sets up $conn
 
+// =========================
+// GET REQUEST: Fetch Bookings
+// =========================
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    try {
+        $sql = "SELECT * FROM booking_form ORDER BY id DESC";
+        $result = $conn->query($sql);
+
+        $bookings = [];
+        while ($row = $result->fetch_assoc()) {
+            $row['addons'] = json_decode($row['addons'], true); // Decode JSON addons
+            $bookings[] = $row;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $bookings
+        ]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+
+    exit();
+}
+
+// =========================
+// POST REQUEST: Create Booking
+// =========================
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Helper function to clean input
     function clean($input) {
         return htmlspecialchars(trim($input));
     }
@@ -25,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Invalid or missing JSON input");
         }
 
-        // Clean and extract input
+        // Extract and sanitize inputs
         $user_id = intval($input['user_id']);
         $first_name = clean($input['first_name']);
         $last_name = clean($input['last_name']);
@@ -46,15 +77,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $account_name = clean($input['account_name']);
         $account_number = clean($input['account_number']);
         $total_rate = floatval($input['total_rate']);
+        $status = 'pending';
 
-        // Prepare SQL insert using mysqli
         $stmt = $conn->prepare("
             INSERT INTO booking_form (
                 user_id, first_name, last_name, suffix, email, phone_number,
                 social_media_link, location, schedule_date, schedule_time, note,
                 theme, banner_message, lightbox_message, colors,
-                addons, mode_of_payment, account_name, account_number, total_rate
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                addons, mode_of_payment, account_name, account_number, total_rate, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         if (!$stmt) {
@@ -62,11 +93,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt->bind_param(
-            "issssssssssssssssssd",
+            "issssssssssssssssssds",
             $user_id, $first_name, $last_name, $suffix, $email, $phone_number,
             $social_media_link, $location, $schedule_date, $schedule_time, $note,
             $theme, $banner_message, $lightbox_message, $colors,
-            $addons, $mode_of_payment, $account_name, $account_number, $total_rate
+            $addons, $mode_of_payment, $account_name, $account_number, $total_rate, $status
         );
 
         if (!$stmt->execute()) {
@@ -84,11 +115,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'error' => $e->getMessage()
         ]);
     }
-} else {
-    http_response_code(405);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Only POST requests are allowed.'
-    ]);
+
+    exit();
 }
+
+// =========================
+// Invalid Method
+// =========================
+http_response_code(405);
+echo json_encode([
+    'success' => false,
+    'message' => 'Only GET and POST requests are allowed.'
+]);
 ?>
