@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './calendar.scss';
 
 function Calendar({ 
-  bookedDates = {}, // Object: { "2025-07-04": 1, "2025-07-05": 2 }
+  bookedDates = [],
   fullyBookedDates = [], 
   currentDate = new Date(), 
   selectedDate,
@@ -72,21 +72,18 @@ function Calendar({
     if (isSelected(date)) return 'selected';
     if (isToday(date)) return 'today';
     if (fullyBookedDates.includes(dateKey)) return 'fully-booked';
-
-    const bookings = bookedDates[dateKey] || 0;
-    if (bookings >= 1 && bookings < 2) return 'booked';
-    if (bookings >= 2) return 'fully-booked';
+    if (bookedDates.includes(dateKey)) return 'booked';
 
     return 'available';
   };
 
   const handleDateClick = (date) => {
     const dateKey = formatDateKey(date);
-    const bookings = bookedDates[dateKey] || 0;
+    const isBooked = bookedDates.includes(dateKey);
+    const isFullyBooked = fullyBookedDates.includes(dateKey);
+    const isAlreadySelected = selectedDate && formatDateKey(selectedDate) === dateKey;
 
-    if (bookings >= 2 || fullyBookedDates.includes(dateKey)) {
-      return; // Prevent selection if fully booked
-    }
+    if (fullyBookedDates.includes(dateKey)) return; // prevent selecting fully booked
 
     onDateClick(date);
   };

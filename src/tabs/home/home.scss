@@ -21,24 +21,14 @@ body::-webkit-scrollbar {
   max-width: 100%;
   margin: 0;
   padding: 0;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  font-family: var(--inter);
 }
 
 // === GLOBAL BUTTON STYLE ===
 button {
-  font-family: var(--archivo);
+  font-family: var(--inter);
   transition: all 0.2s ease;
   cursor: pointer;
-
-  &:hover {
-    opacity: 0.9;
-  }
 }
 
 // === HERO SECTION ===
@@ -183,6 +173,11 @@ button {
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.8rem;
+      font-family: var(--inter);
+
+      &:hover{
+        background-color: darken($primary-color-dark, 5%);
+      }
     }
   }
 
@@ -263,25 +258,32 @@ button {
     padding: 70px 90px;
     color: white;
     max-width: 1000px;
+    font-family: var(--archivo);
 
     h2 {
       font-size: 4rem;
-      line-height: 1;
+      line-height: 1.2;
 
       em {
         font-style: italic;
+        font-family: var(--playfair);
       }
     }
 
     button {
-      margin-top: 20px;
+      margin-top: 3em;
       font-size: 1rem;
       padding: 10px 20px;
       background: none;
       border: 2px solid white;
       color: white;
-      opacity: 70%;
       cursor: pointer;
+      border-radius: 5px;
+
+      &:hover{
+        border-color: darken(white, 5%);
+        color: darken(white, 5%);
+      }
     }
   }
 

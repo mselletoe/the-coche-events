@@ -5,10 +5,12 @@ import Calendar from '../calendar/calendar'
 import './step-2.scss';
 
 function Step2({ formData, setFormData, registerValidator }) {
-  const occupiedTimes = ["10:00 AM", "2:00 PM"];
+  const [occupiedTimes, setOccupiedTimes] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [bookedDates, setBookedDates] = useState([]);
+  const [fullyBookedDates, setFullyBookedDates] = useState([]);
 
   // Store options for dropdowns
   const [regions, setRegions] = useState([]);
@@ -137,6 +139,22 @@ function Step2({ formData, setFormData, registerValidator }) {
     };
 
     initializeComponent();
+  }, []);
+
+  useEffect(() => {
+    const fetchBookedDates = async () => {
+      try {
+        const res = await api.get('/booked_dates.php');
+        if (res.data?.success) {
+          setBookedDates(res.data.bookedDates || []);
+          setFullyBookedDates(res.data.fullyBookedDates || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch booked dates:", err);
+      }
+    };
+
+    fetchBookedDates();
   }, []);
 
   // Handle region change
@@ -368,13 +386,25 @@ function Step2({ formData, setFormData, registerValidator }) {
             <div className="field-row">
               <div className="field-container">
               <Calendar
-                bookedDates={['2025-07-08', '2025-07-12']}
-                fullyBookedDates={['2025-07-09']}
+                bookedDates={bookedDates}
+                fullyBookedDates={fullyBookedDates}
                 currentDate={new Date()}
                 selectedDate={formData.selectedDate ? new Date(formData.selectedDate) : null}
-                onDateClick={(date) => {
+                onDateClick={async (date) => {
                   const isoDate = date.toISOString().split('T')[0];
                   handleChange('selectedDate', isoDate);
+
+                  try {
+                    const res = await api.get(`/occupied_times.php?date=${isoDate}`);
+                    if (res.data?.occupied_times) {
+                      setOccupiedTimes(res.data.occupied_times);
+                    } else {
+                      setOccupiedTimes([]);
+                    }
+                  } catch (error) {
+                    console.error('Failed to fetch occupied times:', error);
+                    setOccupiedTimes([]);
+                  }
                 }}
               />
               </div>

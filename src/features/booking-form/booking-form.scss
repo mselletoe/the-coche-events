@@ -24,7 +24,7 @@
 
     .progress-car {
       position: absolute;
-      top: -13px; // adjust as needed to float above line
+      top: -13px;
       width: 30px;
       height: 30px;
       transition: transform 0.4s ease;
@@ -81,60 +81,11 @@
           font-size: 0.7em;
         }
       }
-
-      .progress-buttons {
-        display: flex;
-        gap: 10px;
-
-        .progress-button {
-          width: 150px;
-          padding: 8px 50px;
-          border: none;
-          border-radius: 5px;
-          font-family: var(--inter);
-          font-weight: 500;
-          cursor: pointer;
-          transition: background-color 0.3s ease, transform 0.3s ease;
-
-          &.next {
-            background-color: $primary-color-light;
-            color: white;
-
-            &:hover {
-              background-color: $primary-color-dark;
-              transform: scale(1.05);
-            }
-
-            &:disabled {
-              background-color: #f0f0f0;
-              color: $shade-2;
-              border: 1px solid $shade-1;
-              cursor: not-allowed;
-              opacity: 0.6;
-            }
-          }
-
-          &.back {
-            background-color: transparent;
-            color: $primary-color-light;
-
-            &:hover {
-              transform: scale(1.05);
-              background-color: $primary-color-dark;
-              color: white;
-            }
-
-            &:disabled {
-              color: $shade-2;
-              cursor: not-allowed;
-            }
-          }
-        }
-      }
     }
 
     .form-card {
       display: flex;
+      flex-direction: column;
 
       .step1-container {
         display: flex;
@@ -162,7 +113,8 @@
         }
       }
 
-      .step2-container, .step3-container {
+      .step2-container,
+      .step3-container {
         width: 100%;
         height: auto;
         background-color: white;
@@ -177,7 +129,8 @@
         width: 100%;
         height: auto;
 
-        .receiver, .billing {
+        .receiver,
+        .billing {
           background-color: white;
           border-radius: 5px;
           box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
@@ -193,8 +146,71 @@
         }
       }
     }
-  }
-}
+
+    // Updated buttons at the bottom
+    .progress-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 2em;
+      padding-top: 1.5em;
+      // border-top: 1px solid #eee; // Remove this if you don't want the thin line
+
+      .progress-button {
+        width: 150px;
+        padding: 8px 50px;
+        border: none;
+        border-radius: 5px;
+        font-family: var(--inter);
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+
+        &.next {
+          background-color: $primary-color-light;
+          color: white;
+
+          &:hover {
+            background-color: darken($primary-color-light, 5%);
+            transform: scale(1.05);
+          }
+
+          &:disabled {
+            background-color: #f0f0f0;
+            color: $shade-2;
+            border: 1px solid $shade-1;
+            cursor: not-allowed;
+            opacity: 0.6;
+          }
+        }
+
+        &.back {
+          background-color: transparent;
+          color: $primary-color-light;
+
+          &:hover {
+            transform: scale(1.05);
+            background-color: darken(white, 10%);
+            color: darken($primary-color-light, 5%);
+          }
+
+          &:disabled {
+            color: $shade-2;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      // 📱 Center-align side-by-side buttons on mobile
+      @media (max-width: 480px) {
+        justify-content: center;
+        .progress-button {
+          width: 130px;
+          padding: 8px 30px;
+        }
+      }
+    }
+  }}
 
 .fade-in {
   opacity: 0;
@@ -268,6 +284,25 @@
   color: white;
 
   &:hover {
-    background-color: $primary-color-dark;
+    background-color: darken($primary-color-light, 5%);
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-form {
+    .form-header {
+      .title {
+        text-align: center;
+        width: 100%;
+
+        h1 {
+          font-size: 1.5em; // optional tweak for mobile
+        }
+
+        p {
+          font-size: 0.8em; // optional tweak for mobile
+        }
+      }
+    }
   }
 }
