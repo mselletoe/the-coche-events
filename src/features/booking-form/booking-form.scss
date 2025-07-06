@@ -64,86 +64,28 @@
 
     .form-header {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      text-align: center;
-      padding: 20px 0 10px;
+      margin: 2em 0;
 
       .title {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
         h1 {
           font-family: var(--inter);
           color: $shade-4;
-          font-size: 2em;
+          font-size: 1.7em;
         }
-
         p {
           font-family: var(--inter);
           font-style: italic;
           color: $shade-3;
-          padding: 10px;
-          font-size: 0.8em;
-        }
-      }
-
-
-      // Top buttons (now optional – leave it if you want to reuse for desktop)
-      .progress-buttons {
-        display: flex;
-        gap: 10px;
-
-        .progress-button {
-          width: 150px;
-          padding: 8px 50px;
-          border: none;
-          border-radius: 5px;
-          font-family: var(--inter);
-          font-weight: 500;
-          cursor: pointer;
-          transition: background-color 0.3s ease, transform 0.3s ease;
-
-          &.next {
-            background-color: $primary-color-light;
-            color: white;
-
-            &:hover {
-              background-color: $primary-color-dark;
-              transform: scale(1.05);
-            }
-
-            &:disabled {
-              background-color: #f0f0f0;
-              color: $shade-2;
-              border: 1px solid $shade-1;
-              cursor: not-allowed;
-              opacity: 0.6;
-            }
-          }
-
-          &.back {
-            background-color: transparent;
-            color: $primary-color-light;
-
-            &:hover {
-              transform: scale(1.05);
-              background-color: $primary-color-dark;
-              color: white;
-            }
-
-            &:disabled {
-              color: $shade-2;
-              cursor: not-allowed;
-            }
-          }
+          font-size: 0.7em;
         }
       }
     }
 
     .form-card {
       display: flex;
+      flex-direction: column;
 
       .step1-container {
         display: flex;
@@ -167,44 +109,12 @@
         }
 
         .addons {
-  flex: 1;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
-  padding: 25px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0px;
-  font-size: 11px;           // 👈 smaller font
-  line-height: 1;          // 👈 reduced line height
-  font-weight: 600;
-  color: $shade-4;
-
-  .addon-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0px;
-
-    label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    input[type="checkbox"] {
-      transform: scale(0.9); // optional: make checkbox smaller
-    }
-
-    select {
-      font-size: 10px;
-      padding: 2px 4px;
-    }
-  }
-}
-
+          flex: 1;
+        }
       }
 
-      .step2-container, .step3-container {
+      .step2-container,
+      .step3-container {
         width: 100%;
         height: auto;
         background-color: white;
@@ -219,7 +129,8 @@
         width: 100%;
         height: auto;
 
-        .receiver, .billing {
+        .receiver,
+        .billing {
           background-color: white;
           border-radius: 5px;
           box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
@@ -236,62 +147,71 @@
       }
     }
 
-    // 🔽 Bottom Buttons Here
-    .bottom-buttons {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 2em;
+    // Updated buttons at the bottom
+    .progress-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 2em;
+  padding-top: 1.5em;
+  // border-top: 1px solid #eee; // Remove this if you don't want the thin line
 
-      .progress-button {
-        width: 150px;
-        padding: 10px 0;
-        border: none;
-        border-radius: 5px;
-        font-family: var(--inter);
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
+  .progress-button {
+    width: 150px;
+    padding: 8px 50px;
+    border: none;
+    border-radius: 5px;
+    font-family: var(--inter);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 
-        &.next {
-          background-color: $primary-color-light;
-          color: white;
+    &.next {
+      background-color: $primary-color-light;
+      color: white;
 
-          &:hover {
-            background-color: $primary-color-dark;
-            transform: scale(1.05);
-          }
+      &:hover {
+        background-color: $primary-color-dark;
+        transform: scale(1.05);
+      }
 
-          &:disabled {
-            background-color: #f0f0f0;
-            color: $shade-2;
-            border: 1px solid $shade-1;
-            cursor: not-allowed;
-            opacity: 0.6;
-          }
-        }
+      &:disabled {
+        background-color: #f0f0f0;
+        color: $shade-2;
+        border: 1px solid $shade-1;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
 
-        &.back {
-          background-color: transparent;
-          color: $primary-color-light;
+    &.back {
+      background-color: transparent;
+      color: $primary-color-light;
 
-          &:hover {
-            transform: scale(1.05);
-            background-color: $primary-color-dark;
-            color: white;
-          }
+      &:hover {
+        transform: scale(1.05);
+        background-color: $primary-color-dark;
+        color: white;
+      }
 
-          &:disabled {
-            color: $shade-2;
-            cursor: not-allowed;
-          }
-        }
+      &:disabled {
+        color: $shade-2;
+        cursor: not-allowed;
       }
     }
   }
-}
 
-// Modals & Animations (unchanged)
+  // 📱 Center-align side-by-side buttons on mobile
+  @media (max-width: 480px) {
+    justify-content: center;
+    .progress-button {
+      width: 130px;
+      padding: 8px 30px;
+    }
+  }
+}
+  }}
+
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -365,5 +285,24 @@
 
   &:hover {
     background-color: $primary-color-dark;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-form {
+    .form-header {
+      .title {
+        text-align: center;
+        width: 100%;
+
+        h1 {
+          font-size: 1.5em; // optional tweak for mobile
+        }
+
+        p {
+          font-size: 0.8em; // optional tweak for mobile
+        }
+      }
+    }
   }
 }

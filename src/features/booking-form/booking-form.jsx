@@ -129,12 +129,10 @@ function BookingForm() {
     if (!href || href === location.pathname) return;
 
     if (href === '/services') {
-      // Prevent navigation and no modal for services tab
       event.preventDefault();
-      return; // user stays on page, no modal
+      return;
     }
 
-    // For other tabs, show modal
     event.preventDefault();
     setTargetPath(href);
     setShowNavigationWarningModal(true);
@@ -163,7 +161,6 @@ function BookingForm() {
 
   return (
     <div className="bookingform-container">
-      {/* Progress Bar */}
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: `${progressPercentage}%` }} />
         <img src={carIcon} alt="car" className="progress-car" style={{ transform: `translateX(${carX}px)` }} />
@@ -178,91 +175,85 @@ function BookingForm() {
         </div>
       </div>
 
-      {/* Main Form */}
-<div className="booking-form">
-  <div className="form-header">
-    <div className="title">
-      <h1>{stepTitles[currentStep].title}</h1>
-      <p>{stepTitles[currentStep].subtitle}</p>
-    </div>
-  </div>
+      <div className="booking-form">
+        <div className="form-header">
+          <div className="title">
+            <h1>{stepTitles[currentStep].title}</h1>
+            <p>{stepTitles[currentStep].subtitle}</p>
+          </div>
+        </div>
 
-  <div className="form-card">
-    {currentStep === 1 && (
-      <Step1
-        selectedStyle={style}
-        onNext={handleNext}
-        registerValidator={fn => (step1Validator.current = fn)}
-        bannerMessage={bannerMessage}
-        setBannerMessage={setBannerMessage}
-        lightboxMessage={lightboxMessage}
-        setLightboxMessage={setLightboxMessage}
-        selectedColors={selectedColors}
-        setSelectedColors={setSelectedColors}
-        selectedAddons={selectedAddons}
-        setSelectedAddons={setSelectedAddons}
-        selectedAddonOptions={selectedAddonOptions}
-        setSelectedAddonOptions={setSelectedAddonOptions}
-      />
-    )}
-    {currentStep === 2 && (
-      <Step2
-        formData={step2FormData}
-        setFormData={setStep2FormData}
-        registerValidator={fn => (step2Validator.current = fn)}
-      />
-    )}
-    {currentStep === 3 && (
-      <Step3
-        registerValidator={fn => (step3Validator.current = fn)}
-        clientInfo={clientInfo}
-        setClientInfo={handleSetClientInfo}
-        useAccountDetails={useAccountDetails}
-        setUseAccountDetails={setUseAccountDetails}
-        accountInfo={accountInfo}
-      />
-    )}
-    {currentStep === 4 && (
-      <Step4
-        style={style}
-        bannerMessage={bannerMessage}
-        lightboxMessage={lightboxMessage}
-        selectedColors={selectedColors}
-        selectedAddons={selectedAddons}
-        selectedAddonOptions={selectedAddonOptions}
-        step2FormData={step2FormData}
-        clientInfo={clientInfo}
-        useAccountDetails={useAccountDetails}
-        accountInfo={accountInfo}
-        hasAgreed={hasAgreed}
-        setHasAgreed={(value) => {
-          setHasAgreed(value);
-          if (value && bookButtonRef.current) {
-            setTimeout(() => {
-              bookButtonRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
-          }
-        }}
-      />
-    )}
-  </div>
+        <div className="form-card">
+          {currentStep === 1 && (
+            <Step1
+              selectedStyle={style}
+              onNext={handleNext}
+              registerValidator={fn => (step1Validator.current = fn)}
+              bannerMessage={bannerMessage}
+              setBannerMessage={setBannerMessage}
+              lightboxMessage={lightboxMessage}
+              setLightboxMessage={setLightboxMessage}
+              selectedColors={selectedColors}
+              setSelectedColors={setSelectedColors}
+              selectedAddons={selectedAddons}
+              setSelectedAddons={setSelectedAddons}
+              selectedAddonOptions={selectedAddonOptions}
+              setSelectedAddonOptions={setSelectedAddonOptions}
+            />
+          )}
+          {currentStep === 2 && (
+            <Step2 formData={step2FormData} setFormData={setStep2FormData} registerValidator={fn => (step2Validator.current = fn)} />
+          )}
+          {currentStep === 3 && (
+            <Step3
+              registerValidator={fn => (step3Validator.current = fn)}
+              clientInfo={clientInfo}
+              setClientInfo={handleSetClientInfo}
+              useAccountDetails={useAccountDetails}
+              setUseAccountDetails={setUseAccountDetails}
+              accountInfo={accountInfo}
+            />
+          )}
+          {currentStep === 4 && (
+            <Step4
+              style={style}
+              bannerMessage={bannerMessage}
+              lightboxMessage={lightboxMessage}
+              selectedColors={selectedColors}
+              selectedAddons={selectedAddons}
+              selectedAddonOptions={selectedAddonOptions}
+              step2FormData={step2FormData}
+              clientInfo={clientInfo}
+              useAccountDetails={useAccountDetails}
+              accountInfo={accountInfo}
+              hasAgreed={hasAgreed}
+              setHasAgreed={(value) => {
+                setHasAgreed(value);
+                if (value && bookButtonRef.current) {
+                  setTimeout(() => {
+                    bookButtonRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }, 100);
+                }
+              }}
+            />
+          )}
+        </div>
 
-  {/* NEW: Bottom Progress Buttons */}
-  <div className="progress-buttons bottom-buttons">
-    <button className="progress-button back" onClick={handleBack}>Back</button>
-    <button
-      ref={bookButtonRef}
-      className="progress-button next"
-      onClick={handleNext}
-      disabled={currentStep === totalSteps && !hasAgreed}
-    >
-      {currentStep === totalSteps ? 'Book' : 'Next'}
-    </button>
-  </div>
-</div>
+        {/* Buttons at bottom right */}
+        <div className="progress-buttons">
+          <button className="progress-button back" onClick={handleBack}>Back</button>
+          <button
+            ref={bookButtonRef}
+            className="progress-button next"
+            onClick={handleNext}
+            disabled={currentStep === totalSteps && !hasAgreed}
+          >
+            {currentStep === totalSteps ? 'Book' : 'Next'}
+          </button>
+        </div>
+      </div>
 
-
-      {/* Confirm Return Modal */}
+      {/* Modals */}
       {showConfirmModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
@@ -284,7 +275,6 @@ function BookingForm() {
         </div>
       )}
 
-      {/* Final Booking Modal */}
       {showFinalBookingModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">
@@ -304,7 +294,6 @@ function BookingForm() {
         </div>
       )}
 
-      {/* Navigation Intercept Modal */}
       {showNavigationWarningModal && (
         <div className="custom-modal-overlay fade-in">
           <div className="custom-modal">

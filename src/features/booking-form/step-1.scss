@@ -19,7 +19,6 @@
       font-weight: bold;
       color: $shade-4;
       margin-bottom: 10px;
-      display: none;
     }
 
     .subtitle {
@@ -27,7 +26,6 @@
       font-style: italic;
       color: $shade-3;
       margin-bottom: 20px;
-      display: none;
     }
 
     .form-row {
@@ -299,6 +297,42 @@
         .addon-select {
           width: 100%;
         }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+  .addons {
+    .addon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .addon-name {
+        font-size: 0.9em;
+        font-weight: 500;
+        line-height: 0;
+        text-align: center;
+
+      }
+
+      .addon-checkbox {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding-left: 135px;
       }
     }
   }
