@@ -89,15 +89,17 @@ function NavBar(){
                             <div className='account-icon'>
                                 {profilePic ? (
                                     <img
-                                        src={
+                                    src={
                                         profilePic.startsWith('blob:')
-                                            ? profilePic
-                                            : `http://localhost/the_coche-events/${profilePic}`
-                                        }
-                                        alt="account-icon"
+                                        ? profilePic
+                                        : `http://localhost/the_coche-events/${profilePic}`
+                                    }
+                                    alt="account-icon"
                                     />
+                                ) : isLoggedIn ? (
+                                    <span>{user?.first_name?.charAt(0).toUpperCase() || 'G'}</span>
                                 ) : (
-                                <span>{user?.first_name?.charAt(0).toUpperCase() || 'G'}</span>
+                                    <img src={userIcon} alt="user icon" />
                                 )}
                             </div>
                             <p>{user?.first_name || 'Guest'}</p>

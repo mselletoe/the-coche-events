@@ -4,7 +4,7 @@ import Pending from '../../features/pending/pending';
 import BookingForm from '../../features/booking-form/booking-form';
 import { Option1, Option2, Option3, Option4 } from '../../assets/images.js';
 import './services.scss';
-import FloatingParticles from "../../features/FloatingParticles/FloatingParticles.jsx";
+import FloatingParticles from "../../features/FloatingParticles/floating-particles.jsx";
 
 function Services() {
   const [selectedOption, setSelectedOption] = useState(null);
