@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api'; // assuming this is axios
 import './gallery.scss';
+import FloatingParticles from "../../features/FloatingParticles/floating-particles.jsx";
 
 function Gallery() {
   const [photos, setPhotos] = useState([]);
@@ -22,6 +23,7 @@ function Gallery() {
 
   return (
     <div className="gallery-container">
+      <FloatingParticles />
       <p className='headings'>Get <span>inspired</span>.<br />Imagine yours.</p>
       <div className="gallery-columns">
         {photos.map((photo, index) => {

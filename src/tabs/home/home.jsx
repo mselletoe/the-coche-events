@@ -1,6 +1,7 @@
 import React, { useEffect, useState, UserRef } from "react";
 import "./home.scss";
 import { NavLink } from "react-router-dom";
+import FloatingParticles from "../../features/FloatingParticles/floating-particles.jsx";
 
 // Import images
 import {
@@ -73,8 +74,57 @@ function Home() {
     },
   ];
 
+  useEffect(() => {
+    const glow = document.getElementById("mouse-glow");
+    let timeout;
+
+    const handleMouseMove = (e) => {
+      glow.style.left = `${e.clientX}px`;
+      glow.style.top = `${e.clientY}px`;
+
+      glow.classList.add("visible");
+
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        glow.classList.remove("visible");
+      }, 200); // glow fades out after 200ms of inactivity
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const glitterContainer = document.getElementById("glitter-container");
+
+    const handleMouseMove = (e) => {
+      const sparkle = document.createElement("div");
+      sparkle.className = "glitter";
+
+      const offsetX = (Math.random() - 0.5) * 50; // random spread
+      const offsetY = (Math.random() - 0.5) * 50;
+
+      sparkle.style.left = `${e.clientX + offsetX}px`;
+      sparkle.style.top = `${e.clientY + offsetY}px`;
+
+      glitterContainer.appendChild(sparkle);
+
+      setTimeout(() => {
+        sparkle.remove();
+      }, 600);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
     <div className="home-container">
+
+      <FloatingParticles />
+      <div className="mouse-glow" id="mouse-glow"></div>
+      <div className="glitter-container" id="glitter-container"></div>
+      
       {/* HERO SECTION */}
       <section className="hero-section">
         <img src={cochesvg} alt="Coche Logo" className="flying-coche" />

@@ -63,10 +63,19 @@
 }
 
 @media (max-width: 480px) {
-    .gallery-container 
-    .gallery-columns {
-    column-count: 2;
-    column-gap: 25px;
+    .gallery-container {
+        padding: 0;
+
+        
+        .headings{
+            font-size: 2em;
+        }
+
+        .gallery-columns {
+            column-count: 2;
+            column-gap: 25px;
+        }
     }
+    
     
 }

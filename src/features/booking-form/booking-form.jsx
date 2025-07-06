@@ -107,7 +107,7 @@ function BookingForm() {
     const totalRate = addonList.reduce((sum, item) => sum + Number(item.price || 0), 0);
 
     const payload = {
-      user_id: finalClient.id || 0,
+      user_id: finalClient?.id ?? null,
       first_name: finalClient.firstName,
       last_name: finalClient.lastName,
       suffix: finalClient.suffix,

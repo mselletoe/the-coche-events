@@ -3,6 +3,7 @@
 .services-container {
   display: flex;
   flex-direction: column;
+  z-index: 99;
 
   .book-now {
     align-self: center;
@@ -144,16 +145,16 @@
 @media (max-width: 480px) {
   .services-container {
     .services-headings {
-      padding: 1.5em 1em;
+      padding: 0 1em 2em 1em;
       gap: 10px;
 
       p {
-        font-size: 2rem;
-        padding: 0px 0px 20px;
+        font-size: 1.5em;
+        padding: 0px 0px 10px;
       }
 
       h4 {
-        font-size: 0.85em;
+        font-size: 0.8em;
         text-align: center;
         padding: 0 10px;
       }
@@ -161,16 +162,15 @@
 
     .services-selections {
       flex-direction: column;
-      padding: 1.5em 1em;
+      padding: 0 0 2em 0;
 
       .styles-text {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1em;
-        padding: 0 40px;
-        gap: 10px;
+        align-items: center;
+        margin-bottom: 2em;
+        padding: 0;
 
         p {
             font-size: 1.7em;
@@ -180,21 +180,24 @@
             color: $primary-color-dark;
             margin: 0;
             white-space: nowrap;
+            padding-bottom: 5px;
         }
 
         h4 {
-            font-size: 0.8em;
+            font-size: 0.7em;
             font-family: var(--inter);
             font-weight: 400;
             font-style: italic;
             color: $shade-3;
-            margin: 4px 0 0;
             flex: 1;
-            text-align: left;
+            text-align: center;
             line-height: 1.2;
-            padding: 0px 10px;
+
+            .responsive-br {
+              display: none;
+            }
         }
-        }
+      }
 
 
       .services-options {
@@ -249,8 +252,7 @@
 
     .book-now {
         font-size: 0.9em;
-        padding: 8px;
-        width: 130px;
+        padding: 10px;
     }
   }
 }

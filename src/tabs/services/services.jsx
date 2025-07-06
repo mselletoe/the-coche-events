@@ -4,6 +4,7 @@ import Pending from '../../features/pending/pending';
 import BookingForm from '../../features/booking-form/booking-form';
 import { Option1, Option2, Option3, Option4 } from '../../assets/images.js';
 import './services.scss';
+import FloatingParticles from "../../features/FloatingParticles/FloatingParticles.jsx";
 
 function Services() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -44,6 +45,7 @@ function Services() {
 
   return (
     <div className='services-container fade-in' key={location.key}>
+      <FloatingParticles />
       <div className='services-headings'>
         <p>
           Every celebration deserves a <span>twist</span>—and<br />
@@ -58,8 +60,8 @@ function Services() {
         <div className='styles-text'>
           <p>Styles</p>
           <h4>
-            Select the kind of <br />
-            surprise you'd love us<br />
+            Select the kind of <span className="responsive-br"><br /></span>
+            surprise you'd love us<span className="responsive-br"><br /></span>
             to set up.
           </h4>
         </div>

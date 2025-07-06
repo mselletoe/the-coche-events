@@ -225,7 +225,7 @@
       .navbar-links {
         position: absolute;
         left: 50%;
-        transform: translateX(-53%); // ✅ Center the nav links
+        transform: translateX(-48%); // ✅ Center the nav links
         display: flex;
         gap: 20px;
         font-size: 0.7em;
@@ -252,21 +252,13 @@
         gap: 6px;
 
         .contact-button {
-          font-size: 0.55rem;     // ✅ Smaller text
-          height: 24px;          // ✅ Smaller height
-          width: 62px;           // ✅ Narrower button
-          padding: 3px 6px;
-          margin-right: 5px;
+          display: none;
         }
 
         .account {
           gap: 4px;
           padding: 2px 4px;
           width: auto;
-
-          #account-icon {
-            height: 22px;
-          }
 
           p {
             display: none;
@@ -284,8 +276,8 @@
   .dropdown-menu {
     top: 60px;
     right: 12px;
-    width: 65px;
-    padding: 2px;
+    width: 100px;
+    padding: 10px;
     margin-right: 7px;
 
     button {
@@ -295,7 +287,7 @@
     }
 
     hr {
-      width: 100px;
+      width: 90px;
     }
   }
 }
