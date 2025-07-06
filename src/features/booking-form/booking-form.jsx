@@ -70,6 +70,63 @@ function BookingForm() {
     accountNumber: ''
   });
 
+  const [fullTotalRate, setFullTotalRate] = useState(0);
+
+  const submitBooking = async () => {
+    const finalClient = useAccountDetails ? accountInfo : clientInfo;
+
+    const addonList = addonsFromDB
+      .map((addon, index) => {
+        if (!selectedAddons[index]) return null;
+        const option = selectedAddonOptions[addon.name] || '';
+        return { name: addon.name, option, price: addon.price };
+      })
+      .filter(Boolean);
+
+    const totalRate = addonList.reduce((sum, item) => sum + Number(item.price || 0), 0);
+
+    const payload = {
+      user_id: finalClient.id || 0,
+      first_name: finalClient.firstName,
+      last_name: finalClient.lastName,
+      suffix: finalClient.suffix,
+      email: finalClient.email,
+      phone_number: finalClient.phoneNumber,
+      social_media_link: finalClient.accountLink,
+      location: `${step2FormData.address}, ${step2FormData.barangay}, ${step2FormData.municipality}, ${step2FormData.province}, ${step2FormData.selectedRegion} ${step2FormData.zip}`,
+      schedule_date: step2FormData.selectedDate,
+      schedule_time: step2FormData.selectedTime,
+      note: step2FormData.note,
+      theme: style,
+      banner_message: bannerMessage,
+      lightbox_message: lightboxMessage,
+      colors: selectedColors.join(', '),
+      addons: addonList,
+      mode_of_payment: paymentDetails.method,
+      account_name: paymentDetails.accountName,
+      account_number: paymentDetails.accountNumber,
+      total_rate: fullTotalRate
+    };
+
+    // 🔍 LOG THE PAYLOAD TO THE CONSOLE
+    console.log("Submitting booking with payload:", payload);
+
+    try {
+      const response = await api.post('/submit_booking.php', payload);
+
+      console.log("Server response:", response.data); // 🔍 Log server response
+
+      if (response.data.success) {
+        setShowFinalBookingModal(true);
+      } else {
+        alert("Booking failed: " + (response.data.message || 'Unknown error.'));
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      alert("Error submitting booking. Please try again.");
+    }
+  };
+
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
@@ -124,6 +181,7 @@ function BookingForm() {
       setCurrentStep(prev => prev + 1);
     } else if (hasAgreed) {
       setShowFinalBookingModal(true);
+      submitBooking();
     }
   };
 
@@ -258,6 +316,7 @@ function BookingForm() {
           {currentStep === 4 && (
             <Step4
               style={style}
+              setFullTotalRate={setFullTotalRate}
               paymentDetails={paymentDetails}
               setPaymentDetails={setPaymentDetails}
               addonsFromDB={addonsFromDB}

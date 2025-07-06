@@ -17,33 +17,45 @@ function Step4({
   setHasAgreed,
   addonsFromDB,
   paymentDetails,
-  setPaymentDetails
+  setPaymentDetails,
+  setFullTotalRate
 }) {
   const baseRate = 2499;
   const finalClient = useAccountDetails ? accountInfo : clientInfo;
 
-const addonList = addonsFromDB
-  ? Object.entries(selectedAddons)
-      .filter(([id, checked]) => checked)
-      .map(([id]) => {
-        const addon = addonsFromDB.find((a) => String(a.id) === String(id));
-        if (!addon) return null;
+  const addonList = addonsFromDB
+    ? Object.entries(selectedAddons)
+        .filter(([id, checked]) => checked)
+        .map(([id]) => {
+          const addon = addonsFromDB.find((a) => String(a.id) === String(id));
+          if (!addon) return null;
 
-        const optionValue = selectedAddonOptions[id] || '';
-        const optionObj = addon.dropdownOptions?.find(o => o.value === optionValue);
-        const price = Number(optionObj?.price) || 0;
+          const optionValue = selectedAddonOptions[id] || '';
+          let price = 0;
 
-        return {
-          name: addon.label,
-          option: optionValue || '',
-          price,
-        };
-      })
-      .filter(Boolean)
-  : [];
+          if (addon.dropdownOptions && addon.dropdownOptions.length > 0) {
+            const optionObj = addon.dropdownOptions.find(o => o.value === optionValue);
+            price = Number(optionObj?.price) || 0;
+          } else {
+            price = Number(addon.price) || 0; // fallback to addon base price
+          }
+
+          return {
+            name: addon.label,
+            option: optionValue || '',
+            price,
+          };
+        })
+        .filter(Boolean)
+    : [];
 
   const totalAddons = addonList.reduce((sum, item) => sum + item.price, 0);
   const total = baseRate + totalAddons;
+
+  // Update full total to parent
+  useEffect(() => {
+    setFullTotalRate(total);
+  }, [total, setFullTotalRate]);
 
   // Scroll to Book button smoothly when checkbox is checked
   useEffect(() => {
