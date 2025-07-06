@@ -231,3 +231,109 @@
 //     opacity: 1;
 //   }
 // }
+
+
+@media (max-width: 480px) {
+  .step1-container {
+    flex-direction: column;
+    gap: 16px;
+
+    .themes, .addons {
+      padding: 20px;
+      width: 100%;
+    }
+
+    .themes {
+      h3 {
+        display: none;
+      }
+
+      .subtitle {
+        display: none;
+      }
+
+      .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .label-column,
+        .input-column {
+          width: 100%;
+        }
+
+        .input-column {
+          margin-top: 5px;
+        }
+      }
+
+      .theme-color-grid {
+        justify-content: flex-start;
+
+        .color-pill {
+          width: auto;
+          padding: 8px 12px;
+        }
+      }
+    }
+
+    .addons {
+      h3 {
+        font-size: 1.2em;
+      }
+
+      .addon-item {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+
+        .addon-checkbox {
+          justify-content: flex-start;
+          margin: 8px 0;
+        }
+
+        .addon-select-wrapper {
+          width: 100%;
+        }
+
+        .addon-select {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+  .addons {
+    .addon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .addon-name {
+        font-size: 0.9em;
+        font-weight: 500;
+        line-height: 0;
+        text-align: center;
+
+      }
+
+      .addon-checkbox {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding-left: 135px;
+      }
+    }
+  }
+}
