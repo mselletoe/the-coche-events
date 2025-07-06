@@ -28,6 +28,94 @@ function AccountSettings() {
   const [addressLine2, setAddressLine2] = useState('');
   const [zipCode, setZipCode] = useState('');
 
+  const [profilePic, setProfilePic] = useState(null); // preview
+  const [profilePicFile, setProfilePicFile] = useState(null);
+  const [imageChanged, setImageChanged] = useState(false);
+
+  const loadProfilePicture = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.id) return;
+
+    try {
+      const res = await api.get(`/fetch_profile_picture.php?user_id=${user.id}`);
+      if (res.data.success && res.data.profile_picture) {
+        setProfilePic(res.data.profile_picture);
+      }
+    } catch (err) {
+      console.error('Error fetching profile picture:', err);
+    }
+  };
+  
+  useEffect(() => {
+    loadProfilePicture();
+  }, []);
+
+  const handleUploadClick = () => {
+    document.getElementById('profilePicInput').click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePic(URL.createObjectURL(file));
+      setProfilePicFile(file);
+      setImageChanged(true);
+    }
+  };
+
+  const handleRemovePicture = () => {
+    setProfilePic(null);
+    setProfilePicFile(null);
+    setImageChanged(true);
+  };
+
+  const handleSavePicture = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.id) return;
+
+    if (profilePicFile) {
+      const formData = new FormData();
+      formData.append("user_id", user.id);
+      formData.append("profile_picture", profilePicFile);
+
+      try {
+        const res = await api.post("/upload_profile_picture.php", formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        console.log("Upload response:", res.data);
+
+        if (res.data.success) {
+          alert("Profile picture uploaded.");
+          setProfilePic(res.data.path); // assumes server returns `path` to uploaded file
+        setProfilePicFile(null);
+        setImageChanged(false);
+        } else {
+          alert("Upload failed: " + (res.data.error || "No error message from server"));
+        }
+      } catch (err) {
+        console.error("Upload error:", err);
+        alert("Upload error: " + err.message);
+      }
+    } else if (profilePic === null && imageChanged) {
+      try {
+        const response = await api.post('/delete_profile_picture.php', {
+          user_id: user.id
+        });
+
+        if (response.data.success) {
+          alert("Profile picture removed.");
+        } else {
+          alert("Failed to remove profile picture.");
+        }
+      } catch (error) {
+        console.error("Delete error:", error);
+        alert("Delete error.");
+      }
+    }
+
+    setImageChanged(false);
+  };
+
   // load user data
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -194,7 +282,18 @@ function AccountSettings() {
         <div className='profile-picture-container'>
           <div className="profile-content">
             <div className="profile-image">
-              <span>{currentUserName ? currentUserName.charAt(0).toUpperCase() : ''}</span>
+              {profilePic ? (
+                <img
+                  src={
+                    profilePic?.startsWith('blob:')
+                      ? profilePic
+                      : `http://localhost/the_coche-events/${profilePic}`
+                  }
+                  alt="Profile"
+                />
+              ) : (
+                <span>{currentUserName ? currentUserName.charAt(0).toUpperCase() : ''}</span>
+              )}
             </div>
 
             <div className="profile-details">
@@ -203,8 +302,16 @@ function AccountSettings() {
                 <p>Upload a new image or remove your current picture.</p>
               </div>
               <div className="button-group">
-                <button className="primary-btn">Upload</button>
-                <button className="secondary-btn">Remove</button>
+              <input
+                type="file"
+                id="profilePicInput"
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              <button className="primary-btn" onClick={handleUploadClick}>Upload</button>
+              <button className="secondary-btn" onClick={handleRemovePicture}>Remove</button>
+              <button className="secondary-btn" onClick={handleSavePicture}>Save</button>
               </div>
             </div>
           </div>
