@@ -15,7 +15,9 @@ function Step4({
   accountInfo,
   hasAgreed,
   setHasAgreed,
-  addonsFromDB
+  addonsFromDB,
+  paymentDetails,
+  setPaymentDetails
 }) {
   const baseRate = 2499;
   const finalClient = useAccountDetails ? accountInfo : clientInfo;
@@ -93,17 +95,42 @@ const addonList = addonsFromDB
             <h3>Payment Details</h3>
             <p className="note">Select your payment method and fill in the required details</p>
             <div className="payment-options">
-              <label><input type="radio" name="payment" /> Cash</label>
-              <label><input type="radio" name="payment" /> Bank Transfer</label>
-              <label><input type="radio" name="payment" /> e-Wallet</label>
+              <label>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="bank"
+                  checked={paymentDetails.method === 'bank'}
+                  onChange={(e) => setPaymentDetails(prev => ({ ...prev, method: e.target.value }))}
+                /> Bank Transfer
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="payment"
+                  value="ewallet"
+                  checked={paymentDetails.method === 'ewallet'}
+                  onChange={(e) => setPaymentDetails(prev => ({ ...prev, method: e.target.value }))}
+                /> e-Wallet
+              </label>
             </div>
+
             <div className="input-group">
               <label>Account Name</label>
-              <input type="text" />
+              <input
+                type="text"
+                value={paymentDetails.accountName}
+                onChange={(e) => setPaymentDetails(prev => ({ ...prev, accountName: e.target.value }))}
+              />
             </div>
+
             <div className="input-group">
               <label>Account Number</label>
-              <input type="text" />
+              <input
+                type="text"
+                value={paymentDetails.accountNumber}
+                onChange={(e) => setPaymentDetails(prev => ({ ...prev, accountNumber: e.target.value }))}
+              />
             </div>
           </div>
         </div>

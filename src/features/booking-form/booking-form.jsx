@@ -63,6 +63,12 @@ function BookingForm() {
   const [manualClientInfo, setManualClientInfo] = useState(clientInfo);
   const [useAccountDetails, setUseAccountDetails] = useState(false);
   const [accountInfo, setAccountInfo] = useState(null);
+  
+  const [paymentDetails, setPaymentDetails] = useState({
+    method: '',
+    accountName: '',
+    accountNumber: ''
+  });
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -120,6 +126,7 @@ function BookingForm() {
       setShowFinalBookingModal(true);
     }
   };
+
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -251,6 +258,8 @@ function BookingForm() {
           {currentStep === 4 && (
             <Step4
               style={style}
+              paymentDetails={paymentDetails}
+              setPaymentDetails={setPaymentDetails}
               addonsFromDB={addonsFromDB}
               bannerMessage={bannerMessage}
               lightboxMessage={lightboxMessage}
