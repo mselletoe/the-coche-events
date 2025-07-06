@@ -246,3 +246,77 @@ select::placeholder {
     color: $shade-2;
   }
 }
+
+@media (max-width: 480px) {
+  .step2-container {
+    .booking-form {
+      .section {
+        &.two-column {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .section-label {
+          h3 {
+            font-size: 16px;
+          }
+
+          .legend {
+            font-size: 10px;
+            gap: 0.5rem;
+
+            .legend-box {
+              width: 20px;
+              height: 14px;
+            }
+          }
+        }
+
+        .section-content {
+          gap: 0.75rem;
+
+          &.location-fields,
+          &.schedule-fields {
+            .field-row {
+              grid-template-columns: 1fr;
+
+              select,
+              input {
+                font-size: 10px;
+              }
+            }
+          }
+
+          &.schedule-fields {
+            .time-grid {
+              grid-template-columns: repeat(2, 1fr);
+              padding: 1rem;
+
+              button {
+                width: 100%;
+                font-size: 10px;
+              }
+            }
+          }
+        }
+      }
+
+      .time-options {
+        justify-content: center;
+
+        button {
+          font-size: 10px;
+          padding: 0.4rem 0.8rem;
+        }
+      }
+
+      textarea {
+        font-size: 10px;
+      }
+
+      .error-message {
+        font-size: 7px;
+      }
+    }
+  }
+}

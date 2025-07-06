@@ -245,49 +245,99 @@
 
     .themes {
       h3 {
-        display: none;
+        font-size: 1.3em;
+        text-align: center;
+        margin-bottom: 8px;
       }
 
       .subtitle {
-        display: none;
+        font-size: 0.75em;
+        text-align: center;
+        margin-bottom: 15px;
       }
 
       .form-row {
         flex-direction: column;
         align-items: flex-start;
+        margin-bottom: 15px;
 
-        .label-column,
-        .input-column {
+        .label-column {
           width: 100%;
+          font-size: 0.9em;
+          margin-bottom: 5px;
         }
 
         .input-column {
-          margin-top: 5px;
+          width: 100%;
+
+          input, select {
+            font-size: 14px;
+            padding: 12px;
+          }
+        }
+
+        .theme-color-grid {
+          justify-content: center;
+          gap: 6px;
+          margin-top: 8px;
+
+          .color-pill {
+            width: auto;
+            padding: 8px 12px;
+            font-size: 9px;
+            min-width: 70px;
+          }
         }
       }
 
-      .theme-color-grid {
-        justify-content: flex-start;
-
-        .color-pill {
-          width: auto;
-          padding: 8px 12px;
-        }
+      .error-text {
+        font-size: 10px;
+        margin-top: 3px;
       }
     }
 
     .addons {
       h3 {
-        font-size: 1.2em;
+        font-size: 1.3em;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+
+      .addon-instructions {
+        font-size: 0.75em;
+        text-align: center;
+        margin-bottom: 15px;
       }
 
       .addon-item {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         align-items: flex-start;
+        gap: 5px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+
+        .addon-name {
+          font-size: 1em;
+          font-weight: 600;
+          align-self: flex-start;
+        }
 
         .addon-checkbox {
+          display: flex;
+          align-items: center;
           justify-content: flex-start;
-          margin: 8px 0;
+          width: 100%;
+
+          input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+          }
+
+          label {
+            font-size: 0.85em;
+            margin-bottom: 0;
+          }
         }
 
         .addon-select-wrapper {
@@ -296,43 +346,16 @@
 
         .addon-select {
           width: 100%;
+          padding: 10px;
+          font-size: 14px;
+          border-radius: 6px;
         }
       }
-    }
-  }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width: 480px) {
-  .addons {
-    .addon-item {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      .addon-name {
-        font-size: 0.9em;
-        font-weight: 500;
-        line-height: 0;
+      .clarification-note {
+        font-size: 0.7em;
         text-align: center;
-
-      }
-
-      .addon-checkbox {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding-left: 135px;
+        margin-top: 15px;
       }
     }
   }

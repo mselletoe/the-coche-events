@@ -289,20 +289,110 @@
 }
 
 @media (max-width: 480px) {
-  .booking-form {
-    .form-header {
-      .title {
-        text-align: center;
-        width: 100%;
+  .bookingform-container{
+    padding: 2em 0;
 
-        h1 {
-          font-size: 1.5em; // optional tweak for mobile
-        }
+    .progress-bar {
+      width: 80%;
 
-        p {
-          font-size: 0.8em; // optional tweak for mobile
+      .progress-points {
+        top: -10px;
+
+        .progress-circle {
+          width: 12px;
+          height: 12px;
+          margin-top: 6px;
         }
       }
+    }
+
+    .booking-form {
+      .form-header {
+        flex-direction: column;
+        margin: 1.5em 0;
+        text-align: center;
+
+        .title {
+          width: 100%;
+
+          h1 {
+            font-size: 1.4em;
+            margin-bottom: 0.2em;
+          }
+
+          p {
+            font-size: 0.75em;
+            margin-bottom: 0.5em;
+          }
+        }
+      }
+
+      .form-card {
+        .step1-container {
+          flex-direction: column;
+          gap: 15px;
+          font-size: 11px;
+
+          .themes, .addons {
+            padding: 20px;
+            flex: none;
+          }
+        }
+
+        .step2-container,
+        .step3-container {
+          padding: 20px;
+          font-size: 11px;
+        }
+
+        .step4-container {
+          flex-direction: column;
+          gap: 15px;
+
+          .receiver,
+          .billing {
+            padding: 20px;
+            flex: none;
+            font-size: 11px;
+          }
+        }
+      }
+
+      .progress-buttons {
+        justify-content: center;
+        margin-top: 1.5em;
+        padding-top: 1em;
+        flex-wrap: wrap;
+
+        .progress-button {
+          width: 140px;
+          padding: 10px 20px;
+          font-size: 14px;
+          margin: 5px;
+        }
+      }
+    }
+  }
+
+  .custom-modal {
+    margin: 20px;
+    padding: 1.5em;
+    max-width: 90%;
+    font-size: 14px;
+
+    p {
+      font-size: 11px;
+    }
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1em;
+
+    button {
+      padding: 0.7em 1.5em;
+      font-size: 14px;
     }
   }
 }

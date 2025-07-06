@@ -104,3 +104,70 @@
         }
     }
 }
+
+// Media query
+@media screen and (max-width: 480px) {
+    .footer {
+        .upperfooter {
+            flex-direction: column;
+            height: auto;
+            padding: 50px 20px;
+            gap: 20px;
+
+            #coche-logo {
+                flex: none;
+                height: 25px;
+            }
+
+            .upperfooter-texts {
+                flex: none;
+                width: 100%;
+
+                .coche-contact-details, .coche-agreements {
+                    flex-direction: column;
+                    height: auto;
+                    gap: 10px;
+                    text-align: center;
+                    font-size: 0.65em;
+                }
+
+                .coche-agreements {
+                    margin-top: 10px;
+                }
+            }
+        }
+
+        .lowerfooter {
+            flex-direction: column;
+            height: auto;
+            padding: 15px 20px;
+            text-align: center;
+            gap: 10px;
+            font-size: 0.65em;
+        }
+    }
+
+    .coche-agreements-container {
+        padding: 0 20px;
+
+        .agreement-heading {
+            width: 100%;
+            font-size: 1.1em;
+            margin: 30px 0;
+        }
+
+        .agreement-content {
+            h1 {
+                font-size: 1.1em;
+            }
+
+            ul {
+                padding: 5px 20px;
+            }
+
+            p, li {
+                font-size: 0.85em;
+            }
+        }
+    }
+}
