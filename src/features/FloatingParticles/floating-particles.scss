@@ -9,14 +9,15 @@
 .particle {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.7;
+  opacity: 0.06;
   animation: float-up linear infinite;
+  transition: all 0.3s ease-in-out;
 }
 
 @keyframes float-up {
   0% {
     transform: translateY(0);
-    opacity: 0.6;
+    opacity: 0.1;
   }
   100% {
     transform: translateY(-100vh);
@@ -28,10 +29,10 @@
   .particle:nth-child(#{$i}) {
     left: #{random(100)}vw;
     top: #{random(100)}vh;
-    width: #{random(4) + 4}px;
-    height: #{random(4) + 4}px;
+    width: #{random(4) + 50}px;
+    height: #{random(4) + 50}px;
     animation-delay: #{random(20)}s;
     animation-duration: #{random(10) + 10}s;
-    background-color: #{nth((#ffcad4, #ffd6a5, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff, #ffc6ff), random(7))};
+    background-color: #{nth((#ffcad4, #ffd6a5, #ffd9bf, #ffda9b, #ffa0e6, #bdb2ff, #ffc6ff), random(7))};
   }
 }
