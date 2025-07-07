@@ -285,6 +285,18 @@ function BookingForm() {
             <h1>{stepTitles[currentStep].title}</h1>
             <p>{stepTitles[currentStep].subtitle}</p>
           </div>
+
+          <div className="progress-buttons">
+            <button className="progress-button back" onClick={handleBack}>Back</button>
+            <button
+              ref={bookButtonRef}
+              className="progress-button next"
+              onClick={handleNext}
+              disabled={currentStep === totalSteps && !hasAgreed}
+            >
+              {currentStep === totalSteps ? 'Book' : 'Next'}
+            </button>
+          </div>
         </div>
 
         <div className="form-card">
@@ -349,18 +361,6 @@ function BookingForm() {
           )}
         </div>
 
-        {/* Buttons at bottom right */}
-        <div className="progress-buttons">
-          <button className="progress-button back" onClick={handleBack}>Back</button>
-          <button
-            ref={bookButtonRef}
-            className="progress-button next"
-            onClick={handleNext}
-            disabled={currentStep === totalSteps && !hasAgreed}
-          >
-            {currentStep === totalSteps ? 'Book' : 'Next'}
-          </button>
-        </div>
       </div>
 
       {/* Modals */}
