@@ -101,7 +101,6 @@ function Login(){
           <button className="login_button" type="submit">Sign In</button>
         </form>
 
-        <p className="forgot-password">Forgot Password?</p>
         <p className="register_q">Don’t have an account? <span onClick={() => navigate("/auth/register")}>Register for free</span></p>
       </div>
     )       
